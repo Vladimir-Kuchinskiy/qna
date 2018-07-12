@@ -1,0 +1,6 @@
+= form_with model: [@question, @answer] do |f|
+  p
+    = f.label :body
+    = f.text_area :body
+  p
+    = f.submit
