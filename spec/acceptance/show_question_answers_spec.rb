@@ -6,15 +6,14 @@ feature "Show question with it's answers", '
   I want to be able to see a question and it\'s answers
 ' do
 
-  given(:answer) { create(:answer) }
+  given(:question) { create(:question) { |question| question.answers << create_list(:answer, 3) } }
 
   scenario 'User tries to see question and the answers' do
-    byebug
-    visit question_url(answer.question)
+    visit question_url(question)
 
-    expect(page).to have_content(answer.question.title)
-    expect(page).to have_content(answer.question.body)
-    expect(page).to have_content(answer.body)
+    expect(page).to have_content(question.title)
+    expect(page).to have_content(question.body)
+    question.answers.each { |answer| expect(page).to have_content(answer.body) }
   end
 
 end
