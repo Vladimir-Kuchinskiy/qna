@@ -9,7 +9,6 @@ feature 'Create question', %q{
   given(:user) { create(:user) }
 
   scenario 'Authenticated user tries to create a question' do
-
     sign_in(user)
 
     visit questions_path
