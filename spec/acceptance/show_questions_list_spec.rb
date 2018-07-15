@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'Show questions list', %q{
+feature 'Show questions list', '
   In order to see all questions
   As an guest
   I want to be able to visit questions page
-} do
+' do
 
   given(:questions) { create_list(:question, 5) }
 
