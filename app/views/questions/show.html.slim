@@ -8,6 +8,7 @@ h4 Answers:
 - @question.answers.each do |answer|
   p = answer.body
 
-p = link_to 'Add New Answer', new_question_answer_path(@question)
+h4 Add New Answer:
+= render 'answers/form', question: @question, answer: @question.answers.new
 
 p = link_to 'Back', questions_path
