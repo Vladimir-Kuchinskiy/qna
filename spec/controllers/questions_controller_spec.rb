@@ -124,16 +124,37 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+
+    let(:another_question) { create(:another_question) }
     sign_in_user
-    before { question }
 
-    it 'removes a question record from the database' do
-      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+    before do
+      @user.questions << question
+      another_question
     end
 
-    it 'redirects to questions index path' do
-      delete :destroy, params: { id: question }
-      expect(response).to redirect_to questions_path
+    context 'destroy user\'s question' do
+      it 'removes a question record from the database' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirects to questions index path' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
     end
+
+    context 'destroy another user\'s question' do
+      it 'does not change questions count' do
+        expect { delete :destroy, params: { id: another_question } }.to_not change(Question, :count)
+      end
+
+      it 're-renders questions index path' do
+        delete :destroy, params: { id: another_question }
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+
   end
 end

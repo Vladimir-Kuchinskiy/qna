@@ -4,10 +4,13 @@ table id="questions_table"
     tr
       th Title
       th Body
+      th User Email
   tbody
     - @questions.each do |question|
-      tr
+      tr data-attr="#{question.id}"
         td = link_to question.title, question
         td = question.body
+        td = question.user.try(:email)
+        td = link_to 'Delete', question, method: :delete, data: { confirm: 'Are you sure?' }
 
 = link_to 'Ask a Question', new_question_path
