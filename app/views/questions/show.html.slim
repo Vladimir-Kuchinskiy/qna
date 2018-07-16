@@ -6,7 +6,7 @@ h4 Body:  #{@question.body}
 h4 Answers:
 
 - @question.answers.each do |answer|
-  p = answer.body
+  p data-answer="#{answer.id}" = answer.body
 
 p = link_to 'Add New Answer', new_question_answer_path(@question)
 
