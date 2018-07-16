@@ -1,5 +1,6 @@
-class AnswersController < ApplicationController
+# frozen_string_literal: true
 
+class AnswersController < ApplicationController
   before_action :set_question
 
   def new
@@ -24,5 +25,4 @@ class AnswersController < ApplicationController
   def answer_params
     params.require(:answer).permit(:body)
   end
-
 end
