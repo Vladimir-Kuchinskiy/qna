@@ -4,9 +4,13 @@ h4 Title: #{@question.title}
 h4 Body:  #{@question.body}
 
 h4 Answers:
-
-- @question.answers.each do |answer|
-  p data-answer="#{answer.id}" = answer.body
+table
+  tbody
+    - @question.answers.each do |answer|
+      tr data-answer="#{answer.id}"
+        td = answer.body
+        td = answer.user.try(:email)
+        td = link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
 
 h4 Add New Answer:
 = render 'answers/form', question: @question, answer: @question.answers.new

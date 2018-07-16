@@ -40,7 +40,9 @@ class QuestionsController < ApplicationController
   private
 
   def can_destroy?
-    redirect_to questions_path, notice: 'Sorry! You can delete only your own questions' if current_user != @question.user
+    if current_user != @question.user
+      redirect_to questions_path, notice: 'Sorry! You can delete only your own questions'
+    end
   end
 
   def question_params

@@ -38,9 +38,8 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user
 
     before do
-      question.answers << answer
+      question.answers << answer << another_answer
       @user.answers << answer
-      another_answer
     end
 
     context 'destroy user\'s answer' do
@@ -61,7 +60,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-renders questions/show path' do
         delete :destroy, params: { id: another_answer }
-        expect(response).to redirect_to 'questions/show'
+        expect(response).to redirect_to question_path(question)
       end
     end
 
