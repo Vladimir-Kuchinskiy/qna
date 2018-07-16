@@ -6,7 +6,7 @@ h4 Body:  #{@question.body}
 h4 Answers:
 
 - @question.answers.each do |answer|
-  p = answer.body
+  p data-answer="#{answer.id}" = answer.body
 
 h4 Add New Answer:
 = render 'answers/form', question: @question, answer: @question.answers.new
