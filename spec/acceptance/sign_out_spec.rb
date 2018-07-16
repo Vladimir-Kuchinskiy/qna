@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-feature 'User sign in', '
-  In order to be able to ask question
+feature 'User sign out', '
+  In order to be able to quit the system
   As a user
-  I want to be able to sign in
+  I want to be able to sign out
 ' do
 
   given(:user) { create(:user) }
