@@ -6,7 +6,7 @@ feature 'Delete question', '
   I want to be able to delete my question
 ' do
 
-  given(:user) { create(:user) }
+  given(:user) { create(:user) { |user| user.questions << create_list(:question, 3) } }
 
   scenario 'Authenticated user tries to create a question' do
     sign_in(user)
@@ -18,13 +18,6 @@ feature 'Delete question', '
     click_on 'OK'
 
     expect(page).to have_content 'Your question was successfully deleted'
-  end
-
-  scenario 'Non-authenticated user tries to ask a question' do
-    visit questions_path
-    click_on 'Ask a Question'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
 end
