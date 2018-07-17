@@ -124,7 +124,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-
     let(:another_question) { create(:another_question) }
     sign_in_user
 
@@ -154,7 +153,5 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to redirect_to questions_path
       end
     end
-
-
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'User sign out', '
@@ -16,5 +18,4 @@ feature 'User sign out', '
     expect(page).to have_content 'Signed out successfully.'
     expect(current_path).to eq root_path
   end
-
 end
