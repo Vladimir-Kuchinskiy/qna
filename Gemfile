@@ -67,6 +67,7 @@ end
 
 group :test, :development do
   gem 'webdrivers'
+  gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'selenium-webdriver', '3.13.0'

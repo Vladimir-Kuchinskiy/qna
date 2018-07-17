@@ -6,31 +6,31 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:answer)   { create(:answer) }
 
-  describe 'GET #create' do
+  describe 'POST #create' do
     sign_in_user
     context 'with valid attributes' do
       it 'saves a new answer in the database' do
         expect do
-          post :create, params: { answer: attributes_for(:answer), question_id: question }
+          post :create, params: { answer: attributes_for(:answer), question_id: question, format: :js }
         end.to change(question.answers, :count).by(1)
       end
 
-      it 'redirects to a questions#show view' do
-        post :create, params: { answer: attributes_for(:answer), question_id: question }
-        expect(response).to redirect_to question_path(assigns(:question))
+      it 'render create template' do
+        post :create, params: { answer: attributes_for(:answer), question_id: question, format: :js }
+        expect(response).to render_template :create
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save the answer' do
         expect do
-          post :create, params: { answer: attributes_for(:invalid_answer), question_id: question }
+          post :create, params: { answer: attributes_for(:invalid_answer), question_id: question, format: :js }
         end.to_not change(Answer, :count)
       end
 
-      it 're-renders questions/show view' do
-        post :create, params: { answer: attributes_for(:invalid_answer), question_id: question }
-        expect(response).to render_template 'questions/show'
+      it 'render create template' do
+        post :create, params: { answer: attributes_for(:invalid_answer), question_id: question, format: :js }
+        expect(response).to render_template :create
       end
     end
   end

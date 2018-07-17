@@ -9,12 +9,8 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.build(answer_params)
     respond_to do |format|
-      if @answer.save
-        format.html { redirect_to @question, notice: 'Answer was successfully created' }
-        format.js
-      else
-        render 'questions/show'
-      end
+      @answer.save
+      format.js
     end
   end
 
