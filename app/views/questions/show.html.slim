@@ -11,6 +11,6 @@ table
         td = answer.body
         td = link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
 
-p = link_to 'Add New Answer', new_question_answer_path(@question)
+p = render 'answers/form', question: @question, answer: @question.answers.new
 
 p = link_to 'Back', questions_path

@@ -7,7 +7,7 @@ class AnswersController < ApplicationController
   before_action :can_destroy?, only: :destroy
 
   def create
-    @answer = @question.answers.new(answer_params)
+    @answer = @question.answers.build(answer_params)
     if @answer.save
       redirect_to @question, notice: 'Answer was successfully created'
     else
