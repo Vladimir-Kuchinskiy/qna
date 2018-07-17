@@ -7,6 +7,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:answer) { create(:answer) }
 
   describe 'GET #create' do
+    sign_in_user
     context 'with valid attributes' do
       it 'saves a new answer in the database' do
         expect do
@@ -27,9 +28,9 @@ RSpec.describe AnswersController, type: :controller do
         end.to_not change(Answer, :count)
       end
 
-      it 're-renders new view' do
+      it 're-renders questions show page view' do
         post :create, params: { answer: attributes_for(:invalid_answer), question_id: question }
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
       end
     end
   end

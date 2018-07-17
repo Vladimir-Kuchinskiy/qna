@@ -6,11 +6,6 @@ FactoryBot.define do
     question
   end
 
-  factory :invalid_answer, class: 'Answer' do
-    body nil
-    question
-  end
-
   factory :another_answer, class: 'Answer' do
     body "AnotherText"
     question
