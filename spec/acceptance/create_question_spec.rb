@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Create question', '
@@ -26,5 +28,4 @@ feature 'Create question', '
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
-
 end

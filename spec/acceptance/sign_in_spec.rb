@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'User sign in', '
@@ -9,7 +11,6 @@ feature 'User sign in', '
   given(:user) { create(:user) }
 
   scenario 'Registered user is tries to sign in' do
-
     sign_in(user)
 
     expect(page).to have_content 'Signed in successfully.'
@@ -25,5 +26,4 @@ feature 'User sign in', '
     expect(page).to have_content 'Invalid Email or password.'
     expect(current_path).to eq new_user_session_path
   end
-
 end

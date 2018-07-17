@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'User sign up', '
@@ -32,5 +34,4 @@ feature 'User sign up', '
     expect(page).to have_content 'Email has already been taken'
     expect(current_path).to eq user_registration_path
   end
-
 end

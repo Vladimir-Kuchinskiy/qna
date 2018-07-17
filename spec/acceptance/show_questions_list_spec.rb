@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Show questions list', '
@@ -13,5 +15,4 @@ feature 'Show questions list', '
     visit questions_path
     expect(page).to have_css('#questions_table tbody tr', count: 5)
   end
-
 end

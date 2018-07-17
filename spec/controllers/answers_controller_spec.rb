@@ -44,7 +44,7 @@ RSpec.describe AnswersController, type: :controller do
         end.to change(Answer, :count).by(1)
       end
 
-      it 'redirects to a questions#show view'do
+      it 'redirects to a questions#show view' do
         post :create, params: { answer: attributes_for(:answer), question_id: question }
         expect(response).to redirect_to question_path(assigns(:question))
       end
@@ -94,6 +94,5 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to redirect_to question_path(question)
       end
     end
-
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Delete answer', '
@@ -9,7 +11,6 @@ feature 'Delete answer', '
   given(:user) { create(:user) { |user| user.answers << create(:answer) } }
   given(:question) { create(:question) { |question| question.answers << create(:answer) << user.answers } }
   given(:another_question) { create(:another_question) { |question| question.answers << create(:answer) } }
-
 
   scenario 'Authenticated user tries to delete his own answers' do
     sign_in(user)
@@ -34,5 +35,4 @@ feature 'Delete answer', '
     expect(page).to have_content 'Sorry! You can delete only your own answers'
     expect(current_path).to eq question_path(another_question)
   end
-
 end

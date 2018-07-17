@@ -7,8 +7,8 @@ FactoryBot.define do
   end
 
   factory :another_question, class: 'Question' do
-    title "MyString"
-    body "MyText"
+    title 'MyString'
+    body 'MyText'
   end
 
   factory :invalid_question, class: 'Question' do

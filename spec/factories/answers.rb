@@ -7,7 +7,7 @@ FactoryBot.define do
   end
 
   factory :another_answer, class: 'Answer' do
-    body "AnotherText"
+    body 'AnotherText'
     question
   end
 
