@@ -9,7 +9,12 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.build(answer_params)
     respond_to do |format|
-      @answer.save
+      if @answer.save
+        flash.now[:notice] = 'Your answer was successfully created'
+      else
+        flash.now[:error] = 'Invalid answer'
+      end
+
       format.js
     end
   end
