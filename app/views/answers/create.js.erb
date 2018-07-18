@@ -1,4 +1,9 @@
-<% if @answer.errors.messages.empty? %>
+<% if @answer.errors.present? %>
+  <% @answer.errors.full_messages.each do |message| %>
+
+    $('.answer-errors').html('<%= j message %>');
+  <% end %>
+<% else %>
   $('tbody').append('<%= render 'answer' %>');
   $('#answer_body').val('');
 <% end %>

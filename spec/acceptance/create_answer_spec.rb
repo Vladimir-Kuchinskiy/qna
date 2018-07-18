@@ -23,4 +23,16 @@ feature 'Create answer', '
     expect(current_path).to eq question_path(question)
   end
 
+  scenario 'Authenticated user tries to create invalid answer', js: true do
+    sign_in(user)
+
+    visit question_path(question)
+    click_on 'Create Answer'
+
+    expect(page).to have_content 'Invalid answer'
+    expect(page).to have_content 'Body can\'t be blank'
+
+    expect(current_path).to eq question_path(question)
+  end
+
 end

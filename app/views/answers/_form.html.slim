@@ -1,7 +1,8 @@
 = form_with model: [question, answer], remote: true do |f|
-  p
-    = f.label :body, 'Your answer'
-    = f.text_area :body
+  = f.label :body, 'Your answer'
+  br
+  = f.text_area :body
+  .answer-errors style="color: red"
   = f.hidden_field :user_id, value: current_user.try(:id)
   p
     = f.submit
