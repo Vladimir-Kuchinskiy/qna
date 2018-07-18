@@ -1,0 +1,4 @@
+tr data-answer="#{@answer.id}"
+  td = @answer.body
+  td = @answer.user.try(:email)
+  td = link_to 'Delete', @answer, method: :delete, data: { confirm: 'Are you sure?' }
