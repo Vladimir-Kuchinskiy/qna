@@ -70,7 +70,7 @@ group :test, :development do
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'rspec-rails'
-  gem 'selenium-webdriver', '3.13.0'
+  gem 'capybara-webkit'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
