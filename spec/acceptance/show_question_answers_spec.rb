@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature "Show question with it's answers", '
   In order to to be aware of conversation about question topic
