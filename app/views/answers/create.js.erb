@@ -1,6 +1,7 @@
+$('.answer-errors').hide();
 <% if @answer.errors.present? %>
   <% @answer.errors.full_messages.each do |message| %>
-
+    $('.answer-errors').show();
     $('.answer-errors').html('<%= j message %>');
   <% end %>
 <% else %>
