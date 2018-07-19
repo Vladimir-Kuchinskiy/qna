@@ -1,0 +1,16 @@
+$('.answer-errors').hide();
+<% if @answer.errors.present? %>
+  <% @answer.errors.full_messages.each do |message| %>
+    $('.answer-errors').show();
+    $('.answer-errors').html('<%= j message %>');
+  <% end %>
+<% else %>
+  $('.answers').html('<%= j render 'questions/answers' %>');
+  $('.edit_answer_link').click(function(e) {
+    e.preventDefault();
+    $(this).hide();
+    var answer_id = $(this).data('answerId');
+    $('form#edit-answer-' + answer_id).show();
+  });
+<% end %>
+<%= ajax_flash('body') %>
