@@ -2,7 +2,7 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: :create
+  before_action :set_question, only: %i[create update]
   before_action :set_answer,   only: %i[destroy update]
   before_action :can_destroy?, only: :destroy
 
