@@ -1,5 +1,6 @@
 tr data-answer="#{@answer.id}"
   td = @answer.body
   td = @answer.user.try(:email)
-  td = link_to 'Edit', edit_answer_path(@answer) if current_user.present?
-  td = link_to 'Delete', @answer, method: :delete, data: { confirm: 'Are you sure?' }
+  td = link_to 'Edit' if current_user.present?
+  td = render 'answers/edit_form', question: @question, answer: @answer
+  td = link_to 'Delete', [@question, @answer], method: :delete, data: { confirm: 'Are you sure?' }
