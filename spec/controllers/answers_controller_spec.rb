@@ -39,6 +39,10 @@ RSpec.describe AnswersController, type: :controller do
     let(:answer) { create(:answer, question: question) }
 
     context 'with valid attributes' do
+      it 'assigns the requested question to @question' do
+        patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' }, format: :js }
+        expect(assigns(:question)).to eq question
+      end
 
       it 'assigns the requested answer to @answer' do
         patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' }, format: :js }
