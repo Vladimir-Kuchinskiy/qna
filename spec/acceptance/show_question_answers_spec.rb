@@ -8,7 +8,7 @@ feature "Show question with it's answers", '
   I want to be able to see a question and it\'s answers
 ' do
 
-  given(:question) { create(:question) { |question| question.answers << create_list(:answer, 3) } }
+  given(:question) { create(:question, answers: create_list(:answer, 3)) }
 
   scenario 'User tries to see question and the answers' do
     visit question_url(question)

@@ -8,7 +8,7 @@ feature 'Delete question', '
   I want to be able to delete my question
 ' do
 
-  given(:user) { create(:user) { |user| user.questions << create_list(:question, 3) } }
+  given(:user)     { create(:user, questions: create_list(:question, 3)) }
   given(:question) { create(:question) }
 
   scenario 'Authenticated user tries to delete his own question' do
