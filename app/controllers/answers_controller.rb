@@ -4,7 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: %i[create update]
   before_action :set_answer,   only: %i[destroy update]
-  before_action :can_destroy?, only: :destroy
+  before_action :can_operate?, only: %i[destroy update]
 
   def create
     @answer = @question.answers.build(answer_params)
@@ -20,7 +20,11 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params)
+    if @answer.update(answer_params)
+      flash.now[:notice] = 'Your answer was successfully updated'
+    else
+      flash.now[:error] = 'Invalid answer'
+    end
   end
 
   def destroy
@@ -42,9 +46,9 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body)
   end
 
-  def can_destroy?
+  def can_operate?
     if current_user != @answer.user
-      redirect_to question_path(@answer.question), notice: 'Sorry! You can delete only your own answers'
+      redirect_to question_path(@answer.question), notice: 'Sorry! You can operate only with your own answers'
     end
   end
 end

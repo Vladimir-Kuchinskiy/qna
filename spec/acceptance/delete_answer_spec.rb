@@ -32,7 +32,7 @@ feature 'Delete answer', '
     answer_tr = find("tr[data-answer='#{question.answers.last.id}']")
     answer_tr.find('a', text: 'Delete').click
 
-    expect(page).to have_content 'Sorry! You can delete only your own answers'
+    expect(page).to have_content 'Sorry! You can operate only with your own answers'
     expect(current_path).to eq question_path(question)
   end
 end
