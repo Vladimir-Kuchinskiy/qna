@@ -3,4 +3,4 @@ tr data-answer="#{answer.id}"
   td = answer.user.try(:email)
   td = link_to 'Edit', '', class: 'edit_answer_link', data: { answer_id: answer.id } if answer.can_operate?(current_user)
   td = render 'answers/edit_form', question: answer.question, answer: answer
-  td = link_to 'Delete', [answer.question, answer], method: :delete, data: { confirm: 'Are you sure?' } if answer.can_operate?(current_user)
+  td = link_to 'Delete', [answer.question, answer], method: :delete, remote: true, data: { confirm: 'Are you sure?' } if answer.can_operate?(current_user)
