@@ -29,10 +29,7 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy
-    respond_to do |format|
-      flash.now[:notice] = 'Your answer was successfully deleted'
-      format.js
-    end
+    flash.now[:notice] = 'Your answer was successfully deleted'
   end
 
   private
