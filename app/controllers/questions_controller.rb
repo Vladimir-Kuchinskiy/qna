@@ -3,7 +3,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question,       only: %i[show edit update destroy]
-  before_action :can_destroy?,       only: :destroy
+  before_action :can_operate?,       only: %i[destroy update]
 
   def index
     @questions = Question.all
@@ -14,8 +14,6 @@ class QuestionsController < ApplicationController
   def new
     @question = Question.new
   end
-
-  def edit; end
 
   def create
     @question = current_user.questions.build(question_params)
@@ -28,9 +26,9 @@ class QuestionsController < ApplicationController
 
   def update
     if @question.update(question_params)
-      redirect_to @question, notice: 'Your question was successfully updated'
+      flash.now[:notice] = 'Your question was successfully updated'
     else
-      render :edit
+      flash.now[:error] = 'Invalid question'
     end
   end
 
@@ -41,9 +39,9 @@ class QuestionsController < ApplicationController
 
   private
 
-  def can_destroy?
+  def can_operate?
     if current_user != @question.user
-      redirect_to questions_path, notice: 'Sorry! You can delete only your own questions'
+      redirect_to questions_path, notice: 'Sorry! You can operate only with your own questions'
     end
   end
 

@@ -31,7 +31,7 @@ feature 'Delete question', '
     question_tr = find("tr[data-attr='#{question.id}']")
     question_tr.find('a', text: 'Delete').click
 
-    expect(page).to have_content 'Sorry! You can delete only your own questions'
+    expect(page).to have_content 'Sorry! You can operate only with your own questions'
     expect(current_path).to eq questions_path
   end
 end
