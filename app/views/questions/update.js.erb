@@ -1,0 +1,15 @@
+$('.question-errors').hide();
+<% if @question.errors.present? %>
+  <% @question.errors.full_messages.each do |message| %>
+    $('.question-errors').show();
+    $('.question-errors').html('<%= j message %>');
+  <% end %>
+<% else %>
+  $('.question_body').html('<%= j render 'questions/question' %>');
+  $('.edit_answer_link').click(function(e) {
+    e.preventDefault();
+    $(this).hide();
+    $('form.edit_question').show();
+  });
+<% end %>
+<%= ajax_flash('body') %>

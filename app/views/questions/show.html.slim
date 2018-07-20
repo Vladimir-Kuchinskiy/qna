@@ -1,13 +1,13 @@
 h2 Question page
-
-h4 Title: #{@question.title}
-h4 Body:  #{@question.body}
+.question_body
+  = render 'questions/question'
 
 h4 Answers:
 table
   tbody class="answers"
     = render 'answers'
 
-p = render 'answers/form', question: @question, answer: @question.answers.new
+
+p = render 'answers/form', question: @question, answer: @question.answers.new if current_user.present?
 
 p = link_to 'Back', questions_path

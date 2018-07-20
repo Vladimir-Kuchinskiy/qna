@@ -7,10 +7,9 @@ feature 'Delete answer', '
   As an authenticated user
   I want to be able to delete my answer
 ' do
-
-  given(:answer)    { create(:answer) }
-  given(:user)      { create(:user, answers: [answer]) }
-  given!(:question) { create(:question, answers: user.answers + [create(:answer)] ) }
+  
+  given(:user)      { create(:user, answers: [create(:answer)]) }
+  given!(:question) { create(:question, answers: user.answers + [create(:answer)]) }
 
   before do
     sign_in(user)
@@ -27,12 +26,8 @@ feature 'Delete answer', '
   end
 
   scenario 'Authenticated user tries to delete someone else\'s question' do
+    user.answers.destroy_all
     visit question_path(question)
-
-    answer_tr = find("tr[data-answer='#{question.answers.last.id}']")
-    answer_tr.find('a', text: 'Delete').click
-
-    expect(page).to have_content 'Sorry! You can operate only with your own answers'
-    expect(current_path).to eq question_path(question)
+    expect(page).to_not have_link 'Delete'
   end
 end

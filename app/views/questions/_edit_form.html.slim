@@ -1,0 +1,8 @@
+= form_with model: [@question], class: 'edit_question', remote: true do |f|
+  p
+    = f.label :title
+    = f.text_field :title
+  p
+    = f.label :body
+    = f.text_area :body
+  p = f.submit 'Save'

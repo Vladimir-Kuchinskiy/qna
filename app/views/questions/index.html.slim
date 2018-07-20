@@ -11,6 +11,6 @@ table id="questions_table"
         td = link_to question.title, question
         td = question.body
         td = question.user.try(:email)
-        td = link_to 'Delete', question, method: :delete, data: { confirm: 'Are you sure?' }
+        td = link_to 'Delete', question, method: :delete, data: { confirm: 'Are you sure?' } if question.can_operate?(current_user)
 
 = link_to 'Ask a Question', new_question_path
