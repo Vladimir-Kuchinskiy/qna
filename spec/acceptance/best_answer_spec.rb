@@ -9,7 +9,7 @@ feature 'Mark answer as the best', '
 ' do
 
   given(:user)      { create(:user) }
-  given!(:question) { create(:question, user: user, answers: create_list(:answer, 2)) }
+  given!(:question) { create(:question, user: user, answers: create_list(:answer, 3)) }
 
   describe 'Authenticated user' do
     before do
@@ -19,27 +19,33 @@ feature 'Mark answer as the best', '
     scenario 'tries to mark answer as the best', js: true do
       visit question_path(question)
 
-      find("a[data-best-answer-id='#{question.answers.last}']", text: 'Mark as the Best').click
+      find("#the-best-link-#{question.answers.last.id}").click
 
-      expect(page).to have_content 'Your answer was successfully marked as the best'
+      expect(page).to have_content 'The answer was successfully marked as the best'
       within '.answers' do
-        expect(find(:xpath, '//tr[1]/td[1]')).to have_content question.answers.last.body
+        expect(find(:xpath, '//tr[1]')).to have_content question.answers.last.body
       end
     end
 
-    scenario 'tries to mark another answer as the best' do
-      question.answers.last.update(the_best: true)
+    scenario 'tries to mark another answer as the best', js: true do
+      question.answers.first.update(the_best: true)
 
       visit question_path(question)
 
-      find("a[data-best-answer-id='#{question.answers.first}']", text: 'Mark as the Best').click
+      find("#the-best-link-#{question.answers.last.id}").click
 
-      expect(page).to have_content 'Your answer was successfully marked as the best'
+      expect(page).to have_content 'The answer was successfully marked as the best'
       within '.answers' do
-        expect(find(:xpath, '//tr[1]/td[1]')).to have_content question.answers.first.body
+        expect(find(:xpath, '//tr[1]')).to have_content question.answers.last.body
       end
     end
   end
 
-  describe 'Non-authenticated user'
+  describe 'Non-authenticated user' do
+    scenario 'tries to mark answer as the best' do
+      visit question_path(question)
+
+      expect(page).to_not have_selector("#the-best-link-#{question.answers.last.id}")
+    end
+  end
 end

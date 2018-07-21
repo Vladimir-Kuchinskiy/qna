@@ -1,5 +1,5 @@
 h4 Title: #{@question.title}
 h4 Body:  #{@question.body}
 - if @question.can_operate?(current_user)
-  = link_to 'Edit', '', class: 'edit_question_link'
+  = link_to 'Edit', '', class: 'edit_question_link' if @question.can_operate?(current_user)
   = render 'edit_form'
