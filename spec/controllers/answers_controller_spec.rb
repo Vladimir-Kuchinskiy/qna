@@ -109,7 +109,7 @@ RSpec.describe AnswersController, type: :controller do
         question.answers.first.reload
         expect(question.answers.first.the_best).to eq true
       end
-      it 'makes all the other answers the best attribute to false' do
+      it 'makes all the other answers\' the best attribute to false' do
         expect((question.answers[-1] + question.answers[-2]).map(&:the_best)).to eq [false, false]
       end
     end
