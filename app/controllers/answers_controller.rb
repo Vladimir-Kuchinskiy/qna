@@ -2,8 +2,8 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: %i[create update]
-  before_action :set_answer,   only: %i[destroy update]
+  before_action :set_question, only: %i[create update pick_up_the_best]
+  before_action :set_answer,   only: %i[update pick_up_the_best destroy]
   before_action :can_operate?, only: %i[destroy update]
 
   def create
@@ -25,6 +25,11 @@ class AnswersController < ApplicationController
     else
       flash.now[:error] = 'Invalid answer'
     end
+  end
+
+  def pick_up_the_best
+    @answer.update_the_best
+    flash.now[:notice] = 'The answer was successfully marked as the best'
   end
 
   def destroy

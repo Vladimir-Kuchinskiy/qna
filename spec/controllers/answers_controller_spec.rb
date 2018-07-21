@@ -94,12 +94,13 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'PATCH #pick_the_best' do
+  describe 'PATCH #pick_up_the_best' do
     let(:user)     { create(:user) }
-    let(:question) { create(:question, user: user, answers: create_list(:answer, 2)) }
+    let(:question) { create(:question, user: user, answers: create_list(:answer, 3)) }
     sign_in_user
     before do
-      patch :pick_the_best, params: { id: question.answers.first, question_id: question, answer: { the_best: true }, format: :js }
+      question.answers.last.update(the_best: true)
+      patch :pick_up_the_best, params: { id: question.answers.first, question_id: question }, format: :js
     end
     context 'tries to mark users\' answer as the best' do
       it 'assigns the requested answer to an @answer' do
@@ -109,8 +110,16 @@ RSpec.describe AnswersController, type: :controller do
         question.answers.first.reload
         expect(question.answers.first.the_best).to eq true
       end
-      it 'makes all the other answers\' the best attribute to false' do
-        expect((question.answers[-1] + question.answers[-2]).map(&:the_best)).to eq [false, false]
+      it 'places the best answer as first of the answers collection' do
+        question.answers.map(&:reload)
+        expect(question.answers.from_the_best.first).to eq question.answers.first
+      end
+      it 'makes all the other answers\' the best attribute to nil' do
+        question.answers.map(&:reload)
+        expect(question.answers.map(&:the_best)).to eq [true, nil, nil]
+      end
+      it 'renders pick_up_the_best template' do
+        expect(response).to render_template :pick_up_the_best
       end
     end
   end
