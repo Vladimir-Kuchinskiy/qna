@@ -15,6 +15,6 @@ class Answer < ApplicationRecord
   end
 
   def can_operate?(current_user)
-    current_user == user
+    user.present? && current_user == user
   end
 end

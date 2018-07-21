@@ -7,6 +7,6 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
 
   def can_operate?(current_user)
-    current_user == user
+    user.present? && current_user == user
   end
 end
