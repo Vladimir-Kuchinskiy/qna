@@ -3,6 +3,8 @@ class FileUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
 
+  delegate  :identifier, to: :file
+
   # Choose what kind of storage to use for this uploader:
   storage :file
   # storage :fog
