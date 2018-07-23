@@ -35,6 +35,7 @@ gem 'slim-rails'
 gem 'jquery-rails'
 gem 'carrierwave'
 gem 'remotipart'
+gem 'bootstrap'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

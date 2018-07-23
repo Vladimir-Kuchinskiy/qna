@@ -8,10 +8,24 @@ html
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    p class="notice" = notice
-    p class="alert"  = alert
-    - if current_user.present?
-      p Account: #{current_user.email} | #{link_to 'Sign out', destroy_user_session_path, method: :delete}
-    - else
-      p = link_to 'Sign in', new_user_session_path
-    = yield
+    .container-relative
+      nav class="navbar navbar-expand-lg navbar-light bg-light"
+        .container
+          div class="navbar-brand" QnA
+          button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            span class="navbar-toggler-icon"
+          div class="collapse navbar-collapse" id="navbarSupportedContent"
+            ul class="navbar-nav mr-auto"
+              li class="nav-item"
+                = link_to 'Questions', questions_path, class: 'nav-link'
+            - if current_user.present?
+              div class="nav-item" Account: #{current_user.email} #{link_to 'Sign out', destroy_user_session_path, class: 'btn btn-outline-success my-2 my-sm-0', method: :delete}
+            - else
+              = link_to 'Sign in', new_user_session_path, class: 'btn btn-outline-success my-2 my-sm-0'
+      .container id="main"
+        - flash.each do |key, value|
+          = content_tag :div, class: "alert alert-#{key == 'notice' ? 'success' : 'danger'}" do
+            button type="button" class="close" data-dismiss="alert" aria-label="Close"
+              span aria-hidden="true"&times
+            = value
+        = yield

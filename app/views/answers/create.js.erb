@@ -8,4 +8,4 @@ $('.answer-errors').hide();
   $('tbody').append('<%= j render 'answer', answer: @answer %>');
   $('.answers_body').val('');
 <% end %>
-<%= ajax_flash('body') %>
+<%= ajax_flash('#main') %>
