@@ -1,0 +1,2 @@
+heroku auth:token => take password
+login kuchinskiy.wladimir@gmail.com
