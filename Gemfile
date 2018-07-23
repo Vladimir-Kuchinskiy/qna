@@ -33,6 +33,7 @@ gem 'devise'
 gem 'rails-controller-testing'
 gem 'slim-rails'
 gem 'jquery-rails'
+gem 'carrierwave'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
