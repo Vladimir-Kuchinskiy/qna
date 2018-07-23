@@ -2,7 +2,7 @@
 
 class Question < ApplicationRecord
   has_many   :answers
-  has_many   :attachments
+  has_many   :attachments, as: :attachable
 
   belongs_to :user, optional: true
 

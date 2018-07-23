@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 class Answer < ApplicationRecord
+  has_many :attachments, as: :attachable
+
   belongs_to :question, optional: true
   belongs_to :user, optional: true
+
+  accepts_nested_attributes_for :attachments
 
   validates :body, presence: true
   validates :the_best, uniqueness: { scope: :question_id }, if: ->(answer) { answer.the_best.present? }
