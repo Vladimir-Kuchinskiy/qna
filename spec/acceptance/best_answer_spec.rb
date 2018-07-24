@@ -9,7 +9,7 @@ feature 'Mark answer as the best', '
 ' do
 
   given(:user)      { create(:user) }
-  given!(:question) { create(:question, user: user, answers: create_list(:answer, 3)) }
+  given!(:question) { create(:question, user: user, answers: create_list(:answer, 3, user: user)) }
 
   describe 'Authenticated user' do
     before do
@@ -23,7 +23,7 @@ feature 'Mark answer as the best', '
 
       expect(page).to have_content 'The answer was successfully marked as the best'
       within '.answers' do
-        expect(find(:xpath, '//tr[1]')).to have_content question.answers.last.body
+        expect(find(:xpath, '//*[contains(@class, "blog-post ")][2]')).to have_content question.answers.last.body
       end
     end
 
@@ -36,7 +36,7 @@ feature 'Mark answer as the best', '
 
       expect(page).to have_content 'The answer was successfully marked as the best'
       within '.answers' do
-        expect(find(:xpath, '//tr[1]')).to have_content question.answers.last.body
+        expect(find(:xpath, '//*[contains(@class, "blog-post ")][2]')).to have_content question.answers.last.body
       end
     end
   end

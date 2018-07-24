@@ -4,6 +4,7 @@
       .form-group
         = f.label :body, 'Your answer'
         = f.input :body, class: 'answers_body', placeholder: 'Body', label: false
+        .answer-errors
       p
         = f.fields_for :attachments do |a|
           = a.input :file

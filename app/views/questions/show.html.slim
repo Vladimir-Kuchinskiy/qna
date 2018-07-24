@@ -3,8 +3,9 @@
     .question_body
       = render 'questions/question'
 
-    h2 class="pb-3 mb-4 font-italic border-bottom" Answers:
-    = render 'answers'
+    .answers
+      h2 class="pb-3 mb-4 font-italic border-bottom" Answers:
+      = render 'answers'
 
     p = render 'answers/form', question: @question, answer: @answer if current_user.present?
 

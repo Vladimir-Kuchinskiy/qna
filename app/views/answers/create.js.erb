@@ -5,7 +5,7 @@ $('.answer-errors').hide();
     $('.answer-errors').html('<%= j message %>');
   <% end %>
 <% else %>
-  $('tbody').append('<%= j render 'answer', answer: @answer %>');
-  $('.answers_body').val('');
+  $('.answers').append('<%= j render 'answer', answer: @answer %>');
+  $('.answer_body').val('');
 <% end %>
 <%= ajax_flash('#main') %>
