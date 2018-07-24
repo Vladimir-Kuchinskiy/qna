@@ -1,12 +1,11 @@
-h2 Question page
-.question_body
-  = render 'questions/question'
+.row
+  .col-md-12
+    .question_body
+      = render 'questions/question'
 
-h4 Answers:
-table
-  tbody class="answers"
+    h2 class="pb-3 mb-4 font-italic border-bottom" Answers:
     = render 'answers'
 
-p = render 'answers/form', question: @question, answer: @answer if current_user.present?
+    p = render 'answers/form', question: @question, answer: @answer if current_user.present?
 
-p = link_to 'Back', questions_path
+    p = link_to 'Back', questions_path

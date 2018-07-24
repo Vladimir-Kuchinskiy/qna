@@ -6,7 +6,7 @@
         .jumbotron
           h4.blog-post-title = link_to question.title, question
           p.blog-post-meta
-            = question.created_at.strftime('%B %d, %Y') + ' by ' + question.user.try(:email)
+            = question.created_at.try(:strftime, '%B %d, %Y') + ' by ' + question.user.try(:email)
           p
             = question.body
           = link_to 'Delete', question, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } if question.can_operate?(current_user)

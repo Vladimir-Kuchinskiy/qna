@@ -1,14 +1,12 @@
-= form_with model: [question] do |f|
-  p
-    = f.label :title
-    = f.text_field :title
-  p
-    = f.label :body
-    = f.text_area :body
-  p Attachments:
-  p
-    = f.fields_for :attachments do |a|
-      = a.label :file
-      = a.file_field :file
-
-  p = f.submit
+.row
+  .col-md-4
+    = simple_form_for question do |f|
+      .form-group
+        = f.input :title, class: 'form-control', placeholder: 'Title'
+      .form-group
+        = f.input :body, class: 'form-control', placeholder: 'Body'
+      p Attachments:
+      p
+        = f.fields_for :attachments do |a|
+          = a.input :file, class: 'btn btn-default btn-sm'
+      p = f.submit class: 'btn btn-lg btn-primary'
