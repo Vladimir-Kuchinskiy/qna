@@ -1,11 +1,11 @@
 .row
   .col-md-3.offset-4.text-center.form-signin
-    = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
       h1 class="h3 mb-3 font-weight-normal" Sign in
       = f.label :email, class: 'sr-only'
-      = f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control', placeholder: 'Email address'
+      = f.input :email, autofocus: true, autocomplete: 'email', class: 'form-control', placeholder: 'Email address', label: false
       = f.label :password, class: 'sr-only'
-      = f.password_field :password, autocomplete: 'off', class: 'form-control', placeholder: 'Password'
+      = f.input :password, autocomplete: 'off', class: 'form-control', placeholder: 'Password', label: false
       - if devise_mapping.rememberable?
         .field
           = f.check_box :remember_me, class: 'checkbox mb-3'

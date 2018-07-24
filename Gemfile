@@ -36,6 +36,7 @@ gem 'jquery-rails'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'bootstrap'
+gem 'simple_form'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

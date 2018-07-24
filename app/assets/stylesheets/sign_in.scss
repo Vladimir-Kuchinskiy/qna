@@ -23,7 +23,7 @@
 }
 
 .form-signin input[type="email"] {
-  margin-bottom: -1px;
+  margin-bottom: -17px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -56,20 +56,4 @@
 
 .registrations .form-control:focus {
   z-index: 2;
-}
-
-.registrations input[type="email"] {
-  margin-bottom: 10px;
-}
-
-.registrations #pass {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.registrations input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
