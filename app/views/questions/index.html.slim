@@ -1,16 +1,14 @@
-h1 Questions
-table id="questions_table"
-  thead
-    tr
-      th Title
-      th Body
-      th User Email
-  tbody
+.row
+  .col-md-10
+    h1 class="display-5" Questions
     - @questions.each do |question|
-      tr data-attr="#{question.id}"
-        td = link_to question.title, question
-        td = question.body
-        td = question.user.try(:email)
-        td = link_to 'Delete', question, method: :delete, data: { confirm: 'Are you sure?' } if question.can_operate?(current_user)
-
-= link_to 'Ask a Question', new_question_path
+      .row
+        .jumbotron
+          h4.blog-post-title = link_to question.title, question
+          p.blog-post-meta
+            = question.created_at.strftime('%B %d, %Y') + ' by ' + question.user.try(:email)
+          p
+            = question.body
+          = link_to 'Delete', question, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } if question.can_operate?(current_user)
+  .col-md-2
+    = link_to 'Ask a Question', new_question_path, class: 'btn btn-primary'
