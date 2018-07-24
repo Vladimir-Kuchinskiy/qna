@@ -10,7 +10,7 @@ feature 'Delete answer', '
 
   given(:user)      { create(:user) }
   given!(:answer)   { create(:answer, user: user) }
-  given!(:question) { create(:question, answers: user.answers) }
+  given!(:question) { create(:question, answers: user.answers, user: user) }
 
   before do
     sign_in(user)
@@ -19,9 +19,10 @@ feature 'Delete answer', '
   scenario 'Authenticated user tries to delete his own answers', js: true do
     visit question_path(question)
 
-    click_on 'Delete'
+    within('.blog-post') { click_on 'Delete' }
 
     expect(page).to have_content 'Your answer was successfully deleted'
+
     within '.answers' do
       expect(page).to_not have_content 'MyText'
     end
@@ -29,8 +30,8 @@ feature 'Delete answer', '
 
   scenario 'Authenticated user tries to delete someone else\'s question' do
     user.answers.destroy_all
-    question.answers << create(:answer)
+    question.answers << create(:answer, user: create(:user))
     visit question_path(question)
-    expect(page).to_not have_link 'Delete'
+    within('.answers') { expect(page).to_not have_link 'Delete' }
   end
 end

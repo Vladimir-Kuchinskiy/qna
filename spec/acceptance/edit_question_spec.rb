@@ -7,7 +7,7 @@ feature 'Edit question', '
 ' do
   given(:user)              { create(:user) }
   given!(:question)         { create(:question, user: user) }
-  given!(:another_question) { create(:another_question) }
+  given!(:another_question) { create(:another_question, user: create(:user)) }
 
 
   describe 'Authenticated user' do
@@ -17,12 +17,12 @@ feature 'Edit question', '
 
     scenario 'sees link to Edit' do
       visit question_path(question)
-      within('.question_body') { expect(page).to have_link 'Edit' }
+      within('.body_question') { expect(page).to have_link 'Edit' }
     end
 
     scenario 'tries to edit his question', js: true do
       visit question_path(question)
-      within '.question_body' do
+      within '.body_question' do
         click_on 'Edit'
         fill_in 'Title', with: 'new title'
         fill_in 'Body',  with: 'new body'
@@ -38,14 +38,14 @@ feature 'Edit question', '
 
     scenario 'tries to edit someone else\'s question' do
       visit question_path(another_question)
-      within('.question_body') { expect(page).to_not have_link 'Edit' }
+      within('.body_question') { expect(page).to_not have_link 'Edit' }
     end
   end
 
   describe 'None-authenticated user' do
     scenario 'tries to edit an answer' do
       visit question_path(question)
-      within('.question_body') { expect(page).to_not have_link 'Edit' }
+      within('.body_question') { expect(page).to_not have_link 'Edit' }
     end
   end
 end

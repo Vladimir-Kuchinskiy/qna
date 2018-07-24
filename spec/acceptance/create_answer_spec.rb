@@ -6,8 +6,8 @@ feature 'Create answer', '
   I want to be able to add an answer
 ' do
 
-  given(:question) { create(:question) }
   given(:user)     { create(:user) }
+  given(:question) { create(:question, user: user) }
 
   before do
     sign_in(user)
@@ -19,7 +19,7 @@ feature 'Create answer', '
     fill_in 'Your answer', with: 'My answer'
     click_on 'Create Answer'
 
-    within 'tr' do
+    within '.blog-post' do
       expect(page).to have_content 'My answer'
     end
 

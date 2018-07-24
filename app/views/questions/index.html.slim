@@ -3,7 +3,7 @@
     h1 class="display-5" Questions
     - @questions.each do |question|
       .row
-        .jumbotron
+        .jumbotron data-question-id="#{question.id}"
           h4.blog-post-title = link_to question.title, question
           p.blog-post-meta
             = question.created_at.try(:strftime, '%B %d, %Y') + ' by ' + question.user.try(:email)

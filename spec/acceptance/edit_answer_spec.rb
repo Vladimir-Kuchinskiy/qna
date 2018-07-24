@@ -5,13 +5,12 @@ feature 'Edit answer', '
   As an authenticated user
   I want to be able to edit an answer
 ' do
-  given(:user)             { create(:user) }
-  given(:question)         { create(:question) }
-  given(:answer)           { create(:answer, question: question) }
+  given(:user)      { create(:user) }
+  given!(:question) { create(:question, user: user) }
+  given!(:answer)   { create(:answer, question: question, user: user) }
 
   describe 'Authenticated user' do
     before do
-      user.answers << answer
       sign_in(user)
     end
 
@@ -22,8 +21,8 @@ feature 'Edit answer', '
 
     scenario 'tries to edit his answer', js: true do
       visit question_path(question)
-      click_on 'Edit'
       within '.answers' do
+        click_on 'Edit'
         fill_in 'Answer', with: 'edited answer'
         click_on 'Save'
 

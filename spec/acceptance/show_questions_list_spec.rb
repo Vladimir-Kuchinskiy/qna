@@ -8,7 +8,7 @@ feature 'Show questions list', '
   I want to be able to visit questions page
 ' do
 
-  given(:questions) { create_list(:question, 5) }
+  given(:questions) { create_list(:question, 5, user: create(:user)) }
 
   scenario 'User tries to visit questions page with all the questions' do
     questions

@@ -9,7 +9,7 @@ feature 'Delete question', '
 ' do
 
   given(:user)      { create(:user, questions: create_list(:question, 3)) }
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, user: create(:user)) }
 
   before do
     sign_in(user)
@@ -18,7 +18,7 @@ feature 'Delete question', '
   scenario 'Authenticated user tries to delete his own question' do
     visit questions_path
 
-    question_tr = find("tr[data-attr='#{user.questions.first.id}']")
+    question_tr = find(".jumbotron[data-question-id='#{user.questions.first.id}']")
     question_tr.find('a', text: 'Delete').click
 
     expect(page).to have_content 'Your question was successfully deleted'

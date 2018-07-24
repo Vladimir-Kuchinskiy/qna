@@ -3,7 +3,7 @@
     = simple_form_for [question, answer], remote: true do |f|
       .form-group
         = f.label :body, 'Your answer'
-        = f.input :body, placeholder: 'Body', class: 'answers_body', label: false
+        = f.input :body, placeholder: 'Body', label: false
         .answer-errors
       p
         = f.fields_for :attachments do |a|
