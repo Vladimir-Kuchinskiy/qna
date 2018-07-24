@@ -6,6 +6,6 @@ $('.answer-errors').hide();
   <% end %>
 <% else %>
   $('.answers').append('<%= j render 'answer', answer: @answer %>');
-  $('.answer_body').val('');
+  $('textarea').val('');
 <% end %>
 <%= ajax_flash('#main') %>
