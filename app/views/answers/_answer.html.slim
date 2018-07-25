@@ -8,7 +8,10 @@
       - if answer.attachments.has_files?
         h5 Attachments:
         - answer.attachments.each do |a|
-          p = link_to a.file.identifier, a.file.url, target: '_blank'
+          p data-attachment="#{a.id}"
+            = link_to a.file.identifier, a.file.url, target: '_blank', class: 'd-index'
+            - if answer.can_operate?(current_user)
+              = link_to 'Delete file', a, class: 'd-index btn btn-danger btn-sm', method: :delete, data: {confirm: 'Are you sure?'}, remote: true
     .col-md-4
       - if @question.can_operate?(current_user) && !answer.the_best?
         = link_to 'Make The Best', pick_up_the_best_question_answer_path(@question, answer), id: "the-best-link-#{answer.id}", class: 'btn d-inline btn-outline-info', method: :patch, remote: true
