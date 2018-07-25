@@ -28,7 +28,7 @@ feature 'Add files to answer', '
     fill_in 'Your answer', with: 'Test answer'
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Add file'
-    attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+    find(:xpath, '//*[@id="new_answer"]/div[3]/div/input').set("#{Rails.root}/spec/rails_helper.rb")
     click_on 'Create Answer'
 
     within '.answers' do
