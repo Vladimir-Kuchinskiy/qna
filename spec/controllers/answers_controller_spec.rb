@@ -124,7 +124,6 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-
   describe 'DELETE #destroy' do
     let(:answer)         { create(:answer) }
     let(:another_answer) { create(:another_answer) }

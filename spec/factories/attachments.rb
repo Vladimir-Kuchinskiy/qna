@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :attachment do
-    file "MyString"
-    belonds_to ""
+    file File.new("#{Rails.root}/spec/rails_helper.rb")
   end
 end
