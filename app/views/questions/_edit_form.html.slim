@@ -7,6 +7,8 @@
         = f.input :body, class: 'form-control', placeholder: 'Body'
       p Attachments:
       p
-        = f.fields_for :attachments do |a|
-          = a.input :file, class: 'btn btn-default btn-sm'
+        = f.simple_fields_for :attachments do |attachment|
+          = render 'attachment_fields', f: attachment
+        .links
+          = link_to_add_association 'Add file', f, :attachments
       = f.submit 'Save', class: 'btn btn-primary'

@@ -23,6 +23,17 @@ feature 'Add files to answer', '
     within '.answers' do
       expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
     end
+  end
+  scenario 'User adds multiple files when asks question', js: true do
+    fill_in 'Your answer', with: 'Test answer'
+    attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+    click_on 'Add file'
+    attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+    click_on 'Create Answer'
 
+    within '.answers' do
+      expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
+      expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/2/rails_helper.rb'
+    end
   end
 end

@@ -21,4 +21,16 @@ feature 'Add files to question', '
 
     expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
   end
+
+  scenario 'User adds multiple files when asks question', js: true do
+    fill_in 'Title', with: 'Test question'
+    fill_in 'Body', with: 'text text text'
+    attach_file('File', "#{Rails.root}/spec/spec_helper.rb")
+    click_on 'Add file'
+    find(:xpath, '//*[@id="new_question"]/div[4]/div/input').set("#{Rails.root}/spec/rails_helper.rb")
+    click_on 'Create Question'
+
+    expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/2/spec_helper.rb'
+    expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/3/rails_helper.rb'
+  end
 end
