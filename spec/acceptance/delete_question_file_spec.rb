@@ -9,12 +9,11 @@ feature 'Delete file from question', '
   given(:user)      { create(:user) }
   given!(:question) { create(:question, user: user, attachments: [create(:attachment)]) }
 
-  background do
-    sign_in(user)
-    visit question_path(question)
-  end
-
   describe 'Author' do
+    before do
+      sign_in(user)
+      visit question_path(question)
+    end
     scenario 'sees link for file delete' do
       expect(page).to have_link 'Delete file'
     end
@@ -26,6 +25,9 @@ feature 'Delete file from question', '
   end
 
   scenario 'Non-author tries to delete file from question' do
-    expect(page).to_not have_link 'rails_helper.rb', href: '/uploads/attachment/file/1/rails_helper.rb'
+    sign_in(user)
+    question.update(user_id: create(:user))
+    visit question_path(question)
+    expect(page).to_not have_link 'Delete file'
   end
 end

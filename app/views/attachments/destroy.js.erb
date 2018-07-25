@@ -1,0 +1,4 @@
+$('p[data-attachment="<%= @attachment.id %>"]').fadeOut(300, function(){
+    $(this).remove();
+});
+<%= ajax_flash('#main') %>

@@ -5,7 +5,10 @@
     - if @question.attachments.has_files?
       h5 Attachments
       - @question.attachments.each do |a|
-        p = link_to a.file.identifier, a.file.url, target: '_blank'
+        p data-attachment="#{a.id}"
+          = link_to a.file.identifier, a.file.url, target: '_blank d-index'
+          - if @question.can_operate?(current_user)
+            = link_to 'Delete file', a, class: 'd-index btn btn-danger btn-sm', method: :delete, data: { confirm: 'Are you sure?' }, remote: true
   .col-md-4
     - if @question.can_operate?(current_user)
       = link_to 'Edit', '', class: 'edit_question_link d-inline btn btn-success'
