@@ -1,8 +1,8 @@
 .row
   .col-md-12
-    = simple_form_for [question, answer], class: 'edit_answer', id: "edit-answer-#{answer.id}", remote: true do |f|
+    = simple_form_for [@question, answer], class: 'edit_answer', id: "edit-answer-#{answer.id}", remote: true do |f|
       .form-group
         = f.label :body, 'Answer'
-        = f.input :body, label: false, class: 'form-control', placeholder: 'Body'
+        = f.input :body, label: false
         .answer-errors style="color: red"
       = f.submit 'Save', class: 'btn btn-primary'

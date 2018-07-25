@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question,       only: %i[show edit update destroy]
   before_action :can_operate?,       only: %i[destroy update]
+  before_action :build_attachments,  only: :show
 
   def index
     @questions = Question.all
@@ -42,6 +43,10 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def build_attachments
+    @question.attachments.build unless @question.attachments.any?
+  end
 
   def can_operate?
     if current_user != @question.user

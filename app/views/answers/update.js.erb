@@ -10,7 +10,7 @@ $('.answer-errors').hide();
     e.preventDefault();
     $(this).hide();
     var answer_id = $(this).data('answerId');
-    $('form#edit-answer-' + answer_id).show();
+    $('form#edit_answer_' + answer_id).show();
   });
 <% end %>
 <%= ajax_flash('#main') %>

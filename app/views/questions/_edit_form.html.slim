@@ -5,4 +5,8 @@
         = f.input :title, class: 'form-control', placeholder: 'Title'
       .form-group
         = f.input :body, class: 'form-control', placeholder: 'Body'
+      p Attachments:
+      p
+        = f.fields_for :attachments do |a|
+          = a.input :file, class: 'btn btn-default btn-sm'
       = f.submit 'Save', class: 'btn btn-primary'

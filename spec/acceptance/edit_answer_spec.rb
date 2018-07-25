@@ -23,8 +23,9 @@ feature 'Edit answer', '
       visit question_path(question)
       within '.answers' do
         click_on 'Edit'
-        fill_in 'Answer', with: 'edited answer'
-        click_on 'Save'
+
+        page.execute_script %($('#answer_body').val('edited answer'))
+        page.execute_script %($('input[data-disable-with="Save"]').click())
 
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'

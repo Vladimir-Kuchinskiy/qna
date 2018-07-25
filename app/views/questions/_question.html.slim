@@ -2,10 +2,10 @@
   .col-md-8
     h2 #{@question.title}
     p.lead #{@question.body}
-    h5 Attachments
-    ul
+    - if @question.attachments.has_files?
+      h5 Attachments
       - @question.attachments.each do |a|
-        li = link_to a.file.identifier, a.file.url, target: '_blank'
+        p = link_to a.file.identifier, a.file.url, target: '_blank'
   .col-md-4
     - if @question.can_operate?(current_user)
       = link_to 'Edit', '', class: 'edit_question_link d-inline btn btn-success'
