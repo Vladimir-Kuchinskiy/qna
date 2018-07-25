@@ -37,6 +37,7 @@ gem 'carrierwave'
 gem 'remotipart'
 gem 'bootstrap'
 gem 'simple_form'
+gem 'cocoon'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
