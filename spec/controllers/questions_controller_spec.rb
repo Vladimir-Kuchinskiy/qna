@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:question) { create(:question, user: create(:user)) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -119,6 +119,64 @@ RSpec.describe QuestionsController, type: :controller do
 
         it 'renders update template' do
           expect(response).to render_template :update
+        end
+      end
+    end
+
+    context 'user tries to update another user\'s question' do
+      before do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
+      end
+
+      it 'does not change question attributes' do
+        question.reload
+        expect(question.title).to eq 'MyString'
+        expect(question.body).to eq 'MyText'
+      end
+
+      it 'redirects to question path' do
+        expect(response).to redirect_to questions_path
+      end
+    end
+  end
+
+  describe 'PATCH #vote' do
+    sign_in_user
+    context 'user tries to give' do
+      context 'positive vote for question' do
+        it 'assigns the requested question to @question' do
+          patch :vote, params: { id: question, vote: true, format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes question attributes' do
+          expect do  patch :vote, params: { id: question,
+                                                  vote: true,
+                                                  format: :js }
+          end.to change(question, :vote).by(1)
+        end
+
+        it 'renders vote template' do
+          patch :vote, params: { id: question, vote: true, format: :js }
+          expect(response).to render_template :vote
+        end
+      end
+      context 'negative vote for question' do
+        it 'assigns the requested question to @question' do
+          patch :vote, params: { id: question, vote: false, format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes question attributes' do
+          expect do  patch :vote, params: { id: question,
+                                            vote: false,
+                                            format: :js }
+          end.to change(question, :vote).by(-1)
+        end
+
+        it 'renders update template' do
+          patch :vote, params: { id: question, vote: false, format: :js }
+          expect(response).to render_template :vote
         end
       end
     end
