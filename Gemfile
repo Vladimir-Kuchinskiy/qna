@@ -75,6 +75,8 @@ group :test, :development do
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'rspec-rails'
+  gem 'poltergeist'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
   gem 'capybara-webkit'
 end
 
