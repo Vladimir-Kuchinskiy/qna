@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_23_081531) do
+ActiveRecord::Schema.define(version: 2018_07_27_075923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2018_07_23_081531) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.boolean "the_best"
+    t.integer "votes_count", default: 0
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["the_best", "question_id"], name: "index_answers_on_the_best_and_question_id", unique: true
     t.index ["user_id"], name: "index_answers_on_user_id"
@@ -42,6 +43,7 @@ ActiveRecord::Schema.define(version: 2018_07_23_081531) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.integer "votes_count", default: 0
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
@@ -67,4 +69,19 @@ ActiveRecord::Schema.define(version: 2018_07_23_081531) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "votes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "question_id"
+    t.bigint "answer_id"
+    t.boolean "voted"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_votes_on_answer_id"
+    t.index ["question_id"], name: "index_votes_on_question_id"
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
+  add_foreign_key "votes", "answers"
+  add_foreign_key "votes", "questions"
+  add_foreign_key "votes", "users"
 end

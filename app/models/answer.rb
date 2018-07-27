@@ -2,6 +2,7 @@
 
 class Answer < ApplicationRecord
   has_many :attachments, as: :attachable, dependent: :destroy
+  has_many :votes, dependent: :destroy
 
   belongs_to :question, optional: true
   belongs_to :user, optional: true
