@@ -2,7 +2,7 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question,       only: %i[show edit update destroy]
+  before_action :set_question,       only: %i[show edit update vote destroy]
   before_action :can_operate?,       only: %i[destroy update]
   before_action :build_attachments,  only: :show
 
@@ -35,6 +35,19 @@ class QuestionsController < ApplicationController
     else
       flash.now[:error] = 'Invalid question'
     end
+  end
+
+  def vote
+    respond_to do |format|
+      if @question.give_vote(current_user, params[:vote])
+        flash.now[:success] = 'Your vote was successfully added'
+        format.js
+      else
+        flash.now[:error] = 'You can not vote for this question'
+        format.js { render 'common/ajax_flash' }
+      end
+    end
+
   end
 
   def destroy
