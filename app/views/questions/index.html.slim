@@ -2,13 +2,7 @@
   .col-md-10
     h1 class="display-5" Questions
     - @questions.each do |question|
-      .row
-        .jumbotron data-question-id="#{question.id}"
-          h4.blog-post-title = link_to question.title, question
-          p.blog-post-meta
-            = question.created_at.try(:strftime, '%B %d, %Y') + ' by ' + question.user.try(:email)
-          p
-            = question.body
-          = link_to 'Delete', question, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } if question.can_operate?(current_user)
+      div data-question="#{question.id}"
+        = render 'question_on_index_page', question: question
   .col-md-2
     = link_to 'Ask a Question', new_question_path, class: 'btn btn-primary'

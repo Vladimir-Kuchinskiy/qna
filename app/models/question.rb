@@ -16,7 +16,7 @@ class Question < ApplicationRecord
   end
 
   def give_vote(current_user, vote)
-    if !can_vote(current_user)
+    if !can_vote?(current_user)
       false
     else
       ActiveModel::Type::Boolean.new.cast(vote) ? self.votes_count += 1 : self.votes_count -= 1
@@ -27,7 +27,7 @@ class Question < ApplicationRecord
 
   private
 
-  def can_vote(current_user)
+  def can_vote?(current_user)
     current_user != user && !current_user.votes.find_by(question_id: id).try(:voted)
   end
 end

@@ -17,4 +17,8 @@ class User < ApplicationRecord
       votes.create(answer_id: entity.id, voted: true)
     end
   end
+
+  def can_vote?(question)
+    self != question.user && !self.votes.find_by(question_id: question.id).try(:voted)
+  end
 end

@@ -1,2 +1,2 @@
-$('.body_question').html('<%= j render 'questions/question' %>');
+$('div[data-question="<%= @question.id %>"]').html('<%= j render 'questions/question_on_index_page', question: @question %>');
 <%= ajax_flash('#main') %>

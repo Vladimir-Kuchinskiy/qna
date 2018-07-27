@@ -40,14 +40,13 @@ class QuestionsController < ApplicationController
   def vote
     respond_to do |format|
       if @question.give_vote(current_user, params[:vote])
-        flash.now[:success] = 'Your vote was successfully added'
+        flash.now[:notice] = 'Your vote was successfully added'
         format.js
       else
         flash.now[:error] = 'You can not vote for this question'
         format.js { render 'common/ajax_flash' }
       end
     end
-
   end
 
   def destroy
