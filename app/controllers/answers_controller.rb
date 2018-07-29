@@ -43,7 +43,7 @@ class AnswersController < ApplicationController
     respond_to do |format|
       if @answer.remove_vote(current_user)
         flash.now[:notice] = 'Your vote was successfully dismissed'
-        format.js { render 'questions/vote' }
+        format.js { render 'answers/vote' }
       else
         flash.now[:error] = 'You can not dismiss your vote for this answer'
         format.js { render 'common/ajax_flash' }
