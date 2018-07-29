@@ -99,7 +99,7 @@ RSpec.describe AnswersController, type: :controller do
     let(:answer) { create(:answer, question: question, user: create(:user)) }
     context 'user tries to give' do
       context 'positive vote for question' do
-        before { patch :vote, params: { id: answer, question_id: question, vote: true, format: :js } }
+        before { patch :vote, params: { id: answer, question_id: question, vote: 1, format: :js } }
 
         it 'assigns the requested question to @question' do
           expect(assigns(:question)).to eq question
@@ -118,7 +118,7 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
       context 'negative vote for question' do
-        before { patch :vote, params: { id: answer, question_id: question, vote: false, format: :js } }
+        before { patch :vote, params: { id: answer, question_id: question, vote: -1, format: :js } }
 
         it 'assigns the requested question to @question' do
           expect(assigns(:question)).to eq question
@@ -141,7 +141,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'author tries to give any vote' do
       before do
         answer.update(user: @user)
-        patch :vote, params: { id: answer, question_id: question, vote: true, format: :js }
+        patch :vote, params: { id: answer, question_id: question, vote: 1, format: :js }
       end
 
       it 'does not changes votes count of an answer' do

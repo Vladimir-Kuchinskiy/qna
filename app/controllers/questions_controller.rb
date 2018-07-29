@@ -2,7 +2,7 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question,       only: %i[show edit update vote destroy]
+  before_action :set_question,       only: %i[show edit update vote dismiss_vote destroy]
   before_action :can_operate?,       only: %i[destroy update]
   before_action :build_attachments,  only: :show
 
@@ -39,15 +39,23 @@ class QuestionsController < ApplicationController
 
   def vote
     respond_to do |format|
-      if @question.give_vote(current_user, params[:vote])
+      if @question.give_vote(current_user, params[:vote].to_i)
         flash.now[:notice] = 'Your vote was successfully added'
-        if params[:show]
-          format.js { render 'questions/update'}
-        else
-          format.js
-        end
+        params[:show] ? format.js { render 'questions/update'} : format.js
       else
         flash.now[:error] = 'You can not vote for this question'
+        format.js { render 'common/ajax_flash' }
+      end
+    end
+  end
+
+  def dismiss_vote
+    respond_to do |format|
+      if @question.remove_vote(current_user)
+        flash.now[:notice] = 'Your vote was successfully dismissed'
+        params[:show] ? format.js { render 'questions/update'} : format.js { render 'questions/vote' }
+      else
+        flash.now[:error] = 'You can not dismiss your vote for this question'
         format.js { render 'common/ajax_flash' }
       end
     end

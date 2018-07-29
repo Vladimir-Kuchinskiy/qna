@@ -144,7 +144,7 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
     context 'user tries to give' do
       context 'positive vote for question' do
-        before { patch :vote, params: { id: question, vote: true, format: :js } }
+        before { patch :vote, params: { id: question, vote: 1, format: :js } }
 
         it 'assigns the requested question to @question' do
           expect(assigns(:question)).to eq question
@@ -159,7 +159,7 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
       context 'negative vote for question' do
-        before { patch :vote, params: { id: question, vote: false, format: :js } }
+        before { patch :vote, params: { id: question, vote: -1, format: :js } }
 
         it 'assigns the requested question to @question' do
           expect(assigns(:question)).to eq question
@@ -178,11 +178,54 @@ RSpec.describe QuestionsController, type: :controller do
     context 'author tries to give any vote' do
       before do
         question.update(user: @user)
-        patch :vote, params: { id: question, vote: true, format: :js }
+        patch :vote, params: { id: question, vote: 1, format: :js }
       end
       it 'does not changes votes count of a question' do
         expect(question.reload.votes_count).to eq 0
       end
+      it 'renders common/ajax_flash template' do
+        expect(response).to render_template 'common/ajax_flash'
+      end
+    end
+  end
+
+  describe 'PATCH #dismiss_vote' do
+    sign_in_user
+    context 'Voted user tries to dismiss vote' do
+      before do
+        question.update(votes_count: 1)
+        question.votes.create(user: @user, voted: true, choice: 1)
+        patch :dismiss_vote, params: { id: question, format: :js }
+      end
+
+      it 'assigns the requested question to @question' do
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'changes question votes_count by -1' do
+        expect(question.reload.votes_count).to eq 0
+      end
+
+      it 'gives user 1 chanse to vote for this question' do
+        expect(@user.reload.votes.last.voted).to eq false
+      end
+
+      it 'renders vote template' do
+        expect(response).to render_template :vote
+      end
+    end
+
+    context 'User/Author tries to dismiss vote' do
+      before { patch :dismiss_vote, params: { id: question, format: :js } }
+
+      it 'assigns the requested question to @question' do
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'do not change votes_count of question' do
+        expect(question.reload.votes_count).to eq 0
+      end
+
       it 'renders common/ajax_flash template' do
         expect(response).to render_template 'common/ajax_flash'
       end

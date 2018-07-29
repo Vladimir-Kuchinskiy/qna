@@ -29,7 +29,7 @@ class AnswersController < ApplicationController
 
   def vote
     respond_to do |format|
-      if @answer.give_vote(current_user, params[:vote])
+      if @answer.give_vote(current_user, params[:vote].to_i)
         flash.now[:notice] = 'Your vote was successfully added'
         format.js
       else
