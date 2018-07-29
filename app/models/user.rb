@@ -11,17 +11,16 @@ class User < ApplicationRecord
   has_many :votes, dependent: :destroy
 
   def vote(entity, voted)
-    if entity.is_a?(Question)
-      vote = votes.find_by(question_id: entity.id)
-      vote ? vote.update(voted: true, choice: voted) : votes.create(question_id: entity.id, voted: true, choice: voted)
+    vote = votes.find_by(Kernel.eval("{ #{entity.class.name.downcase}_id: #{entity.id} }"))
+    if vote
+      vote.update(voted: true, choice: voted)
     else
-      vote = votes.find_by(answer_id: entity.id)
-      vote ? vote.update(voted: true, choice: voted) : votes.create(answer_id: entity.id, voted: true, choice: voted)
+      votes.create(Kernel.eval("{#{entity.class.name.downcase}_id: #{entity.id}, voted: true, choice: #{voted}}"))
     end
   end
 
   def dismiss_vote(entity)
-    vote = entity.is_a?(Question) ? votes.find_by(question_id: entity.id) : votes.find_by(answer_id: entity.id)
+    vote = votes.find_by(Kernel.eval("{ #{entity.class.name.downcase}_id: #{entity.id} }"))
     vote&.voted ? vote.update(voted: false, choice: 0) : false
   end
 

@@ -4,6 +4,6 @@ class Attachment < ApplicationRecord
   mount_uploader :file, FileUploader
 
   def self.has_files?
-    all.map{ |a| a[:file] }.any?
+    all.map { |a| a[:file] }.any?
   end
 end
