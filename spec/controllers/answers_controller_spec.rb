@@ -94,6 +94,65 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #vote' do
+    sign_in_user
+    let(:answer) { create(:answer, question: question) }
+    context 'user tries to give' do
+      context 'positive vote for an answer' do
+        it 'assigns the requested question to @question' do
+          patch :vote, params: { id: question, vote: true, format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes answer attributes' do
+          expect do  patch :vote, params: { id: answer, question_id: question,
+                                            vote: true,
+                                            format: :js }
+          end.to change(question, :vote).by(1)
+        end
+
+        it 'renders vote template' do
+          patch :vote, params: { id: question, vote: true, format: :js }
+          expect(response).to render_template :vote
+        end
+      end
+      context 'negative vote for question' do
+        it 'assigns the requested question to @question' do
+          patch :vote, params: { id: question, vote: false, format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes question attributes' do
+          expect do  patch :vote, params: { id: question,
+                                            vote: false,
+                                            format: :js }
+          end.to change(question, :vote).by(-1)
+        end
+
+        it 'renders update template' do
+          patch :vote, params: { id: question, vote: false, format: :js }
+          expect(response).to render_template :vote
+        end
+      end
+    end
+
+    context 'user tries to update another user\'s question' do
+      before do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
+      end
+
+      it 'does not change question attributes' do
+        question.reload
+        expect(question.title).to eq 'MyString'
+        expect(question.body).to eq 'MyText'
+      end
+
+      it 'redirects to question path' do
+        expect(response).to redirect_to questions_path
+      end
+    end
+  end
+
   describe 'PATCH #pick_up_the_best' do
     let(:user)     { create(:user) }
     let(:question) { create(:question, user: user, answers: create_list(:answer, 3)) }

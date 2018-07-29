@@ -144,47 +144,46 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
     context 'user tries to give' do
       context 'positive vote for question' do
+        before { patch :vote, params: { id: question, vote: true, format: :js } }
+
         it 'assigns the requested question to @question' do
-          patch :vote, params: { id: question, vote: true, format: :js }
           expect(assigns(:question)).to eq question
         end
 
         it 'changes question votes_count by +1' do
-          patch :vote, params: { id: question, vote: true, format: :js }
           expect(question.reload.votes_count).to eq 1
         end
 
         it 'renders vote template' do
-          patch :vote, params: { id: question, vote: true, format: :js }
           expect(response).to render_template :vote
         end
       end
       context 'negative vote for question' do
+        before { patch :vote, params: { id: question, vote: false, format: :js } }
+
         it 'assigns the requested question to @question' do
-          patch :vote, params: { id: question, vote: false, format: :js }
           expect(assigns(:question)).to eq question
         end
 
         it 'changes question votes_count by -1' do
-          patch :vote, params: { id: question, vote: false, format: :js }
           expect(question.reload.votes_count).to eq -1
         end
 
         it 'renders vote template' do
-          patch :vote, params: { id: question, vote: false, format: :js }
           expect(response).to render_template :vote
         end
       end
     end
 
     context 'author tries to give any vote' do
-      before { question.update(user: @user) }
-      it 'does not changes votes count of a question' do
+      before do
+        question.update(user: @user)
         patch :vote, params: { id: question, vote: true, format: :js }
+      end
+      it 'does not changes votes count of a question' do
         expect(question.reload.votes_count).to eq 0
       end
-      it 'renders vote template' do
-        patch :vote, params: { id: question, vote: false, format: :js }
+      it 'renders common/ajax_flash template' do
         expect(response).to render_template 'common/ajax_flash'
       end
     end
