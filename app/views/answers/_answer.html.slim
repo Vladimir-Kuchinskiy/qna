@@ -13,12 +13,12 @@
       - answer.attachments.each do |a|
         p data-attachment="#{a.id}"
           = link_to a.file.identifier, a.file.url, target: '_blank', class: 'd-index'
-          - if answer.can_operate?(current_user)
+          - if current_user && current_user.owner?(answer)
             = link_to 'Delete file', a, class: 'd-index btn btn-danger btn-sm', method: :delete, data: {confirm: 'Are you sure?'}, remote: true
   .col-md-4
-    - if @question.can_operate?(current_user) && !answer.the_best?
+    - if !answer.the_best? && current_user && current_user.owner?(@question)
       = link_to 'Make The Best', pick_up_the_best_question_answer_path(@question, answer), id: "the-best-link-#{answer.id}", class: 'btn d-inline btn-outline-info', method: :patch, remote: true
-    - if answer.can_operate?(current_user)
+    - if current_user && current_user.owner?(answer)
       = link_to 'Edit Answer', '', class: 'edit_answer_link d-inline btn btn-outline-success', data: { answer_id: answer.id }
       = link_to 'Delete', [@question, answer], method: :delete, class: 'btn d-inline btn-outline-danger', remote: true, data: {confirm: 'Are you sure?'}
       p = render 'answers/edit_form', answer: answer

@@ -11,10 +11,6 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  def can_operate?(current_user)
-    user.present? && current_user == user
-  end
-
   def give_vote(current_user, vote)
     if !can_vote?(current_user)
       false

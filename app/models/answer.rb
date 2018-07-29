@@ -19,10 +19,6 @@ class Answer < ApplicationRecord
     update(the_best: true)
   end
 
-  def can_operate?(current_user)
-    user.present? && current_user == user
-  end
-
   def give_vote(current_user, vote)
     if !can_vote?(current_user)
       false

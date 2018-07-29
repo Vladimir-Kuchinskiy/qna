@@ -18,6 +18,10 @@ class User < ApplicationRecord
     end
   end
 
+  def owner?(entity)
+    entity.user == self
+  end
+
   def can_vote?(entity)
     if entity.is_a?(Question)
       self != entity.user && !self.votes.find_by(question_id: entity.id).try(:voted)
