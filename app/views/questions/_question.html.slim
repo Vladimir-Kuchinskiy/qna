@@ -14,7 +14,7 @@
         - elsif current_user && current_user.can_dismiss?(@question)
           = link_to 'Dismiss vote', dismiss_vote_question_path(@question, show: true), method: :patch, remote: true, class: 'btn btn-outline-danger btn-sm d-index float-right'
     p.lead #{@question.body}
-    - if @question.attachments.has_files?
+    - if @question.attachments.files?
       h5 Attachments
       - @question.attachments.each do |a|
         p data-attachment="#{a.id}"

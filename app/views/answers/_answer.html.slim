@@ -8,7 +8,7 @@
       p -- The Best --
     p class="blog-post-meta" = answer.created_at.try(:strftime, '%B %d, %Y') + ' by ' + answer.user.try(:email)
     p #{answer.body}
-    - if answer.attachments.has_files?
+    - if answer.attachments.files?
       h5 Attachments:
       - answer.attachments.each do |a|
         p data-attachment="#{a.id}"
