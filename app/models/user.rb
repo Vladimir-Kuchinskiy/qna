@@ -10,11 +10,23 @@ class User < ApplicationRecord
   has_many :answers
   has_many :votes, dependent: :destroy
 
-  def vote(entity)
+  def vote(entity, voted)
     if entity.is_a?(Question)
-      votes.create(question_id: entity.id, voted: true)
+      vote = votes.find_by(question_id: entity.id)
+      vote ? vote.update(voted: true, choice: voted) : votes.create(question_id: entity.id, voted: true, choice: voted)
     else
-      votes.create(answer_id: entity.id, voted: true)
+      vote = votes.find_by(answer_id: entity.id)
+      vote ? vote.update(voted: true, choice: voted) : votes.create(answer_id: entity.id, voted: true, choice: voted)
+    end
+  end
+
+  def dismiss_vote(entity)
+    vote = entity.is_a?(Question) ? votes.find_by(question_id: entity.id) : votes.find_by(answer_id: entity.id)
+    if vote&.voted
+      vote.update_attribute(:voted, false)
+      vote.update(choice: 0)
+    else
+      false
     end
   end
 
@@ -24,9 +36,17 @@ class User < ApplicationRecord
 
   def can_vote?(entity)
     if entity.is_a?(Question)
-      self != entity.user && !self.votes.find_by(question_id: entity.id).try(:voted)
+      self != entity.user && !votes.find_by(question_id: entity.id).try(:voted)
     else
-      self != entity.user && !self.votes.find_by(answer_id: entity.id).try(:voted)
+      self != entity.user && !votes.find_by(answer_id: entity.id).try(:voted)
+    end
+  end
+
+  def can_dismiss?(entity)
+    if entity.is_a?(Question)
+      self != entity.user && votes.find_by(question_id: entity.id)&.try(:voted)
+    else
+      self != entity.user && votes.find_by(answer_id: entity.id)&.try(:voted)
     end
   end
 end

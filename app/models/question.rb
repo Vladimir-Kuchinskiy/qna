@@ -12,18 +12,22 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
 
   def give_vote(current_user, vote)
-    if !can_vote?(current_user)
-      false
-    else
-      ActiveModel::Type::Boolean.new.cast(vote) ? self.votes_count += 1 : self.votes_count -= 1
-      current_user.vote(self)
+    if current_user.can_vote?(self)
+      self.votes_count += vote
+      current_user.vote(self, vote)
       save
+    else
+      false
     end
   end
 
-  private
-
-  def can_vote?(current_user)
-    current_user != user && !current_user.votes.find_by(question_id: id).try(:voted)
+  def remove_vote(current_user)
+    if current_user.can_dismiss?(self)
+      self.votes_count -= current_user.votes.find_by(question_id: id).choice
+      current_user.dismiss_vote(self)
+      save
+    else
+      false
+    end
   end
 end
