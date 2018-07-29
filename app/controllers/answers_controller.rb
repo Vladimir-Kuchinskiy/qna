@@ -2,8 +2,8 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: %i[create update pick_up_the_best]
-  before_action :set_answer,   only: %i[update pick_up_the_best destroy]
+  before_action :set_question, only: %i[create update vote pick_up_the_best]
+  before_action :set_answer,   only: %i[update vote pick_up_the_best destroy]
   before_action :can_operate?, only: %i[destroy update]
 
   def create
@@ -24,6 +24,18 @@ class AnswersController < ApplicationController
       flash.now[:notice] = 'Your answer was successfully updated'
     else
       flash.now[:error] = 'Invalid answer'
+    end
+  end
+
+  def vote
+    respond_to do |format|
+      if @answer.give_vote(current_user, params[:vote])
+        flash.now[:notice] = 'Your vote was successfully added'
+        format.js
+      else
+        flash.now[:error] = 'You can not vote for this answer'
+        format.js { render 'common/ajax_flash' }
+      end
     end
   end
 

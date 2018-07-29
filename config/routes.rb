@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     patch :vote, on: :member
     resources :answers do
       patch :pick_up_the_best, on: :member
+      patch :vote,             on: :member
     end
   end
 
