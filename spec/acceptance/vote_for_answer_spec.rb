@@ -48,7 +48,7 @@ feature 'Give a vote for an answer', '
     scenario 'tries to give any vote for an aswer' do
       sign_in(author)
       visit question_path(question)
-      within '.answer' do
+      within '.answers' do
         expect(page).to_not have_link 'Like'
         expect(page).to_not have_link 'Dislike'
       end

@@ -19,7 +19,7 @@ feature 'Create answer', '
     fill_in 'Your answer', with: 'My answer'
     click_on 'Create Answer'
 
-    within '.blog-post' do
+    within '.answers' do
       expect(page).to have_content 'My answer'
     end
 

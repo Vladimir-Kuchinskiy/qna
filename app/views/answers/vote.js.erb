@@ -1,0 +1,2 @@
+$('div[data-answer="<%= @answer.id %>"]').html('<%= j render 'answers/answer', answer: @answer, question: @question %>');
+<%= ajax_flash('#main') %>
