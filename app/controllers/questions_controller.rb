@@ -41,7 +41,11 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.give_vote(current_user, params[:vote])
         flash.now[:notice] = 'Your vote was successfully added'
-        format.js
+        if params[:show]
+          format.js { render 'questions/update'}
+        else
+          format.js
+        end
       else
         flash.now[:error] = 'You can not vote for this question'
         format.js { render 'common/ajax_flash' }
