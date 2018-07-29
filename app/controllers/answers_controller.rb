@@ -2,8 +2,8 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: %i[create update vote pick_up_the_best]
-  before_action :set_answer,   only: %i[update vote pick_up_the_best destroy]
+  before_action :set_question, only: %i[create update vote dismiss_vote pick_up_the_best]
+  before_action :set_answer,   only: %i[update vote dismiss_vote pick_up_the_best destroy]
   before_action :can_operate?, only: %i[destroy update]
 
   def create
@@ -34,6 +34,18 @@ class AnswersController < ApplicationController
         format.js
       else
         flash.now[:error] = 'You can not vote for this answer'
+        format.js { render 'common/ajax_flash' }
+      end
+    end
+  end
+
+  def dismiss_vote
+    respond_to do |format|
+      if @answer.remove_vote(current_user)
+        flash.now[:notice] = 'Your vote was successfully dismissed'
+        format.js { render 'questions/vote' }
+      else
+        flash.now[:error] = 'You can not dismiss your vote for this answer'
         format.js { render 'common/ajax_flash' }
       end
     end

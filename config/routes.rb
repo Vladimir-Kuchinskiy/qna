@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     patch :dismiss_vote, on: :member
     resources :answers do
       patch :pick_up_the_best, on: :member
+      patch :dismiss_vote,     on: :member
       patch :vote,             on: :member
     end
   end

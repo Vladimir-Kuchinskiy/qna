@@ -13,8 +13,7 @@ class Question < ApplicationRecord
 
   def give_vote(current_user, vote)
     if current_user.can_vote?(self)
-      self.votes_count += vote
-      current_user.vote(self, vote)
+      self.votes_count += vote if current_user.vote(self, vote)
       save
     else
       false

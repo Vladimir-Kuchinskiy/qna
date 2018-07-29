@@ -154,10 +154,54 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #dismiss_vote' do
+    sign_in_user
+    let(:answer) { create(:answer, question: question, user: create(:user)) }
+    context 'Voted user tries to dismiss vote' do
+      before do
+        answer.update(votes_count: 1)
+        answer.votes.create(user: @user, voted: true, choice: 1)
+        patch :dismiss_vote, params: { id: answer, question_id: question, format: :js }
+      end
+
+      it 'assigns the requested question to @question' do
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'assigns the requested answer to @answer' do
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer votes_count by -1' do
+        expect(answer.reload.votes_count).to eq 0
+      end
+
+      it 'gives user 1 chance to vote for this answer' do
+        expect(@user.reload.votes.last.voted).to eq false
+      end
+
+      it 'renders vote template' do
+        expect(response).to render_template :vote
+      end
+    end
+
+    context 'User/Author tries to dismiss vote' do
+      before { patch :dismiss_vote, params: { id: answer, question_id: question, format: :js } }
+
+      it 'do not change votes_count of answer' do
+        expect(answer.reload.votes_count).to eq 0
+      end
+
+      it 'renders common/ajax_flash template' do
+        expect(response).to render_template 'common/ajax_flash'
+      end
+    end
+  end
+
   describe 'PATCH #pick_up_the_best' do
+    sign_in_user
     let(:user)     { create(:user) }
     let(:question) { create(:question, user: user, answers: create_list(:answer, 3)) }
-    sign_in_user
     before do
       question.answers.last.update(the_best: true)
       patch :pick_up_the_best, params: { id: question.answers.first, question_id: question }, format: :js

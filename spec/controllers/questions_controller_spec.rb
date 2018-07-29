@@ -218,10 +218,6 @@ RSpec.describe QuestionsController, type: :controller do
     context 'User/Author tries to dismiss vote' do
       before { patch :dismiss_vote, params: { id: question, format: :js } }
 
-      it 'assigns the requested question to @question' do
-        expect(assigns(:question)).to eq question
-      end
-
       it 'do not change votes_count of question' do
         expect(question.reload.votes_count).to eq 0
       end
