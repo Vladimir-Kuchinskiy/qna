@@ -11,6 +11,8 @@
         - if current_user && current_user.can_vote?(@question)
           = link_to 'Like', vote_question_path(@question, vote: 1, show: true), method: :patch, remote: true, class: 'btn btn-success d-index btn-sm'
           = link_to 'Dislike', vote_question_path(@question, vote: -1, show: true), method: :patch, remote: true, class: 'btn btn-danger d-index btn-sm'
+        - elsif current_user && current_user.can_dismiss?(@question)
+          = link_to 'Dismiss vote', dismiss_vote_question_path(@question, show: true), method: :patch, remote: true, class: 'btn btn-outline-danger btn-sm d-index float-right'
     p.lead #{@question.body}
     - if @question.attachments.has_files?
       h5 Attachments

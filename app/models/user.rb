@@ -22,12 +22,7 @@ class User < ApplicationRecord
 
   def dismiss_vote(entity)
     vote = entity.is_a?(Question) ? votes.find_by(question_id: entity.id) : votes.find_by(answer_id: entity.id)
-    if vote&.voted
-      vote.update_attribute(:voted, false)
-      vote.update(choice: 0)
-    else
-      false
-    end
+    vote&.voted ? vote.update(voted: false, choice: 0) : false
   end
 
   def owner?(entity)
