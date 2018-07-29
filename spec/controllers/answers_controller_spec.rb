@@ -96,59 +96,60 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #vote' do
     sign_in_user
-    let(:answer) { create(:answer, question: question) }
+    let(:answer) { create(:answer, question: question, user: create(:user)) }
     context 'user tries to give' do
-      context 'positive vote for an answer' do
+      context 'positive vote for question' do
+        before { patch :vote, params: { id: answer, question_id: question, vote: true, format: :js } }
+
         it 'assigns the requested question to @question' do
-          patch :vote, params: { id: question, vote: true, format: :js }
           expect(assigns(:question)).to eq question
         end
 
-        it 'changes answer attributes' do
-          expect do  patch :vote, params: { id: answer, question_id: question,
-                                            vote: true,
-                                            format: :js }
-          end.to change(question, :vote).by(1)
+        it 'assigns the requested question to @answer' do
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it 'changes answer votes_count by +1' do
+          expect(answer.reload.votes_count).to eq 1
         end
 
         it 'renders vote template' do
-          patch :vote, params: { id: question, vote: true, format: :js }
           expect(response).to render_template :vote
         end
       end
       context 'negative vote for question' do
+        before { patch :vote, params: { id: answer, question_id: question, vote: false, format: :js } }
+
         it 'assigns the requested question to @question' do
-          patch :vote, params: { id: question, vote: false, format: :js }
           expect(assigns(:question)).to eq question
         end
 
-        it 'changes question attributes' do
-          expect do  patch :vote, params: { id: question,
-                                            vote: false,
-                                            format: :js }
-          end.to change(question, :vote).by(-1)
+        it 'assigns the requested answer to @answer' do
+          expect(assigns(:answer)).to eq answer
         end
 
-        it 'renders update template' do
-          patch :vote, params: { id: question, vote: false, format: :js }
+        it 'changes answer votes_count by -1' do
+          expect(answer.reload.votes_count).to eq -1
+        end
+
+        it 'renders vote template' do
           expect(response).to render_template :vote
         end
       end
     end
 
-    context 'user tries to update another user\'s question' do
+    context 'author tries to give any vote' do
       before do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
+        answer.update(user: @user)
+        patch :vote, params: { id: answer, question_id: question, vote: true, format: :js }
       end
 
-      it 'does not change question attributes' do
-        question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+      it 'does not changes votes count of an answer' do
+        expect(anwswer.reload.votes_count).to eq 0
       end
 
-      it 'redirects to question path' do
-        expect(response).to redirect_to questions_path
+      it 'renders common/ajax_flash template' do
+        expect(response).to render_template 'common/ajax_flash'
       end
     end
   end
