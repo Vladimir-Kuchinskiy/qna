@@ -9,8 +9,10 @@
             | Rating
             span.badge.badge-light.font-weight-normal = question.votes_count
         - if current_user && current_user.can_vote?(question)
-          = link_to 'Dislike', vote_question_path(question, vote: false), method: :patch, remote: true, class: 'btn btn-danger btn-sm d-index float-right'
-          = link_to 'Like', vote_question_path(question, vote: true), method: :patch, remote: true, class: 'btn btn-success btn-sm d-index float-right'
+          = link_to 'Dislike', vote_question_path(question, vote: -1), method: :patch, remote: true, class: 'btn btn-danger btn-sm d-index float-right'
+          = link_to 'Like', vote_question_path(question, vote: 1), method: :patch, remote: true, class: 'btn btn-success btn-sm d-index float-right'
+        - elsif current_user && current_user.can_dismiss?(question)
+          = link_to 'Dismiss vote', dismiss_vote_question_path(question), method: :patch, remote: true, class: 'btn btn-outline-danger btn-sm d-index float-right'
     p.blog-post-meta
       = question.created_at.try(:strftime, '%B %d, %Y') + ' by ' + question.user.try(:email)
     p

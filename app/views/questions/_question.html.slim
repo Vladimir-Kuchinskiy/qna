@@ -9,8 +9,8 @@
             span.badge.badge-light.font-weight-normal = @question.votes_count
       .col-md-3
         - if current_user && current_user.can_vote?(@question)
-          = link_to 'Like', vote_question_path(@question, vote: true, show: true), method: :patch, remote: true, class: 'btn btn-success d-index btn-sm'
-          = link_to 'Dislike', vote_question_path(@question, vote: false, show: true), method: :patch, remote: true, class: 'btn btn-danger d-index btn-sm'
+          = link_to 'Like', vote_question_path(@question, vote: 1, show: true), method: :patch, remote: true, class: 'btn btn-success d-index btn-sm'
+          = link_to 'Dislike', vote_question_path(@question, vote: -1, show: true), method: :patch, remote: true, class: 'btn btn-danger d-index btn-sm'
     p.lead #{@question.body}
     - if @question.attachments.has_files?
       h5 Attachments

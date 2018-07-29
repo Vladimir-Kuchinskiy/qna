@@ -23,5 +23,5 @@
       = link_to 'Delete', [@question, answer], method: :delete, class: 'btn d-inline btn-outline-danger', remote: true, data: {confirm: 'Are you sure?'}
       p = render 'answers/edit_form', answer: answer
     - elsif current_user && current_user.can_vote?(answer)
-      = link_to 'Like', vote_question_answer_path(answer, question_id: question, vote: true), method: :patch, remote: true, class: 'btn btn-success d-inline'
-      = link_to 'Dislike', vote_question_answer_path(answer, question_id: question, vote: false), method: :patch, remote: true, class: 'btn btn-danger d-inline'
+      = link_to 'Like', vote_question_answer_path(answer, question_id: question, vote: 1), method: :patch, remote: true, class: 'btn btn-success d-inline'
+      = link_to 'Dislike', vote_question_answer_path(answer, question_id: question, vote: -1), method: :patch, remote: true, class: 'btn btn-danger d-inline'
