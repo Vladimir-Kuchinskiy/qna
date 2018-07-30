@@ -2,7 +2,7 @@
 
 class Answer < ApplicationRecord
   has_many :attachments, as: :attachable, dependent: :destroy
-  has_many :votes, dependent: :destroy
+  has_many :votes, as: :voteable, dependent: :destroy
 
   belongs_to :question, optional: true
   belongs_to :user, optional: true
@@ -30,7 +30,7 @@ class Answer < ApplicationRecord
 
   def remove_vote(current_user)
     if current_user.can_dismiss?(self)
-      self.votes_count -= current_user.votes.find_by(answer_id: id).choice
+      self.votes_count -= current_user.votes.find_by(voteable_id: id).choice
       current_user.dismiss_vote(self)
       save
     else

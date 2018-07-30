@@ -11,16 +11,16 @@ class User < ApplicationRecord
   has_many :votes, dependent: :destroy
 
   def vote(entity, voted)
-    vote = votes.find_by(Kernel.eval("{ #{entity.class.name.downcase}_id: #{entity.id} }"))
+    vote = votes.find_by(voteable_id: entity.id)
     if vote
       vote.update(voted: true, choice: voted)
     else
-      votes.create(Kernel.eval("{#{entity.class.name.downcase}_id: #{entity.id}, voted: true, choice: #{voted}}"))
+      votes.create(voteable_id: entity.id, voted: true, choice: voted)
     end
   end
 
   def dismiss_vote(entity)
-    vote = votes.find_by(Kernel.eval("{ #{entity.class.name.downcase}_id: #{entity.id} }"))
+    vote = votes.find_by(voteable_id: entity.id)
     vote&.voted ? vote.update(voted: false, choice: 0) : false
   end
 
@@ -29,18 +29,10 @@ class User < ApplicationRecord
   end
 
   def can_vote?(entity)
-    if entity.is_a?(Question)
-      self != entity.user && !votes.find_by(question_id: entity.id).try(:voted)
-    else
-      self != entity.user && !votes.find_by(answer_id: entity.id).try(:voted)
-    end
+    self != entity.user && !votes.find_by(voteable_id: entity.id).try(:voted)
   end
 
   def can_dismiss?(entity)
-    if entity.is_a?(Question)
-      self != entity.user && votes.find_by(question_id: entity.id)&.try(:voted)
-    else
-      self != entity.user && votes.find_by(answer_id: entity.id)&.try(:voted)
-    end
+    self != entity.user && votes.find_by(voteable_id: entity.id)&.try(:voted)
   end
 end
