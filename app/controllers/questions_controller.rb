@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
   before_action :can_operate?,       only: %i[destroy update]
   before_action :build_attachments,  only: :show
 
+  after_action :publish_question, only: :create
+
   def index
     @questions = Question.all
   end
@@ -35,6 +37,19 @@ class QuestionsController < ApplicationController
     else
       flash.now[:error] = 'Invalid question'
     end
+  end
+
+  def publish_question
+    return if @question.errors.any?
+    user = current_user
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render_with_signed_in_user(
+        user,
+        partial: 'questions/question_on_index_page',
+        locals: { question: @question }
+      )
+    )
   end
 
   def vote
@@ -79,7 +94,7 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, attachments_attributes: [:id, :file, :_destroy])
+    params.require(:question).permit(:title, :body, attachments_attributes: %i[id file _destroy])
   end
 
   def set_question
