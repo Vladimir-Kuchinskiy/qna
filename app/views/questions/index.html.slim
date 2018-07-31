@@ -5,4 +5,5 @@
       - @questions.each do |question|
         = render 'question_on_index_page', question: question
   .col-md-2
-    = link_to 'Ask a Question', new_question_path, class: 'btn btn-primary'
+    - if user_signed_in?
+      = link_to 'Ask a Question', new_question_path, class: 'btn btn-primary'

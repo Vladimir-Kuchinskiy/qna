@@ -9,23 +9,29 @@ feature 'Create question', '
 ' do
 
   given(:user) { create(:user) }
+  describe 'As a user' do
+    background do
+      sign_in(user)
+      visit questions_path
+    end
 
-  scenario 'Authenticated user tries to create a question' do
-    sign_in(user)
+    scenario 'creates question with valid attributes' do
+      click_on 'Ask a Question'
+      fill_in 'Title', with: 'Test Question'
+      fill_in 'Body',  with: 'Test Body'
+      click_on 'Create Question'
 
-    visit questions_path
-    click_on 'Ask a Question'
-    fill_in 'Title', with: 'Test Question'
-    fill_in 'Body',  with: 'Test Body'
-    click_on 'Create Question'
+      expect(page).to have_content 'Your question was successfully created'
+    end
 
-    expect(page).to have_content 'Your question was successfully created'
-  end
+    scenario 'can not create question with valid attributes' do
+      click_on 'Ask a Question'
+      fill_in 'Title', with: ''
+      fill_in 'Body',  with: ''
+      click_on 'Create Question'
 
-  scenario 'Non-authenticated user tries to ask a question' do
-    visit questions_path
-    click_on 'Ask a Question'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to have_content 'Title can\'t be blank'
+      expect(page).to have_content 'Body can\'t be blank'
+    end
   end
 end
