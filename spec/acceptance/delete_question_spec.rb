@@ -8,26 +8,25 @@ feature 'Delete question', '
   I want to be able to delete my question
 ' do
 
-  given(:user)      { create(:user, questions: create_list(:question, 3)) }
-  given!(:question) { create(:question, user: create(:user)) }
+  given(:user)      { create(:user) }
+  given!(:question) { create(:question, user: user) }
+  given!(:another_question) { create(:question, user: create(:user)) }
 
   before do
     sign_in(user)
   end
 
   scenario 'Authenticated user tries to delete his own question' do
-    visit questions_path
+    visit question_path(question)
 
-    question_tr = find(".jumbotron[data-question-id='#{user.questions.first.id}']")
-    question_tr.find('a', text: 'Delete').click
+    within('.body_question') { click_on 'Delete' }
 
     expect(page).to have_content 'Your question was successfully deleted'
     expect(current_path).to eq questions_path
   end
 
   scenario 'Authenticated user tries to delete someone else\'s question' do
-    user.questions.destroy_all
-    visit questions_path
+    visit question_path(another_question)
     expect(page).to_not have_link 'Delete'
   end
 end

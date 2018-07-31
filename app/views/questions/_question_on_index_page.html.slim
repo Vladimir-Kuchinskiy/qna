@@ -1,20 +1,21 @@
-.row
-  .jumbotron.question data-question-id="#{question.id}"
-    .row
-      .col-md-8
-        h4.blog-post-title = link_to question.title, question
-      .col-md-4
-        h4.float-right.d-index.votes
-          .badge.badge-primary.font-weight-normal
-            | Rating
-            span.badge.badge-light.font-weight-normal = question.votes_count
-        - if current_user && current_user.can_vote?(question)
-          = link_to 'Dislike', vote_question_path(question, vote: -1), method: :patch, remote: true, class: 'btn btn-danger btn-sm d-index float-right'
-          = link_to 'Like', vote_question_path(question, vote: 1), method: :patch, remote: true, class: 'btn btn-success btn-sm d-index float-right'
-        - elsif current_user && current_user.can_dismiss?(question)
-          = link_to 'Dismiss vote', dismiss_vote_question_path(question), method: :patch, remote: true, class: 'btn btn-outline-danger btn-sm d-index float-right'
-    p.blog-post-meta
-      = question.created_at.try(:strftime, '%B %d, %Y') + ' by ' + question.user.try(:email)
-    p
-      = question.body
-    = link_to 'Delete', question, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } if current_user && current_user.owner?(question)
+div data-question="#{question.id}"
+  .row
+    .jumbotron.question data-question-id="#{question.id}"
+      .row
+        .col-md-8
+          h4.blog-post-title = link_to question.title, question
+        .col-md-4
+          h4.float-right.d-index.votes
+            .badge.badge-primary.font-weight-normal
+              | Rating
+              span.badge.badge-light.font-weight-normal = question.votes_count
+          - if user_signed_in?
+            - if current_user.can_vote?(question)
+              = link_to 'Dislike', vote_question_path(question, vote: -1), method: :patch, remote: true, class: 'btn btn-danger btn-sm d-index float-right'
+              = link_to 'Like', vote_question_path(question, vote: 1), method: :patch, remote: true, class: 'btn btn-success btn-sm d-index float-right'
+            - elsif current_user.can_dismiss?(question)
+              = link_to 'Dismiss vote', dismiss_vote_question_path(question), method: :patch, remote: true, class: 'btn btn-outline-danger btn-sm d-index float-right'
+      p.blog-post-meta
+        = question.created_at.try(:strftime, '%B %d, %Y') + ' by ' + question.user.try(:email)
+      p
+        = question.body

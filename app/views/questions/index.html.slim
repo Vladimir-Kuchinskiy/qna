@@ -1,8 +1,8 @@
 .row
   .col-md-10
     h1 class="display-5" Questions
-    - @questions.each do |question|
-      div data-question="#{question.id}"
+    .questions_list
+      - @questions.each do |question|
         = render 'question_on_index_page', question: question
   .col-md-2
     = link_to 'Ask a Question', new_question_path, class: 'btn btn-primary'
