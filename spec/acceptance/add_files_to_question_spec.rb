@@ -10,27 +10,32 @@ feature 'Add files to question', '
 
   background do
     sign_in(user)
-    visit new_question_path
+    visit questions_path
   end
 
-  scenario 'User adds file when asks question' do
+  scenario 'User adds file when asks question', js: true do
+    click_on 'Ask a Question'
+
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
+    click_on 'Add file'
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Create Question'
 
-    expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
+    expect(page).to have_content 'Your question was successfully created'
   end
 
   scenario 'User adds multiple files when asks question', js: true do
+    click_on 'Ask a Question'
+
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
+    click_on 'Add file'
     attach_file('File', "#{Rails.root}/spec/spec_helper.rb")
     click_on 'Add file'
     find(:xpath, '//*[@id="new_question"]/div[4]/div/input').set("#{Rails.root}/spec/rails_helper.rb")
     click_on 'Create Question'
 
-    expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/2/spec_helper.rb'
-    expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/3/rails_helper.rb'
+    expect(page).to have_content 'Your question was successfully created'
   end
 end

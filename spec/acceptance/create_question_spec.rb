@@ -44,7 +44,7 @@ feature 'Create question', '
         visit questions_path
       end
 
-      Capybara.using_session('quest') do
+      Capybara.using_session('guest') do
         visit questions_path
       end
 
@@ -58,7 +58,7 @@ feature 'Create question', '
         expect(page).to have_content 'Test Body'
       end
 
-      Capybara.using_session('quest') do
+      Capybara.using_session('guest') do
         expect(page).to have_content 'Test Question'
         expect(page).to have_content 'Test Body'
       end
