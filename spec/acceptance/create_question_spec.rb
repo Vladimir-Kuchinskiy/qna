@@ -9,7 +9,8 @@ feature 'Create question', '
 ' do
 
   given(:user) { create(:user) }
-  describe 'As a user' do
+
+  context 'As a user', js: true do
     background do
       sign_in(user)
       visit questions_path
@@ -22,6 +23,8 @@ feature 'Create question', '
       click_on 'Create Question'
 
       expect(page).to have_content 'Your question was successfully created'
+      expect(page).to have_content 'Test Question'
+      expect(page).to have_content 'Test Body'
     end
 
     scenario 'can not create question with valid attributes' do
@@ -30,8 +33,42 @@ feature 'Create question', '
       fill_in 'Body',  with: ''
       click_on 'Create Question'
 
-      expect(page).to have_content 'Title can\'t be blank'
-      expect(page).to have_content 'Body can\'t be blank'
+      expect(page).to have_content 'Invalid question'
+    end
+  end
+
+  context 'multiple sessions', js: true do
+    scenario 'question appears on another user\'s page' do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit questions_path
+      end
+
+      Capybara.using_session('quest') do
+        visit questions_path
+      end
+
+      Capybara.using_session('user') do
+        click_on 'Ask a Question'
+        fill_in 'Title', with: 'Test Question'
+        fill_in 'Body',  with: 'Test Body'
+        click_on 'Create Question'
+
+        expect(page).to have_content 'Test Question'
+        expect(page).to have_content 'Test Body'
+      end
+
+      Capybara.using_session('quest') do
+        expect(page).to have_content 'Test Question'
+        expect(page).to have_content 'Test Body'
+      end
+    end
+  end
+
+  context 'As a guest' do
+    scenario 'can not create question' do
+      visit questions_path
+      expect(page).to_not have_link 'Ask a Question'
     end
   end
 end

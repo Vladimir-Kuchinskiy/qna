@@ -17,17 +17,16 @@ class QuestionsController < ApplicationController
     @answer.attachments.build
   end
 
-  def new
-    @question = Question.new
-    @question.attachments.build
-  end
-
   def create
     @question = current_user.questions.build(question_params)
-    if @question.save
-      redirect_to @question, notice: 'Your question was successfully created'
-    else
-      render :new
+    respond_to do |format|
+      if @question.save
+        flash.now[:notice] = 'Your question was successfully created'
+        format.js
+      else
+        flash.now[:error] = 'Invalid question'
+        format.js { render 'common/ajax_flash' }
+      end
     end
   end
 
@@ -37,19 +36,6 @@ class QuestionsController < ApplicationController
     else
       flash.now[:error] = 'Invalid question'
     end
-  end
-
-  def publish_question
-    return if @question.errors.any?
-    user = current_user
-    ActionCable.server.broadcast(
-      'questions',
-      ApplicationController.render_with_signed_in_user(
-        user,
-        partial: 'questions/question_on_index_page',
-        locals: { question: @question }
-      )
-    )
   end
 
   def vote
@@ -68,7 +54,7 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.remove_vote(current_user)
         flash.now[:notice] = 'Your vote was successfully dismissed'
-        params[:show] ? format.js { render 'questions/update'} : format.js { render 'questions/vote' }
+        params[:show] ? format.js { render 'questions/update' } : format.js { render 'questions/vote' }
       else
         flash.now[:error] = 'You can not dismiss your vote for this question'
         format.js { render 'common/ajax_flash' }
@@ -82,6 +68,18 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render_with_signed_in_user(
+        current_user,
+        partial: 'questions/question_on_index_page',
+        locals: { question: @question }
+      )
+    )
+  end
 
   def build_attachments
     @question.attachments.build unless @question.attachments.any?

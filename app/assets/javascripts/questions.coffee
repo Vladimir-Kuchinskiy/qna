@@ -8,10 +8,12 @@ $(document).on 'ready turbolinks:load', ->
     e.preventDefault()
     $(this).hide()
     $('form.edit_question').show()
+  $('.create_question_link').click (e) ->
+    e.preventDefault()
+    $('#new_question').show()
 
   App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->
-      console.log 'Connected'
       @perform 'follow'
     ,
 

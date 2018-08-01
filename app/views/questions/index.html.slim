@@ -1,9 +1,10 @@
 .row
-  .col-md-10
+  .col-md-9
     h1 class="display-5" Questions
     .questions_list
       - @questions.each do |question|
         = render 'question_on_index_page', question: question
-  .col-md-2
+  .col-md-3
     - if user_signed_in?
-      = link_to 'Ask a Question', new_question_path, class: 'btn btn-primary'
+      = link_to 'Ask a Question', '', class: 'create_question_link btn btn-primary'
+      = render 'form', question: Question.new
