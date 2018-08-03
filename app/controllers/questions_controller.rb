@@ -10,6 +10,7 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all
+    gon.push(current_user_id: current_user.id) if current_user.present?
   end
 
   def show
@@ -42,7 +43,7 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.give_vote(current_user, params[:vote].to_i)
         flash.now[:notice] = 'Your vote was successfully added'
-        params[:show] ? format.js { render 'questions/update'} : format.js
+        params[:show] ? format.js { render 'questions/update' } : format.js
       else
         flash.now[:error] = 'You can not vote for this question'
         format.js { render 'common/ajax_flash' }
@@ -71,14 +72,7 @@ class QuestionsController < ApplicationController
 
   def publish_question
     return if @question.errors.any?
-    ActionCable.server.broadcast(
-      'questions',
-      ApplicationController.render_with_signed_in_user(
-        current_user,
-        partial: 'questions/question_on_index_page',
-        locals: { question: @question }
-      )
-    )
+    ActionCable.server.broadcast('questions', @question.attributes.merge(email: @question.user.email))
   end
 
   def build_attachments
@@ -87,7 +81,8 @@ class QuestionsController < ApplicationController
 
   def can_operate?
     if current_user != @question.user
-      redirect_to questions_path, notice: 'Sorry! You can operate only with your own questions'
+      flash.now[:error] = 'Sorry! You can operate only with your own questions'
+      render 'common/ajax_flash'
     end
   end
 
@@ -96,6 +91,6 @@ class QuestionsController < ApplicationController
   end
 
   def set_question
-    @question = Question.find(params[:id])
+    @question = Question.includes(:user).find(params[:id])
   end
 end

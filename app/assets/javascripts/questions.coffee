@@ -18,5 +18,7 @@ $(document).on 'ready turbolinks:load', ->
     ,
 
     received: (data) ->
-      questionsList.append data
+      appendQuestion(data)
   })
+  appendQuestion = (data) ->
+    questionsList.append JST['templates/question'](data)

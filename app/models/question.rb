@@ -11,6 +11,8 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  attr_accessor :email
+
   def give_vote(current_user, vote)
     if current_user.can_vote?(self)
       self.votes_count += vote if current_user.vote(self, vote)

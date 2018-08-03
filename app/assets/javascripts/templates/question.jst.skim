@@ -1,0 +1,21 @@
+div data-question="#{@id}"
+  .row
+    .jumbotron.question data-question-id="#{@id}"
+      .row
+        .col-md-8
+          h4.blog-post-title
+            a href="/questions/#{@id}" = @title
+        .col-md-4
+          h4.float-right.d-index.votes
+            .badge.badge-primary.font-weight-normal
+              | Rating
+              span.badge.badge-light.font-weight-normal = @votes_count
+          - if gon.current_user_id && @user_id != gon.current_user_id
+            a class="btn btn-danger btn-sm d-index float-right" data-remote="true" rel="nofollow" data-method="patch" href="/questions/#{@id}/vote?vote=-1" Dislike
+            a class="btn btn-success btn-sm d-index float-right" data-remote="true" rel="nofollow" data-method="patch" href="/questions/#{@id}/vote?vote=1" Like
+      p.blog-post-meta
+        = moment().format('MMMM D, YYYY') + ' by ' + @email
+      p
+        = @body
+
+
