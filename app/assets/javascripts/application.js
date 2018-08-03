@@ -17,9 +17,11 @@
 //= require popper
 //= require bootstrap-sprockets
 //= require cocoon
+//= require moment
 //= require jquery.remotipart
 //= require turbolinks
 //= require_tree .
+//= require_tree ./templates
 
 var App = App = {};
 

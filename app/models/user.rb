@@ -29,10 +29,10 @@ class User < ApplicationRecord
   end
 
   def can_vote?(entity)
-    id != entity.user.id && !votes.find_by(voteable_id: entity.id).try(:voted)
+    id != entity.user_id && !votes.find_by(voteable_id: entity.id).try(:voted)
   end
 
   def can_dismiss?(entity)
-    id != entity.user.id && votes.find_by(voteable_id: entity.id)&.try(:voted)
+    id != entity.user_id && votes.find_by(voteable_id: entity.id)&.try(:voted)
   end
 end
