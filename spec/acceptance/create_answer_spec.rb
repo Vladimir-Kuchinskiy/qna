@@ -36,4 +36,28 @@ feature 'Create answer', '
     expect(current_path).to eq question_path(question)
   end
 
+  context 'Multiple sessions', js: true do
+    scenario 'answer appears on another user\'s page' do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Your answer', with: 'My answer'
+        click_on 'Create Answer'
+
+        within('.answers') { expect(page).to have_content 'My answer' }
+      end
+
+      Capybara.using_session('guest') do
+        within('.answers') { expect(page).to have_content 'My answer' }
+      end
+    end
+  end
+
 end

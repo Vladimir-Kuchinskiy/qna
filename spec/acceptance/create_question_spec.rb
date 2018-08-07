@@ -37,7 +37,7 @@ feature 'Create question', '
     end
   end
 
-  context 'multiple sessions', js: true do
+  context 'Multiple sessions', js: true do
     scenario 'question appears on another user\'s page' do
       Capybara.using_session('user') do
         sign_in(user)
