@@ -120,8 +120,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'MyText'
       end
 
-      it 'redirects to question path' do
-        expect(response).to redirect_to questions_path
+      it 'renders common/flash ajax template' do
+        expect(response).to render_template 'common/ajax_flash'
       end
     end
   end
@@ -239,9 +239,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, params: { id: another_question } }.to_not change(Question, :count)
       end
 
-      it 're-renders questions index path' do
+      it 'renders common/flash js template' do
         delete :destroy, params: { id: another_question }
-        expect(response).to redirect_to questions_path
+        expect(response).to render_template 'common/ajax_flash'
       end
     end
   end
