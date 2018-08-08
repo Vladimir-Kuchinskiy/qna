@@ -14,11 +14,10 @@ class AnswersController < ApplicationController
     respond_to do |format|
       if @answer.save
         flash.now[:notice] = 'Your answer was successfully created'
-        format.js
       else
         flash.now[:error] = 'Invalid answer'
-        format.js { render 'common/ajax_flash' }
       end
+      format.js
     end
   end
 
@@ -80,9 +79,11 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
+    answer = @answer.as_json(include: :attachments).merge(email: @question.user.email)
+    answer['attachments'].each { |a| a['name'] = a['file'].model['file'] }
     ActionCable.server.broadcast(
       "answer_for_question_#{params[:question_id]}",
-      answer: @answer.as_json(include: :attachments).merge(email: @question.user.email)
+      answer: answer
     )
   end
 

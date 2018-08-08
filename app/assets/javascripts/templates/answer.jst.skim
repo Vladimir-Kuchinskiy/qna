@@ -10,12 +10,13 @@ div data-answer-id="#{@answer.id}"
           p -- The Best --
         p class="blog-post-meta" = moment().format('MMMM D, YYYY') + ' by ' + @answer.email
         p = @answer.body
-        - for attachment in @answer.attachments
+        - if @answer.attachments[0]
           h5 Attachments:
-          p data-attachment="#{attachment.id}"
-            a.d-index target="_blank" href="/uploads/attachment/file/#{attachment.id}/#{attachment.file.identifier}" = attachment.file.identifier
-            - if gon.current_user_id && gon.current_user_id == @answer.user_id
-              a.d-index.btn.btn-danger.btn-sm data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/attachments/#{attachment.id}" Delete file
+          - for attachment in @answer.attachments
+            p data-attachment="#{attachment.id}"
+              a.d-index target="_blank" href="#{attachment.file.url}" = attachment.name
+              - if gon.current_user_id && gon.current_user_id == @answer.user_id
+                a.d-index.btn.btn-danger.btn-sm data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/attachments/#{attachment.id}" Delete file
       .col-md-4
         - if gon.current_user_id && gon.current_user_id == gon.question_user_id
           a.btn.d-inline.btn-outline-info id="the-best-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/questions/#{@answer.question_id}/answers/#{@answer.id}/pick_up_the_best" Make The Best
