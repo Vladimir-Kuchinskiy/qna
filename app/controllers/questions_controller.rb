@@ -16,6 +16,8 @@ class QuestionsController < ApplicationController
   def show
     @answer = @question.answers.new
     @answer.attachments.build
+    gon.push(current_user_id: current_user.id) if current_user.present?
+    gon.push(question_id: @question.id, question_user_id: @question.user_id)
   end
 
   def create

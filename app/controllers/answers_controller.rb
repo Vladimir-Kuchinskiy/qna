@@ -6,16 +6,19 @@ class AnswersController < ApplicationController
   before_action :set_answer,   only: %i[update vote dismiss_vote pick_up_the_best destroy]
   before_action :can_operate?, only: %i[destroy update]
 
+  after_action :publish_answer, only: :create
+
   def create
     @answer = @question.answers.build(answer_params)
+    @answer.user = current_user
     respond_to do |format|
       if @answer.save
-        current_user.answers << @answer
         flash.now[:notice] = 'Your answer was successfully created'
+        format.js
       else
         flash.now[:error] = 'Invalid answer'
+        format.js { render 'common/ajax_flash' }
       end
-      format.js
     end
   end
 
@@ -72,7 +75,15 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, attachments_attributes: [:file])
+    params.require(:answer).permit(:body, attachments_attributes: %i[id file _destroy])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast(
+      "answer_for_question_#{params[:question_id]}",
+      answer: @answer.as_json(include: :attachments).merge(email: @question.user.email)
+    )
   end
 
   def can_operate?
