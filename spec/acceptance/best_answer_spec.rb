@@ -23,7 +23,7 @@ feature 'Mark answer as the best', '
 
       expect(page).to have_content 'The answer was successfully marked as the best'
       within '.answers' do
-        expect(find(:xpath, '//*[contains(@class, "blog-post ")][2]')).to have_content question.answers.last.body
+        expect(find("div[data-answer='#{question.answers.last.id}']")).to have_content question.answers.last.body
       end
     end
 
@@ -36,7 +36,7 @@ feature 'Mark answer as the best', '
 
       expect(page).to have_content 'The answer was successfully marked as the best'
       within '.answers' do
-        expect(find(:xpath, '//*[contains(@class, "blog-post ")][2]')).to have_content question.answers.last.body
+        expect(find("div[data-answer='#{question.answers.last.id}']")).to have_content question.answers.last.body
       end
     end
   end
