@@ -25,7 +25,7 @@ class User < ApplicationRecord
   end
 
   def owner?(entity)
-    entity.user == self
+    entity.user_id == id
   end
 
   def can_vote?(entity)

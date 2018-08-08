@@ -7,7 +7,7 @@ class Answer < ApplicationRecord
   belongs_to :question, optional: true
   belongs_to :user, optional: true
 
-  accepts_nested_attributes_for :attachments
+  accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
   validates :body, presence: true
   validates :the_best, uniqueness: { scope: :question_id }, if: ->(answer) { answer.the_best.present? }
