@@ -4,7 +4,6 @@
       .form-group
         = f.label :body, 'Your answer'
         = f.input :body, placeholder: 'Body', label: false
-        .answer-errors style="color: red"
       p Attachments:
       p
         = f.simple_fields_for :attachments do |attachment|

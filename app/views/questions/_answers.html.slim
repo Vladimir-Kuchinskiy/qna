@@ -1,4 +1,4 @@
-h2 class="pb-3 mb-4 font-italic border-bottom"
 - @question.answers.from_the_best.each do |answer|
   - if answer.persisted?
-    = render 'answers/answer', answer: answer, question: @question
+    div data-answer-id="#{answer.id}"
+      = render 'answers/answer', answer: answer, question: @question

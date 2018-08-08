@@ -14,7 +14,7 @@
         - answer.attachments.each do |a|
           p data-attachment="#{a.id}"
             = link_to a.file.identifier, a.file.url, target: '_blank', class: 'd-index'
-            - if current_user && current_user.owner?(answer)
+            - if current_user&.owner?(answer)
               = link_to 'Delete file', a, class: 'd-index btn btn-danger btn-sm', method: :delete, data: {confirm: 'Are you sure?'}, remote: true
     .col-md-4
       - if !answer.the_best? && current_user&.owner?(@question)
