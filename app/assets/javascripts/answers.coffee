@@ -11,12 +11,14 @@ $(document).on 'ready turbolinks:load', ->
     answer_id = $(this).data('answerId')
     $('#edit_answer_' + answer_id).show()
 
-  App.cable.subscriptions.create('QuestionsChannel', {
+  App.cable.subscriptions.create({ channel: 'AnswersChannel', question_id: gon.question_id }, {
     connected: ->
       @perform 'follow'
     ,
+
     received: (data) ->
-      appendQuestion(data)
+      debugger
+      appendAnswer(data)
   })
-  appendQuestion = (data) ->
+  appendAnswer = (data) ->
     answersList.append JST['templates/answer'](data)

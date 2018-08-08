@@ -1,0 +1,38 @@
+div data-answer-id="#{@answer.id}"
+  .blog-post.border-bottom data-answer="#{@answer.id}"
+    .row
+      .col-md-8
+        h4.d-index.answer-votes
+          .badge.badge-primary.font-weight-normal
+            | Rating
+            span.badge.badge-light.font-weight-normal = @answer.votes_count
+        - if @answer.the_best
+          p -- The Best --
+        p class="blog-post-meta" = moment().format('MMMM D, YYYY') + ' by ' + @answer.email
+        p = @answer.body
+        - for attachment in @answer.attachments
+          h5 Attachments:
+          p data-attachment="#{attachment.id}"
+            a.d-index target="_blank" href="/uploads/attachment/file/#{attachment.id}/#{attachment.file.identifier}" = attachment.file.identifier
+            - if gon.current_user_id && gon.current_user_id == @answer.user_id
+              a.d-index.btn.btn-danger.btn-sm data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/attachments/#{attachment.id}" Delete file
+      .col-md-4
+        - if gon.current_user_id && gon.current_user_id == gon.question_user_id
+          a.btn.d-inline.btn-outline-info id="the-best-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/questions/#{@answer.question_id}/answers/#{@answer.id}/pick_up_the_best" Make The Best
+        - if gon.current_user_id && gon.current_user_id == @answer.user_id
+          a.edit_answer_link.d-inline.btn.btn-outline-success data-answer-id="#{@answer.id}" href="" Edit Answer
+          a.btn.d-inline.btn-outline-danger data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/questions/#{@answer.question_id}/answers/#{@answer.id}" Delete
+          .row
+            .col-md-12
+              form.simple_form.edit_answer id="edit_answer_#{@answer.id}" novalidate="novalidate" action="/questions/#{@answer.question_id}/answers/#{@answer.id}" accept-charset="UTF-8" data-remote="true" method="post"
+                input name="utf8" type="hidden" value="✓"
+                input type="hidden" name="_method"value="patch"
+                .form-group
+                  label for="answer_body" Answer
+                  .form-group.text.required.answer_body.form-group-valid
+                    textarea.form-control.is-valid.text.required name="answer[body]" id="answer_body" #{@answer.body}
+                  .answer-errors style="color: red"
+                input.btn.btn-primary type="submit" name="commit" value="Save" data-disable-with="Save"
+        - else if gon.current_user_id && @answer.user_id != gon.current_user_id
+          a.btn.btn-success.d-inline data-remote="true" rel="nofollow" data-method="patch" href="/questions/#{@answer.question_id}/answers/#{@answer.id}/vote?vote=1" Like
+          a.btn.btn-danger.d-inline data-remote="true" rel="nofollow" data-method="patch" href="/questions/#{@answer.question_id}/answers/#{@answer.id}/vote?vote=-1" Dislike
