@@ -17,7 +17,6 @@ $(document).on 'ready turbolinks:load', ->
     ,
 
     received: (data) ->
-      debugger
       appendAnswer(data)
   })
   appendAnswer = (data) ->

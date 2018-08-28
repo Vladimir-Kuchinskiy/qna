@@ -14,5 +14,13 @@ $(document).on 'ready turbolinks:load', ->
     $('form#new_comment').hide()
     addCommentToQuestionButton.show()
 
+  App.cable.subscriptions.create({ channel: 'CommentsChannel', question_id: gon.question_id }, {
+    connected: ->
+      @perform 'follow'
+    ,
+    received: (data) ->
+      appendCommentToQuestion(data)
+  })
+
   appendCommentToQuestion = (data) ->
     commentsListForQuestions.append JST['templates/comment'](data)

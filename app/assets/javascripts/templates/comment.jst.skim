@@ -1,0 +1,5 @@
+.border-bottom
+h6.blog-post-meta
+  small = moment().format('MMMM D, YYYY') + ' by ' + @comment.email
+h6
+  small = @comment.body

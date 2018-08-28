@@ -79,12 +79,16 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
-    answer = @answer.as_json(include: :attachments).merge(email: @question.user.email)
-    answer['attachments'].each { |a| a['name'] = a['file'].model['file'] }
     ActionCable.server.broadcast(
       "answer_for_question_#{params[:question_id]}",
-      answer: answer
+      answer: answer_to_publish
     )
+  end
+
+  def answer_to_publish
+    answer = @answer.as_json(include: :attachments).merge(email: @question.user.email)
+    answer['attachments'].each { |a| a['name'] = a['file'].model['file'] }
+    answer
   end
 
   def can_operate?
