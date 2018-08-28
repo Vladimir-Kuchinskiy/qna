@@ -8,7 +8,8 @@ class User < ApplicationRecord
 
   has_many :questions
   has_many :answers
-  has_many :votes, dependent: :destroy
+  has_many :votes,    dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   def vote(entity, voted)
     vote = votes.find_by(voteable_id: entity.id)
