@@ -7,7 +7,7 @@
           span.badge.badge-light.font-weight-normal = answer.votes_count
       - if answer.the_best?
         p -- The Best --
-      p class="blog-post-meta" = answer.created_at.try(:strftime, '%B %d, %Y') + ' by ' + answer.user.try(:email)
+      p.blog-post-meta = answer.created_at.try(:strftime, '%B %d, %Y') + ' by ' + answer.user.try(:email)
       p #{answer.body}
       - if answer.attachments.files?
         h5 Attachments:

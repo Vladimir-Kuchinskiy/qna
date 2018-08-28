@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2018_08_28_084231) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.string "body"
+    t.text "body"
     t.integer "commentable_id"
     t.string "commentable_type"
     t.bigint "user_id"

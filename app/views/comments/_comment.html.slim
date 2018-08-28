@@ -1,0 +1,5 @@
+.border-bottom
+h6.blog-post-meta
+  small = comment.created_at.try(:strftime, '%B %d, %Y') + ' by ' + comment.user.try(:email)
+h6
+  small = comment.body

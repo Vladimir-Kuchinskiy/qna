@@ -1,0 +1,5 @@
+$('.comments-for-question').append('<%= j render 'comment', comment: @comment %>');
+$('form#new_comment').hide();
+$('#comment_body').val('');
+$('.add-comment-to-question').show();
+<%= ajax_flash('#main') %>

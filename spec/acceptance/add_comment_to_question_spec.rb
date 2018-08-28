@@ -9,26 +9,21 @@ feature 'Add comment to question', '
   given(:user)     { create(:user) }
   given(:question) { create(:question, user: create(:user)) }
 
-  describe 'Authenticated user' do
-    background do
-      sign_in(user)
-      visit question_path(question)
-    end
+  scenario 'Authenticated user tries to add a comment to the question', js: true do
+    sign_in(user)
+    visit question_path(question)
 
-    scenario 'tries to add a comment to the question', js: true do
-      click_on 'add comment'
-      fill_in 'Comment', with: 'Test comment'
-      click_on 'Submit'
+    click_on 'add comment'
+    fill_in 'Comment', with: 'Test comment'
+    click_on 'Create Comment'
 
-      within '.comments' do
-        expect(page).to have_content 'Test comment'
-      end
+    within '.comments-for-question' do
+      expect(page).to have_content 'Test comment'
     end
   end
 
-  describe 'Guest' do
-    scenario 'tries to add a comment to the question', js: true do
-      expect(page).to_not have_link 'add comment'
-    end
+  scenario 'Guest tries to add a comment to the question', js: true do
+    visit question_path(question)
+    expect(page).to_not have_link 'add comment'
   end
 end
