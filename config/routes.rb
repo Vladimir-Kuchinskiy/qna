@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   devise_for :users
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
   resources :questions do
     patch :vote,         on: :member
     patch :dismiss_vote, on: :member
@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   end
 
   resources :attachments, only: :destroy
+  resources :comments,    only: :create
+
 
   root to: 'questions#index'
 
