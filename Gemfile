@@ -40,7 +40,9 @@ gem 'simple_form'
 gem 'cocoon'
 gem 'skim'
 gem 'gon'
-gem 'momentjs-rails'
+gem 'momentjs-rails' # For js moment time with format customization
+gem 'responders'
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
@@ -79,7 +81,7 @@ group :test, :development do
   gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'poltergeist'
-  gem 'phantomjs', :require => 'phantomjs/poltergeist'
+  gem 'phantomjs', require: 'phantomjs/poltergeist'
   gem 'capybara-webkit'
 end
 

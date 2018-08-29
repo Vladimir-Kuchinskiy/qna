@@ -8,7 +8,7 @@ class QuestionsController < ApplicationController
 
   after_action :publish_question, only: :create
 
-  respond_to :html, :js
+  respond_to :js
 
   def index
     gon.push(current_user_id: current_user.id) if current_user.present?
