@@ -1,4 +1,11 @@
-$('form#new_comment').hide();
 $('#comment_body').val('');
-$('.add-comment-to-question').show();
+<% if @comment.commentable_type == 'Question' %>
+  $('.add-comment[data-commentable-id="Question"]').show();
+  $('form[data-commentable-id="Question"] textarea').val('');
+  $('form[data-commentable-id="Question"]').hide();
+<% else %>
+  $('.add-comment[data-commentable-id="<%= @comment.commentable_id %>"]').show();
+  $('form[data-commentable-id="<%= @comment.commentable_id %>"] textarea').val('');
+  $('form[data-commentable-id="<%= @comment.commentable_id %>"]').hide();
+<% end %>
 <%= ajax_flash('#main') %>

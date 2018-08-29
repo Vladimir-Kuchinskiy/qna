@@ -28,3 +28,12 @@
         = link_to 'Dislike', vote_question_answer_path(id: answer, question_id: question, vote: -1), method: :patch, remote: true, class: 'btn btn-danger d-inline'
       - elsif current_user&.can_dismiss?(answer)
         = link_to 'Dismiss vote', dismiss_vote_question_answer_path(id: answer, question_id: @question), method: :patch, remote: true, class: 'btn btn-outline-danger d-inline'
+  .row
+    .col-md-6
+      .comments-for-answer data-answer-comments-id="#{answer.id}"
+        - answer.comments.each do |comment|
+          = render 'comments/comment', comment: comment
+      - if current_user
+        .border-bottom
+        p = link_to 'add comment', '', class: 'badge badge-light add-comment', data: { commentable_id: answer.id }
+        = render 'comments/form', commentable_id: answer.id, commentable_type: 'Answer'

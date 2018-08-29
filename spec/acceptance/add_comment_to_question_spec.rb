@@ -14,12 +14,10 @@ feature 'Add comment to question', '
     visit question_path(question)
 
     click_on 'add comment'
-    fill_in 'Comment', with: 'Test comment'
+    fill_in 'Comment', with: 'Test comment for question'
     click_on 'Create Comment'
 
-    within '.comments-for-question' do
-      expect(page).to have_content 'Test comment'
-    end
+    within('.comments-for-question') { expect(page).to have_content 'Test comment for question' }
   end
 
   scenario 'Guest tries to add a comment to the question', js: true do
@@ -40,17 +38,17 @@ feature 'Add comment to question', '
 
       Capybara.using_session('user') do
         click_on 'add comment'
-        fill_in 'Comment', with: 'Test comment'
+        fill_in 'Comment', with: 'Test comment for question'
         click_on 'Create Comment'
 
         within '.comments-for-question' do
-          expect(page).to have_content 'Test comment'
+          expect(page).to have_content 'Test comment for question'
         end
       end
 
       Capybara.using_session('guest') do
         within '.comments-for-question' do
-          expect(page).to have_content 'Test comment'
+          expect(page).to have_content 'Test comment for question'
         end
       end
     end

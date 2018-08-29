@@ -1,9 +1,12 @@
-= simple_form_for Comment.new, remote: true do |f|
+= simple_form_for Comment.new, remote: true,
+                               data: { commentable_id: commentable_type == 'Answer' ? commentable_id : 'Question' },
+                               id: commentable_type == 'Question' ? commentable_id : '' do |f|
   .form-group
     = f.label :body, 'Comment', class: 'sr-only'
     = f.input :body, placeholder: 'Comment', label: false
-  = f.hidden_field :commentable_id,   value: @question.id
-  = f.hidden_field :commentable_type, value: 'Question'
+  = f.hidden_field :commentable_id,   value: commentable_id
+  = f.hidden_field :commentable_type, value: commentable_type
   p
     = f.submit class: 'btn btn-success btn-sm'
-    = link_to 'Cancel', '', class: 'btn btn-danger btn-sm cancel-comment'
+    = link_to 'Cancel', '', class: 'btn btn-danger btn-sm cancel-comment',
+                            data: { commentable_id: commentable_type == 'Answer' ? commentable_id : 'Question' }

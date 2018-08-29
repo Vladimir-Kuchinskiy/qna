@@ -6,9 +6,9 @@ feature 'Add comment to answer', '
   I would like to be able to comment answer
 ' do
 
-  given(:user)     { create(:user) }
-  given(:question) { create(:question, user: create(:user)) }
-  given(:answer)   { create(:answer, question: question, user: create(:user)) }
+  given(:user)      { create(:user) }
+  given!(:question) { create(:question, user: create(:user)) }
+  given!(:answer)   { create(:answer, question: question, user: create(:user)) }
 
   scenario 'Authenticated user tries to add a comment to the answer', js: true do
     sign_in(user)
@@ -16,11 +16,11 @@ feature 'Add comment to answer', '
 
     within('.answers') do
       click_on 'add comment'
-      fill_in 'Comment', with: 'Test comment'
+      fill_in 'Comment', with: 'Test comment for answer'
       click_on 'Create Comment'
     end
 
-    within('.comments-for-answer') { expect(page).to have_content 'Test comment' }
+    within('.comments-for-answer') { expect(page).to have_content 'Test comment for answer' }
   end
 
   scenario 'Guest tries to add a comment to the answer', js: true do
@@ -42,15 +42,15 @@ feature 'Add comment to answer', '
       Capybara.using_session('user') do
         within('.answers') do
           click_on 'add comment'
-          fill_in 'Comment', with: 'Test comment'
+          fill_in 'Comment', with: 'Test comment for answer'
           click_on 'Create Comment'
         end
 
-        within('.comments-for-answer') { expect(page).to have_content 'Test comment' }
+        within('.comments-for-answer') { expect(page).to have_content 'Test comment for answer' }
       end
 
       Capybara.using_session('guest') do
-        within('.comments-for-answer') { expect(page).to have_content 'Test comment' }
+        within('.comments-for-answer') { expect(page).to have_content 'Test comment for answer' }
       end
     end
   end
