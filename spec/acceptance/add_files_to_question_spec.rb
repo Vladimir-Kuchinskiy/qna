@@ -18,7 +18,6 @@ feature 'Add files to question', '
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
-    click_on 'Add file'
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Create Question'
 
@@ -30,7 +29,6 @@ feature 'Add files to question', '
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
-    click_on 'Add file'
     attach_file('File', "#{Rails.root}/spec/spec_helper.rb")
     click_on 'Add file'
     find(:xpath, '//*[@id="new_question"]/div[4]/div/input').set("#{Rails.root}/spec/rails_helper.rb")

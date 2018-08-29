@@ -1,3 +1,5 @@
-$('#question_title, #question_body').val('');
-$('#new_question').hide();
+<% if !@question.errors.any? %>
+  $('#question_title, #question_body').val('');
+  $('#new_question').hide();
+<% end %>
 <%= ajax_flash('#main') %>

@@ -8,29 +8,27 @@ class QuestionsController < ApplicationController
 
   after_action :publish_question, only: :create
 
+  respond_to :html, :js
+
   def index
-    @questions = Question.all
     gon.push(current_user_id: current_user.id) if current_user.present?
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.new
-    @answer.attachments.build
     gon.push(current_user_id: current_user.id) if current_user.present?
     gon.push(question_id: @question.id, question_user_id: @question.user_id)
+    respond_with(@question)
   end
 
   def create
     @question = current_user.questions.build(question_params)
-    respond_to do |format|
-      if @question.save
-        flash.now[:notice] = 'Your question was successfully created'
-        format.js
-      else
-        flash.now[:error] = 'Invalid question'
-        format.js { render 'common/ajax_flash' }
-      end
+    if @question.save
+      flash.now[:notice] = 'Your question was successfully created'
+    else
+      flash.now[:error] = 'Invalid question'
     end
+    respond_with @question
   end
 
   def update
@@ -39,35 +37,30 @@ class QuestionsController < ApplicationController
     else
       flash.now[:error] = 'Invalid question'
     end
+    respond_with @question
   end
 
   def vote
-    respond_to do |format|
-      if @question.give_vote(current_user, params[:vote].to_i)
-        flash.now[:notice] = 'Your vote was successfully added'
-        params[:show] ? format.js { render 'questions/update' } : format.js
-      else
-        flash.now[:error] = 'You can not vote for this question'
-        format.js { render 'common/ajax_flash' }
-      end
+    if @question.give_vote(current_user, params[:vote].to_i)
+      flash.now[:notice] = 'Your vote was successfully added'
+    else
+      flash.now[:error] = 'You can not vote for this question'
     end
+    respond_with(@question) { |format| format.js { render 'questions/vote', locals: { flag: params[:show] } } }
   end
 
   def dismiss_vote
-    respond_to do |format|
-      if @question.remove_vote(current_user)
-        flash.now[:notice] = 'Your vote was successfully dismissed'
-        params[:show] ? format.js { render 'questions/update' } : format.js { render 'questions/vote' }
-      else
-        flash.now[:error] = 'You can not dismiss your vote for this question'
-        format.js { render 'common/ajax_flash' }
-      end
+    if @question.remove_vote(current_user)
+      flash.now[:notice] = 'Your vote was successfully dismissed'
+    else
+      flash.now[:error] = 'You can not dismiss your vote for this question'
     end
+    respond_with(@question) { |format| format.js { render 'questions/vote', locals: { flag: params[:show] } } }
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path, notice: 'Your question was successfully deleted'
+    flash[:success] = 'Your question was successfully deleted'
+    respond_with @question.destroy
   end
 
   private

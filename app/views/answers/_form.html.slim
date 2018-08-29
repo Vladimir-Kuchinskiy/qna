@@ -7,7 +7,7 @@
         .answer-errors style="color: red"
       p Attachments:
       p
-        = f.simple_fields_for :attachments do |attachment|
+        = f.simple_fields_for :attachments, answer.attachments.new do |attachment|
           = render 'attachment_fields', f: attachment
         .links
           = link_to_add_association 'Add file', f, :attachments

@@ -7,7 +7,7 @@
         = f.input :body, class: 'form-control', placeholder: 'Body'
       p Attachments:
       p
-        = f.simple_fields_for :attachments do |attachment|
+        = f.simple_fields_for :attachments, question.attachments.new do |attachment|
           = render 'attachment_fields', f: attachment
         .links
           = link_to_add_association 'Add file', f, :attachments

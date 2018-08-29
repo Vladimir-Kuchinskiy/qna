@@ -30,10 +30,6 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
 
-    it 'builds new attachment to @answer' do
-      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
-    end
-
     it 'renders show view' do
       expect(response).to render_template :show
     end
@@ -50,7 +46,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question), format: :js }
-        expect(response).to render_template 'questions/create'
+        expect(response).to render_template :create
       end
     end
 
@@ -61,9 +57,9 @@ RSpec.describe QuestionsController, type: :controller do
         }.to_not change(Question, :count)
       end
 
-      it 'renders common/ajax_flash view' do
+      it 'renders create view' do
         post :create, params: { question: attributes_for(:invalid_question), format: :js }
-        expect(response).to render_template 'common/ajax_flash'
+        expect(response).to render_template :create
       end
     end
   end
@@ -120,7 +116,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'MyText'
       end
 
-      it 'renders common/flash ajax template' do
+      it 'renders common/ajax_flash template' do
         expect(response).to render_template 'common/ajax_flash'
       end
     end
@@ -169,8 +165,8 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not changes votes count of a question' do
         expect(question.reload.votes_count).to eq 0
       end
-      it 'renders common/ajax_flash template' do
-        expect(response).to render_template 'common/ajax_flash'
+      it 'renders vote template' do
+        expect(response).to render_template :vote
       end
     end
   end
@@ -208,8 +204,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.reload.votes_count).to eq 0
       end
 
-      it 'renders common/ajax_flash template' do
-        expect(response).to render_template 'common/ajax_flash'
+      it 'renders vote template' do
+        expect(response).to render_template :vote
       end
     end
   end

@@ -7,4 +7,4 @@
     .answers
       = render 'answers'
 
-    p = render 'answers/form', question: @question, answer: @answer if current_user.present?
+    p = render 'answers/form', question: @question, answer: @question.answers.new if current_user.present?

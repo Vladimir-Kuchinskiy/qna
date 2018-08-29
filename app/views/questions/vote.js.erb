@@ -1,2 +1,8 @@
-$('div[data-question="<%= @question.id %>"]').html('<%= j render 'questions/question_on_index_page', question: @question %>');
+<% if !@question.errors.any? %>
+  <% if flag == 'true' %>
+    $('.body_question').html('<%= j render 'questions/question' %>');
+  <% else %>
+    $('div[data-question="<%= @question.id %>"]').html('<%= j render 'questions/question_on_index_page', question: @question %>');
+  <% end %>
+<% end %>
 <%= ajax_flash('#main') %>
