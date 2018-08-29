@@ -22,48 +22,47 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = current_user.questions.build(question_params)
-    if @question.save
-      flash.now[:notice] = 'Your question was successfully created'
-    else
-      flash.now[:error] = 'Invalid question'
+    respond_with(@question = current_user.questions.create(question_params)) do
+      flash[:error] = 'Invalid question' if @question.errors.any?
     end
-    respond_with @question
   end
 
   def update
-    if @question.update(question_params)
-      flash.now[:notice] = 'Your question was successfully updated'
-    else
-      flash.now[:error] = 'Invalid question'
-    end
-    respond_with @question
+    @question.update(question_params)
+    respond_with(@question) { flash[:error] = 'Invalid question' if @question.errors.any? }
   end
 
   def vote
-    if @question.give_vote(current_user, params[:vote].to_i)
-      flash.now[:notice] = 'Your vote was successfully added'
-    else
-      flash.now[:error] = 'You can not vote for this question'
+    respond_with(@question) do |format|
+      if @question.give_vote(current_user, params[:vote].to_i)
+        flash.now[:notice] = 'Your vote was successfully added'
+      else
+        flash.now[:error] = 'You can not vote for this question'
+      end
+      format.js { render 'questions/vote', locals: { flag: params[:show] } }
     end
-    respond_with(@question) { |format| format.js { render 'questions/vote', locals: { flag: params[:show] } } }
   end
 
   def dismiss_vote
-    if @question.remove_vote(current_user)
-      flash.now[:notice] = 'Your vote was successfully dismissed'
-    else
-      flash.now[:error] = 'You can not dismiss your vote for this question'
+    respond_with(@question) do |format|
+      if @question.remove_vote(current_user)
+        flash.now[:notice] = 'Your vote was successfully dismissed'
+      else
+        flash.now[:error] = 'You can not dismiss your vote for this question'
+      end
+      format.js { render 'questions/vote', locals: { flag: params[:show] } }
     end
-    respond_with(@question) { |format| format.js { render 'questions/vote', locals: { flag: params[:show] } } }
   end
 
   def destroy
-    flash[:success] = 'Your question was successfully deleted'
-    respond_with @question.destroy
+    respond_with(@question.destroy) { flash[:notice] = 'Your question was successfully deleted' }
   end
 
   private
+
+  def interpolation_options
+    { resource_name: 'Your question' }
+  end
 
   def publish_question
     return if @question.errors.any?
