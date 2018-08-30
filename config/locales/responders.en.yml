@@ -22,4 +22,7 @@ en:
         notice: 'Your vote was successfully added'
       dismiss_vote:
         notice: 'Your vote was successfully dismissed'
+    comments:
+      create:
+        notice: 'Your comment was successfully added'
 

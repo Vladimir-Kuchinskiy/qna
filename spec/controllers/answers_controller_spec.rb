@@ -41,10 +41,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'with valid attributes' do
         before do
           @user.answers << answer
-          patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' }, format: :js }
-        end
-        it 'assigns the requested question to @question' do
-          expect(assigns(:question)).to eq question
+          patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
         end
 
         it 'assigns the requested answer to @answer' do
@@ -64,7 +61,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'with invalid attributes' do
         before do
           @user.answers << answer
-          patch :update, params: { id: answer, question_id: question, answer: { body: nil }, format: :js }
+          patch :update, params: { id: answer, answer: { body: nil }, format: :js }
         end
 
         it 'does not change answer attributes' do
@@ -80,7 +77,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'user tries to update another user\'s answer' do
       before do
-        patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' }, format: :js }
+        patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
       end
 
       it 'does not change answer attributes' do
@@ -99,11 +96,7 @@ RSpec.describe AnswersController, type: :controller do
     let(:answer) { create(:answer, question: question, user: create(:user)) }
     context 'user tries to give' do
       context 'positive vote for question' do
-        before { patch :vote, params: { id: answer, question_id: question, vote: 1, format: :js } }
-
-        it 'assigns the requested question to @question' do
-          expect(assigns(:question)).to eq question
-        end
+        before { patch :vote, params: { id: answer, vote: 1, format: :js } }
 
         it 'assigns the requested answer to @answer' do
           expect(assigns(:answer)).to eq answer
@@ -118,11 +111,7 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
       context 'negative vote for question' do
-        before { patch :vote, params: { id: answer, question_id: question, vote: -1, format: :js } }
-
-        it 'assigns the requested question to @question' do
-          expect(assigns(:question)).to eq question
-        end
+        before { patch :vote, params: { id: answer, vote: -1, format: :js } }
 
         it 'assigns the requested answer to @answer' do
           expect(assigns(:answer)).to eq answer
@@ -141,7 +130,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'author tries to give any vote' do
       before do
         answer.update(user: @user)
-        patch :vote, params: { id: answer, question_id: question, vote: 1, format: :js }
+        patch :vote, params: { id: answer, vote: 1, format: :js }
       end
 
       it 'does not changes votes count of an answer' do
@@ -161,11 +150,7 @@ RSpec.describe AnswersController, type: :controller do
       before do
         answer.update(votes_count: 1)
         answer.votes.create(user: @user, voted: true, choice: 1)
-        patch :dismiss_vote, params: { id: answer, question_id: question, format: :js }
-      end
-
-      it 'assigns the requested question to @question' do
-        expect(assigns(:question)).to eq question
+        patch :dismiss_vote, params: { id: answer, format: :js }
       end
 
       it 'assigns the requested answer to @answer' do
@@ -179,14 +164,10 @@ RSpec.describe AnswersController, type: :controller do
       it 'gives user 1 chance to vote for this answer' do
         expect(@user.reload.votes.last.voted).to eq false
       end
-
-      it 'renders vote template' do
-        expect(response).to render_template :vote
-      end
     end
 
     context 'User/Author tries to dismiss vote' do
-      before { patch :dismiss_vote, params: { id: answer, question_id: question, format: :js } }
+      before { patch :dismiss_vote, params: { id: answer, format: :js } }
 
       it 'do not change votes_count of answer' do
         expect(answer.reload.votes_count).to eq 0
@@ -204,7 +185,7 @@ RSpec.describe AnswersController, type: :controller do
     let(:question) { create(:question, user: user, answers: create_list(:answer, 3)) }
     before do
       question.answers.last.update(the_best: true)
-      patch :pick_up_the_best, params: { id: question.answers.first, question_id: question }, format: :js
+      patch :pick_up_the_best, params: { id: question.answers.first }, format: :js
     end
     context 'tries to mark users\' answer as the best' do
       it 'assigns the requested answer to an @answer' do
@@ -240,22 +221,22 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'destroy user\'s answer' do
       it 'removes an answer record from the database' do
-        expect { delete :destroy, params: { id: answer, question_id: question }, format: :js }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
 
       it 'renders destroy template' do
-        delete :destroy, params: { id: answer, question_id: question }, format: :js
+        delete :destroy, params: { id: answer }, format: :js
         expect(response).to render_template :destroy
       end
     end
 
     context 'destroy another user\'s answer' do
       it 'does not change questions count' do
-        expect { delete :destroy, params: { id: another_answer, question_id: question }, format: :js }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: another_answer }, format: :js }.to_not change(Answer, :count)
       end
 
       it 'renders common/ajax_flash template' do
-        delete :destroy, params: { id: another_answer, question_id: question }, format: :js
+        delete :destroy, params: { id: another_answer }, format: :js
         expect(response).to render_template 'common/ajax_flash'
       end
     end

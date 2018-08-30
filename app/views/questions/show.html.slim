@@ -5,6 +5,6 @@
     = render 'comments'
     .border-bottom
     .answers
-      = render 'answers'
+      = render 'answers', question: @question
 
     p = render 'answers/form', question: @question, answer: @question.answers.new if current_user.present?

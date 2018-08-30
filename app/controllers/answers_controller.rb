@@ -2,7 +2,7 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: %i[create update vote dismiss_vote pick_up_the_best]
+  before_action :set_question, only: :create
   before_action :set_answer,   only: %i[update vote dismiss_vote pick_up_the_best destroy]
   before_action :can_operate?, only: %i[destroy update]
 
@@ -35,6 +35,7 @@ class AnswersController < ApplicationController
   end
 
   def pick_up_the_best
+    @question = @answer.question
     respond_with(@answer.update_the_best)
   end
 

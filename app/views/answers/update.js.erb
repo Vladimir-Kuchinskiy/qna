@@ -5,7 +5,7 @@ $('.answer-errors').hide();
     $('.answer-errors').html('<%= j message %>');
   <% end %>
 <% else %>
-  $('.answers').html('<%= j render 'questions/answers' %>');
+  $('.answers').html('<%= j render 'questions/answers', question: @answer.question %>');
   $('.edit_answer_link').click(function(e) {
     e.preventDefault();
     $(this).hide();
