@@ -2,11 +2,13 @@
 
 class AttachmentsController < ApplicationController
   before_action :set_attachment
-  before_action :can_operate?
+
+  respond_to :js
 
   def destroy
-    @attachment.destroy
-    flash.now[:notice] = 'Your file was successfully deleted'
+    respond_with(@attachment.destroy_if_owner(current_user)) do
+      flash[:error] = 'Sorry! You can not delete this attachment' if @attachment.errors.any?
+    end
   end
 
   private
@@ -15,15 +17,8 @@ class AttachmentsController < ApplicationController
     @attachment = Attachment.find(params[:id])
   end
 
-  def can_operate?
-    if current_user != @attachment.attachable.user
-      if @attachment.attachable_type == 'Question'
-        redirect_to question_path(@attachment.attachable.id), notice: 'Sorry! You can operate only with your own questions'
-      else
-        redirect_to question_path(@attachment.attachable.question.id), notice: 'Sorry! You can operate only with your '\
-                                                                            'own answers'
-      end
-    end
+  def interpolation_options
+    { resource_name: 'Your file' }
   end
 
 end

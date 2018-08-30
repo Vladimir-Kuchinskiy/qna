@@ -1,4 +1,6 @@
-$('p[data-attachment="<%= @attachment.id %>"]').fadeOut(300, function(){
-    $(this).remove();
-});
+<% if !@attachment.errors.any? %>
+  $('p[data-attachment="<%= @attachment.id %>"]').fadeOut(300, function(){
+      $(this).remove();
+  });
+<% end %>
 <%= ajax_flash('#main') %>

@@ -3,6 +3,12 @@ class Attachment < ApplicationRecord
 
   mount_uploader :file, FileUploader
 
+  def destroy_if_owner(current_user)
+    return destroy if current_user.id == attachable.user_id
+    errors.add(:file, 'access denied')
+    self
+  end
+
   def self.files?
     all.map { |a| a[:file] }.any?
   end

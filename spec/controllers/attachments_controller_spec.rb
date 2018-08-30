@@ -31,9 +31,9 @@ RSpec.describe AttachmentsController, type: :controller do
           expect { delete :destroy, params: { id: attachment_question }, format: :js }.to_not change(Attachment, :count)
         end
 
-        it 'redirects to questions/show path' do
+        it 'renders destroy template' do
           delete :destroy, params: { id: attachment_question }, format: :js
-          expect(response).to redirect_to question_path(attachment_question.attachable)
+          expect(response).to render_template :destroy
         end
       end
     end
@@ -61,9 +61,9 @@ RSpec.describe AttachmentsController, type: :controller do
           expect { delete :destroy, params: { id: attachment_answer }, format: :js }.to_not change(Attachment, :count)
         end
 
-        it 'redirects to questions/show path' do
+        it 'renders destroy template' do
           delete :destroy, params: { id: attachment_answer }, format: :js
-          expect(response).to redirect_to question_path(attachment_answer.attachable.question)
+          expect(response).to render_template :destroy
         end
       end
     end
