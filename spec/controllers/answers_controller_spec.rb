@@ -88,8 +88,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'MyText'
       end
 
-      it 'redirects to question path' do
-        expect(response).to redirect_to question_path(question)
+      it 'renders common/ajax_flash template' do
+        expect(response).to  render_template 'common/ajax_flash'
       end
     end
   end
@@ -148,8 +148,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.reload.votes_count).to eq 0
       end
 
-      it 'renders common/ajax_flash template' do
-        expect(response).to render_template 'common/ajax_flash'
+      it 'renders vote template' do
+        expect(response).to render_template :vote
       end
     end
   end
@@ -192,8 +192,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.reload.votes_count).to eq 0
       end
 
-      it 'renders common/ajax_flash template' do
-        expect(response).to render_template 'common/ajax_flash'
+      it 'renders vote template' do
+        expect(response).to render_template :vote
       end
     end
   end
@@ -254,9 +254,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: another_answer, question_id: question }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 'redirects to questions/show path' do
+      it 'renders common/ajax_flash template' do
         delete :destroy, params: { id: another_answer, question_id: question }, format: :js
-        expect(response).to redirect_to question_path(question)
+        expect(response).to render_template 'common/ajax_flash'
       end
     end
   end

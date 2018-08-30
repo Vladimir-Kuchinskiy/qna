@@ -18,6 +18,7 @@ class Answer < ApplicationRecord
   def update_the_best
     question.answers.where(the_best: true).first.update(the_best: nil) if question.answers.where(the_best: true).any?
     update(the_best: true)
+    self
   end
 
   def give_vote(current_user, vote)
@@ -25,7 +26,8 @@ class Answer < ApplicationRecord
       self.votes_count += vote if current_user.vote(self, vote)
       save
     else
-      false
+      errors.add(:votes_count, 'access denied')
+      self
     end
   end
 
@@ -35,7 +37,8 @@ class Answer < ApplicationRecord
       current_user.dismiss_vote(self)
       save
     else
-      false
+      errors.add(:votes_count, 'access denied')
+      self
     end
   end
 end

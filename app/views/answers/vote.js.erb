@@ -1,2 +1,4 @@
-$('div[data-answer-id="<%= @answer.id %>"]').html('<%= j render 'answers/answer', answer: @answer, question: @question %>');
+<% if !@answer.errors.any? %>
+  $('div[data-answer-id="<%= @answer.id %>"]').html('<%= j render 'answers/answer', answer: @answer, question: @question %>');
+<% end %>
 <%= ajax_flash('#main') %>

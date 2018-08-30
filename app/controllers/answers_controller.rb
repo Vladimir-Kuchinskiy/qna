@@ -8,62 +8,45 @@ class AnswersController < ApplicationController
 
   after_action :publish_answer, only: :create
 
+  respond_to :js
+
   def create
-    @answer = @question.answers.build(answer_params)
-    @answer.user = current_user
-    respond_to do |format|
-      if @answer.save
-        flash.now[:notice] = 'Your answer was successfully created'
-      else
-        flash.now[:error] = 'Invalid answer'
-      end
-      format.js
+    respond_with(@answer = @question.answers.create(answer_params.merge(user_id: current_user.id))) do
+      flash[:error] = 'Invalid answer' if @answer.errors.any?
     end
   end
 
   def update
-    if @answer.update(answer_params)
-      flash.now[:notice] = 'Your answer was successfully updated'
-    else
-      flash.now[:error] = 'Invalid answer'
-    end
+    @answer.update(answer_params)
+    respond_with(@answer) { flash[:error] = 'Invalid answer' if @answer.errors.any? }
   end
 
   def vote
-    respond_to do |format|
-      if @answer.give_vote(current_user, params[:vote].to_i)
-        flash.now[:notice] = 'Your vote was successfully added'
-        format.js
-      else
-        flash.now[:error] = 'You can not vote for this answer'
-        format.js { render 'common/ajax_flash' }
-      end
+    respond_with(@answer.give_vote(current_user, params[:vote].to_i)) do
+      flash[:error] = 'You can not vote for this answer' if @answer.errors.any?
     end
   end
 
   def dismiss_vote
-    respond_to do |format|
-      if @answer.remove_vote(current_user)
-        flash.now[:notice] = 'Your vote was successfully dismissed'
-        format.js { render 'answers/vote' }
-      else
-        flash.now[:error] = 'You can not dismiss your vote for this answer'
-        format.js { render 'common/ajax_flash' }
-      end
+    respond_with(@answer.remove_vote(current_user)) do |format|
+      flash[:error] = 'You can not dismiss vote for this answer' if @answer.errors.any?
+      format.js { render 'answers/vote' }
     end
   end
 
   def pick_up_the_best
-    @answer.update_the_best
-    flash.now[:notice] = 'The answer was successfully marked as the best'
+    respond_with(@answer.update_the_best)
   end
 
   def destroy
-    @answer.destroy
-    flash.now[:notice] = 'Your answer was successfully deleted'
+    respond_with(@answer.destroy)
   end
 
   private
+
+  def interpolation_options
+    { resource_name: 'Your answer' }
+  end
 
   def set_answer
     @answer = Answer.find(params[:id])
@@ -93,7 +76,8 @@ class AnswersController < ApplicationController
 
   def can_operate?
     if current_user != @answer.user
-      redirect_to question_path(@answer.question), notice: 'Sorry! You can operate only with your own answers'
+      flash.now[:error] = 'Sorry! You can operate only with your own answers'
+      render 'common/ajax_flash'
     end
   end
 end

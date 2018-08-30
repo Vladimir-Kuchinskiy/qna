@@ -8,5 +8,13 @@ en:
         notice: '%{resource_name} was successfully updated.'
         # alert: '%{resource_name} could not be updated.'
       destroy:
-        notice: '%{resource_name} was successfully destroyed.'
+        notice: '%{resource_name} was successfully deleted'
         alert: '%{resource_name} could not be destroyed.'
+    answers:
+      vote:
+        notice: 'Your vote was successfully added'
+      dismiss_vote:
+        notice: 'Your vote was successfully dismissed'
+      pick_up_the_best:
+        notice: 'The answer was successfully marked as the best'
+
