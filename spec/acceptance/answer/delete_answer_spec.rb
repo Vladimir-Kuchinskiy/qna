@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'acceptance_helper'
+require_relative '../acceptance_helper'
 
 feature 'Delete answer', '
   In order to delete my answer if I need

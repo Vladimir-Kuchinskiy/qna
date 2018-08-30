@@ -1,4 +1,4 @@
-require_relative 'acceptance_helper'
+require_relative '../acceptance_helper'
 
 feature 'Give a vote for an answer', '
   In order to pick up the most useful/useless answer

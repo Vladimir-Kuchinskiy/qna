@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'acceptance_helper'
+require_relative '../acceptance_helper'
 
 feature 'Mark answer as the best', '
   In order to mark answer as in my opinion the most helpful

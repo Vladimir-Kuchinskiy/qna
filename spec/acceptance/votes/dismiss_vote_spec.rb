@@ -1,4 +1,4 @@
-require_relative 'acceptance_helper'
+require_relative '../acceptance_helper'
 
 feature 'Dismiss a vote for a question', '
   In order cancel my vote for a question

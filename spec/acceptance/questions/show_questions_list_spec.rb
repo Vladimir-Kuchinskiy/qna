@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'acceptance_helper'
+require_relative '../acceptance_helper'
 
 feature 'Show questions list', '
   In order to see all questions

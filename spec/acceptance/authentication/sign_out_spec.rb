@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'acceptance_helper'
+require_relative '../acceptance_helper'
 
 feature 'User sign out', '
   In order to be able to quit the system
