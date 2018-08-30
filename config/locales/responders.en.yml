@@ -17,4 +17,9 @@ en:
         notice: 'Your vote was successfully dismissed'
       pick_up_the_best:
         notice: 'The answer was successfully marked as the best'
+    questions:
+      vote:
+        notice: 'Your vote was successfully added'
+      dismiss_vote:
+        notice: 'Your vote was successfully dismissed'
 

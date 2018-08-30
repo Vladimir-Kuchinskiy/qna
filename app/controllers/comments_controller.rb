@@ -29,10 +29,4 @@ class CommentsController < ApplicationController
     )
   end
 
-  def answer_to_publish
-    answer = @answer.as_json(include: :attachments).merge(email: @answer.user.email)
-    answer['attachments'].each { |a| a['name'] = a['file'].model['file'] }
-    answer
-  end
-
 end

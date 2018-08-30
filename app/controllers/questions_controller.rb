@@ -33,23 +33,15 @@ class QuestionsController < ApplicationController
   end
 
   def vote
-    respond_with(@question) do |format|
-      if @question.give_vote(current_user, params[:vote].to_i)
-        flash.now[:notice] = 'Your vote was successfully added'
-      else
-        flash.now[:error] = 'You can not vote for this question'
-      end
+    respond_with(@question.give_vote(current_user, params[:vote].to_i)) do |format|
+      flash[:error] = 'You can not vote for this question' if @question.errors.any?
       format.js { render 'questions/vote', locals: { flag: params[:show] } }
     end
   end
 
   def dismiss_vote
-    respond_with(@question) do |format|
-      if @question.remove_vote(current_user)
-        flash.now[:notice] = 'Your vote was successfully dismissed'
-      else
-        flash.now[:error] = 'You can not dismiss your vote for this question'
-      end
+    respond_with(@question.remove_vote(current_user)) do |format|
+      flash[:error] = 'You can not dismiss vote for this question' if @question.errors.any?
       format.js { render 'questions/vote', locals: { flag: params[:show] } }
     end
   end

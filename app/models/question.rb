@@ -19,7 +19,8 @@ class Question < ApplicationRecord
       self.votes_count += vote if current_user.vote(self, vote)
       save
     else
-      false
+      errors.add(:votes_count, 'access denied')
+      self
     end
   end
 
@@ -29,7 +30,8 @@ class Question < ApplicationRecord
       current_user.dismiss_vote(self)
       save
     else
-      false
+      errors.add(:votes_count, 'access denied')
+      self
     end
   end
 end
