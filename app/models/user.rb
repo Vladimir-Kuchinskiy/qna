@@ -13,11 +13,8 @@ class User < ApplicationRecord
 
   def vote(entity, voted)
     vote = votes.find_by(voteable_id: entity.id)
-    if vote
-      vote.update(voted: true, choice: voted)
-    else
-      votes.create(voteable_id: entity.id, voted: true, choice: voted)
-    end
+    return vote.update(voted: true, choice: voted) if vote
+    votes.create(voteable_id: entity.id, voted: true, choice: voted)
   end
 
   def dismiss_vote(entity)

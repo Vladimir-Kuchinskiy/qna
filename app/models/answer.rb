@@ -34,8 +34,7 @@ class Answer < ApplicationRecord
   def remove_vote(current_user)
     if current_user.can_dismiss?(self)
       self.votes_count -= current_user.votes.find_by(voteable_id: id).choice
-      current_user.dismiss_vote(self)
-      save
+      save if current_user.dismiss_vote(self)
     else
       errors.add(:votes_count, 'access denied')
       self
