@@ -1,0 +1,7 @@
+= simple_form_for [answer, Comment.new], remote: true, data: { commentable_id: answer.id } do |f|
+  .form-group
+    = f.label :body, 'Comment', class: 'sr-only'
+    = f.input :body, placeholder: 'Comment', label: false
+  p
+    = f.submit class: 'btn btn-success btn-sm'
+    = link_to 'Cancel', '', class: 'btn btn-danger btn-sm cancel-comment', data: { commentable_id: answer.id }

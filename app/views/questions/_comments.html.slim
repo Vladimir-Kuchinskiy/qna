@@ -6,4 +6,4 @@
     - if current_user
       .border-bottom
       p = link_to 'add comment', '', class: 'badge badge-dark add-comment', data: { commentable_id: 'Question' }
-      = render 'comments/form', commentable_id: @question.id, commentable_type: 'Question'
+      = render 'comment_form'

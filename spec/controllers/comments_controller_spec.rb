@@ -9,37 +9,37 @@ RSpec.describe CommentsController, type: :controller do
       sign_in_user
 
       context 'with valid attributes' do
+        it 'assigns the requested question to @question' do
+          post :create, params: { comment: { body: 'New comment' }, question_id: question.id, format: :js }
+          expect(assigns(:commentable)).to eq question
+        end
+
         it 'saves a new comment in the database' do
-          expect {
-            post :create, params: { comment: {
-              body: 'New comment', commentable_id: question.id, commentable_type: 'Question'
-            }, format: :js }
-          }.to change(Comment, :count).by(1)
+          expect do
+            post :create, params: { comment: { body: 'New comment' }, question_id: question.id, format: :js }
+          end.to change(Comment, :count).by(1)
         end
         it 'renders create view' do
-          post :create, params: { comment: {
-            body: 'New comment', commentable_id: question.id, commentable_type: 'Question'
-          }, format: :js }
+          post :create, params: { comment: { body: 'New comment' }, question_id: question.id, format: :js }
           expect(response).to render_template 'comments/create'
         end
       end
 
       context 'with invalid attributes' do
-        it 'does not save the comment' do
-          expect {
-            post :create, params: {
-              comment: { body: nil, commentable_id: question.id, commentable_type: 'Question' },
-              format: :js
-            }
-          }.to_not change(Comment, :count)
+        it 'assigns the requested question to @question' do
+          post :create, params: { comment: { body: nil }, question_id: question.id, format: :js }
+          expect(assigns(:commentable)).to eq question
         end
 
-        it 'renders common/ajax_flash view' do
-          post :create, params: {
-            comment: { body: nil, commentable_id: question.id, commentable_type: 'Question' },
-            format: :js
-          }
-          expect(response).to render_template 'common/ajax_flash'
+        it 'does not save the comment' do
+          expect do
+            post :create, params: { comment: { body: nil }, question_id: question.id, format: :js }
+          end.to_not change(Comment, :count)
+        end
+
+        it 'renders create view' do
+          post :create, params: { comment: { body: nil }, question_id: question.id, format: :js }
+          expect(response).to render_template :create
         end
       end
     end
@@ -48,37 +48,38 @@ RSpec.describe CommentsController, type: :controller do
       sign_in_user
 
       context 'with valid attributes' do
-        it 'saves a new comment in the database' do
-          expect {
-            post :create, params: { comment: {
-                body: 'New comment', commentable_id: answer.id, commentable_type: 'Answer'
-            }, format: :js }
-          }.to change(Comment, :count).by(1)
+        it 'assigns the requested question to @question' do
+          post :create, params: { comment: { body: nil }, answer_id: answer.id, format: :js }
+          expect(assigns(:commentable)).to eq answer
         end
+
+        it 'saves a new comment in the database' do
+          expect do
+            post :create, params: { comment: { body: 'New comment' }, answer_id: answer.id, format: :js }
+          end.to change(Comment, :count).by(1)
+        end
+
         it 'renders create view' do
-          post :create, params: { comment: {
-              body: 'New comment', commentable_id: answer.id, commentable_type: 'Answer'
-          }, format: :js }
+          post :create, params: { comment: { body: 'New comment' }, answer_id: answer.id, format: :js }
           expect(response).to render_template 'comments/create'
         end
       end
 
       context 'with invalid attributes' do
-        it 'does not save the comment' do
-          expect {
-            post :create, params: {
-                comment: { body: nil, commentable_id: answer.id, commentable_type: 'Answer' },
-                format: :js
-            }
-          }.to_not change(Comment, :count)
+        it 'assigns the requested question to @question' do
+          post :create, params: { comment: { body: nil }, answer_id: answer.id, format: :js }
+          expect(assigns(:commentable)).to eq answer
         end
 
-        it 'renders common/ajax_flash view' do
-          post :create, params: {
-              comment: { body: nil, commentable_id: answer.id, commentable_type: 'Answer' },
-              format: :js
-          }
-          expect(response).to render_template 'common/ajax_flash'
+        it 'does not save the comment' do
+          expect do
+            post :create, params: { comment: { body: nil }, answer_id: answer.id, format: :js }
+          end.to_not change(Comment, :count)
+        end
+
+        it 'renders create view' do
+          post :create, params: { comment: { body: nil }, answer_id: answer.id, format: :js }
+          expect(response).to render_template :create
         end
       end
     end

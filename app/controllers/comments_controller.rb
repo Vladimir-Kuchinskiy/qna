@@ -1,24 +1,25 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_commentable, only: :create
   after_action  :publish_comment, only: :create
 
+  respond_to :js
+
   def create
-    respond_to do |format|
-      @comment = current_user.comments.new(comment_params)
-      if @comment.save
-        flash.now[:notice] = 'Your comment was successfully added'
-        format.js
-      else
-        flash.now[:error] = 'Invalid comment'
-        format.js { render 'common/ajax_flash' }
-      end
+    respond_with(@comment = @commentable.comments.create(comment_params.merge(user_id: current_user.id))) do
+      flash[:error] = 'Invalid comment' if @comment.errors.any?
     end
   end
 
   private
 
+  def set_commentable
+    @commentable = Question.find(params[:question_id]) if params[:question_id]
+    @commentable ||= Answer.find(params[:answer_id])
+  end
+
   def comment_params
-    params.require(:comment).permit(:body, :commentable_id, :commentable_type)
+    params.require(:comment).permit(:body)
   end
 
   def publish_comment
@@ -28,5 +29,4 @@ class CommentsController < ApplicationController
       comment: @comment.as_json.merge(email: @comment.user.email)
     )
   end
-
 end
