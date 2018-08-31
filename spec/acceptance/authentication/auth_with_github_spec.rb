@@ -15,6 +15,7 @@ feature 'User sign in with Github', '
     expect(page).to have_content 'Sign in with GitHub'
     click_on 'Sign in with GitHub'
     expect(page).to have_content 'test@mail.com'
+    expect(page).to have_content 'Successfully authenticated from Github account'
     expect(page).to have_content 'Sign out'
   end
 end

@@ -15,6 +15,7 @@ feature 'User sign in with Facebook', '
     expect(page).to have_content 'Sign in with Facebook'
     click_on 'Sign in with Facebook'
     expect(page).to have_content 'test@mail.com'
+    expect(page).to have_content 'Successfully authenticated from Facebook account'
     expect(page).to have_content 'Sign out'
   end
 end
