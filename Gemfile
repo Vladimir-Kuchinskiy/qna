@@ -42,6 +42,8 @@ gem 'skim'
 gem 'gon'
 gem 'momentjs-rails' # For js moment time with format customization
 gem 'responders'
+gem 'omniauth'
+gem 'omniauth-facebook'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
