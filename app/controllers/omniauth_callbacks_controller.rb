@@ -19,7 +19,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     sign_in_and_redirect @user, event: :authentication
     set_flash_message(
       :notice,
-      :success, kind: request.env['omniauth.auth'].provider.titleize
+      :success, kind: request.env['omniauth.auth']['provider'].titleize
     ) if is_navigational_format?
   end
 end
