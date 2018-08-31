@@ -44,6 +44,7 @@ gem 'momentjs-rails' # For js moment time with format customization
 gem 'responders'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-github'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'

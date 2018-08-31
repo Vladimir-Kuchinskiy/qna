@@ -15,7 +15,6 @@ $(document).on 'ready turbolinks:load', ->
     connected: ->
       @perform 'follow'
     ,
-
     received: (data) ->
       appendAnswer(data)
   })
