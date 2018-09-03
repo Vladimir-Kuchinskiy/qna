@@ -13,6 +13,8 @@ class User < ApplicationRecord
   has_many :votes,          dependent: :destroy
   has_many :comments,       dependent: :destroy
 
+  validate :match_email, on: :update
+
   def vote(entity, voted)
     vote = votes.find_by(voteable_id: entity.id)
     return vote.update(voted: true, choice: voted) if vote
@@ -42,11 +44,12 @@ class User < ApplicationRecord
       return user if user
       unless user = User.find_by(email: auth.info.email)
         password = Devise.friendly_token[0, 20]
-        user = User.create!(
-          email: auth.info[:email] || "temp_email_name-#{auth.uid}@#{auth.provider}.com",
-          password: password,
-          password_confirmation: password
+        user = User.new(
+          email: auth.info[:email] || "unverified-#{auth.uid}@#{auth.provider}.com",
+          password: password, password_confirmation: password
         )
+        user.skip_confirmation!
+        user.save!
       end
       user.create_authorization(auth)
     end
@@ -63,11 +66,11 @@ class User < ApplicationRecord
 
   private
 
-  def unverified_regexp
-    /^unverified-([a-z]|\d)+@(facebook|github).com$/i
+  def match_email
+    errors.add(:email, 'Unverified') if email.match(unverified_regexp)
   end
 
-  def temp_email_name
-    'unverified'
+  def unverified_regexp
+    /^unverified-([a-z]|\d)+@(facebook|github).com$/i
   end
 end
