@@ -5,6 +5,10 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations' }
 
+  devise_scope :user do
+    match '/users/:id/verify_email', to: 'registrations#verify_email', via: %i[get patch], as: :verify_email
+  end
+
   concern :voteable do
     patch :vote,         on: :member
     patch :dismiss_vote, on: :member
@@ -22,8 +26,6 @@ Rails.application.routes.draw do
 
   resources :attachments, only: :destroy
   resources :comments,    only: :create
-
-  match '/users/:id/finish_signup', to: 'registrations#verify_email', via: %i[get patch], as: :verify_email
 
   mount ActionCable.server => '/cable'
 end

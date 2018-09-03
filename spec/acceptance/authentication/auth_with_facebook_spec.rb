@@ -8,14 +8,16 @@ feature 'User sign in with Facebook', '
   I want to be able to sign in with Facebook
 ' do
 
-  let!(:user) { create(:user) }
+  let!(:user) { build(:user) }
 
-  scenario 'can sign in user with Facebook account' do
-    visit new_user_session_path
-    expect(page).to have_content 'Sign in with Facebook'
-    click_on 'Sign in with Facebook'
-    expect(page).to have_content 'test@mail.com'
-    expect(page).to have_content 'Successfully authenticated from Facebook account'
-    expect(page).to have_content 'Sign out'
+  context 'Authorized user' do
+    scenario 'can sign in user with Facebook account' do
+      visit new_user_session_path
+      expect(page).to have_content 'Sign in with Facebook'
+      click_on 'Sign in with Facebook'
+      expect(page).to have_content 'test@mail.com'
+      expect(page).to have_content 'Successfully authenticated from Facebook account'
+      expect(page).to have_content 'Sign out'
+    end
   end
 end

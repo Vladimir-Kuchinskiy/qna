@@ -57,3 +57,11 @@
 .registrations .form-control:focus {
   z-index: 2;
 }
+
+.confirmations {
+  transform: translateY(+15%);
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}

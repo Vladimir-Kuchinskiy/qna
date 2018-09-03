@@ -3,10 +3,16 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def facebook
     success_sign_in_and_redirect if @user.persisted?
+    set_flash_message(:notice, :success, kind: 'Facebook') if is_navigational_format?
   end
 
   def github
-    success_sign_in_and_redirect if @user.persisted?
+    if @user.email_verified?
+      success_sign_in_and_redirect if @user.persisted?
+      set_flash_message(:notice, :success, kind: 'GitHub') if is_navigational_format?
+    else
+      redirect_to verify_email_path(@user)
+    end
   end
 
   private
@@ -17,9 +23,5 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def success_sign_in_and_redirect
     sign_in_and_redirect @user, event: :authentication
-    set_flash_message(
-      :notice,
-      :success, kind: request.env['omniauth.auth']['provider'].titleize
-    ) if is_navigational_format?
   end
 end

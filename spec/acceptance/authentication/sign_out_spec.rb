@@ -8,9 +8,12 @@ feature 'User sign out', '
   I want to be able to sign out
 ' do
 
-  given(:user) { create(:user) }
+  given(:user) { build(:user) }
 
   scenario 'Signed out user tries to sign out' do
+    user.skip_confirmation!
+    user.save!
+
     sign_in(user)
 
     click_on 'Sign out'

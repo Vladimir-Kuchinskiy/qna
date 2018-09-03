@@ -1,0 +1,12 @@
+.row
+  .col-md-3.offset-4.text-center.confirmations
+    = simple_form_for(@user, as: 'user', url: verify_email_path(@user)) do |f|
+      h1 class="h3 mb-3 font-weight-normal" Add real email for confirmation
+      = f.label :email, class: 'sr-only'
+      = f.input :email, autofocus: true, autocomplete: 'email', class: 'form-control', placeholder: 'Email address', label: false
+      em 6 characters minimum
+      = f.label :password, class: 'sr-only'
+      = f.input :password, autocomplete: 'off', class: 'form-control', placeholder: 'Password', label: false
+      = f.label :password_confirmation, class: 'sr-only'
+      = f.input :password_confirmation, autocomplete: 'off', class: 'form-control', placeholder: 'Password confirmation', label: false
+      = f.submit 'Send Confirmation', class: 'btn btn-primary btn-block'
