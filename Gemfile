@@ -86,6 +86,8 @@ group :test, :development do
   gem 'poltergeist'
   gem 'phantomjs', require: 'phantomjs/poltergeist'
   gem 'capybara-webkit'
+  gem 'letter_opener'
+  gem 'capybara-email'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
