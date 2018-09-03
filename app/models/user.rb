@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable,
-         :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook, :github],
+         :trackable, :validatable, :confirmable, :omniauthable, omniauth_providers: [:facebook, :github],
          authentication_keys: { email: true }
 
   has_many :questions
@@ -42,14 +42,32 @@ class User < ApplicationRecord
       return user if user
       unless user = User.find_by(email: auth.info.email)
         password = Devise.friendly_token[0, 20]
-        user = User.create!(email: auth.info[:email], password: password, password_confirmation: password)
+        user = User.create!(
+          email: auth.info[:email] || "temp_email_name-#{auth.uid}@#{auth.provider}.com",
+          password: password,
+          password_confirmation: password
+        )
       end
       user.create_authorization(auth)
     end
   end
 
+  def email_verified?
+    !email.match(unverified_regexp)
+  end
+
   def create_authorization(auth)
     authorizations.create(provider: auth.provider, uid: auth.uid)
     self
+  end
+
+  private
+
+  def unverified_regexp
+    /^unverified-([a-z]|\d)+@(facebook|github).com$/i
+  end
+
+  def temp_email_name
+    'unverified'
   end
 end
