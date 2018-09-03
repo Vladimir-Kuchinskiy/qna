@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   root to: 'questions#index'
 
-  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations' }
 
   concern :voteable do
     patch :vote,         on: :member
@@ -22,6 +22,8 @@ Rails.application.routes.draw do
 
   resources :attachments, only: :destroy
   resources :comments,    only: :create
+
+  match '/users/:id/finish_signup', to: 'registrations#verify_email', via: %i[get patch], as: :verify_email
 
   mount ActionCable.server => '/cable'
 end
