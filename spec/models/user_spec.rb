@@ -68,4 +68,21 @@ RSpec.describe User do
       end
     end
   end
+
+  describe '#email_verified?' do
+    let!(:user) { create(:user) }
+
+    context 'user already verified the email' do
+      it 'returns true' do
+        expect(user.email_verified?).to eq true
+      end
+    end
+
+    context 'user did not verified the email' do
+      it 'returns false' do
+        user.update(email: 'unverified-1231ss23@facebook.com')
+        expect(user.email_verified?).to eq false
+      end
+    end
+  end
 end

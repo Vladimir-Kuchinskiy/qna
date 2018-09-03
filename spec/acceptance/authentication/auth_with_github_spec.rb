@@ -8,7 +8,7 @@ feature 'User sign in with Github', '
   I want to be able to sign in with Github
 ' do
 
-  let!(:user) { create(:user) }
+  let!(:user) { build(:user) }
 
   context 'Authorized user' do
     before do

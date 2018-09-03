@@ -6,10 +6,10 @@ class RegistrationsController < Devise::RegistrationsController
     if request.patch? && params[:user] && @user.update(user_params)
       redirect_to root_path, notice: 'Confirm your email please!'
     elsif request.patch?
-      flash.now[:error] = 'Invalid email or password'
+      @user.email = ''
+      render :verify_email
     end
     @user.email = ''
-    render :verify_email
   end
 
   private
