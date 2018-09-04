@@ -5,6 +5,8 @@ class CommentsController < ApplicationController
 
   respond_to :js
 
+  authorize_resource
+
   def create
     respond_with(@comment = @commentable.comments.create(comment_params.merge(user_id: current_user.id))) do
       flash[:error] = 'Invalid comment' if @comment.errors.any?
@@ -14,8 +16,7 @@ class CommentsController < ApplicationController
   private
 
   def set_commentable
-    @commentable = Question.find(params[:question_id]) if params[:question_id]
-    @commentable ||= Answer.find(params[:answer_id])
+    @commentable = params[:question_id] ? Question.find(params[:question_id]) : Answer.find(params[:answer_id])
   end
 
   def comment_params

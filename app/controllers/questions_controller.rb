@@ -3,12 +3,13 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question,       only: %i[show edit update vote dismiss_vote destroy]
-  before_action :can_operate?,       only: %i[destroy update]
+  # before_action :can_operate?,       only: %i[destroy update]
   before_action :build_attachments,  only: :show
 
   after_action :publish_question, only: :create
 
   respond_to :js
+  authorize_resource
 
   def index
     gon.push(current_user_id: current_user.id) if current_user.present?

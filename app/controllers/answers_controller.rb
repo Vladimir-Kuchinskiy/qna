@@ -4,9 +4,11 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: :create
   before_action :set_answer,   only: %i[update vote dismiss_vote pick_up_the_best destroy]
-  before_action :can_operate?, only: %i[destroy update]
+  # before_action :can_operate?, only: %i[destroy update]
 
   after_action :publish_answer, only: :create
+
+  authorize_resource
 
   respond_to :js
 
