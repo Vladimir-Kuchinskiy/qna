@@ -45,6 +45,7 @@ gem 'responders'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
+gem 'cancan'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
