@@ -3,7 +3,7 @@
     .comments-for-question
       - @question.comments.each do |comment|
         = render 'comments/comment', comment: comment
-    - if current_user
+    - if can?(:create, Comment)
       .border-bottom
       p = link_to 'add comment', '', class: 'badge badge-dark add-comment', data: { commentable_id: 'Question' }
       = render 'comment_form'

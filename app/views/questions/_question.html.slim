@@ -8,10 +8,10 @@
             | Rating
             span.badge.badge-light.font-weight-normal = @question.votes_count
       .col-md-3
-        - if current_user && current_user.can_vote?(@question)
+        - if current_user&.can_vote?(@question)
           = link_to 'Like', vote_question_path(@question, vote: 1, show: true), method: :patch, remote: true, class: 'btn btn-success d-index btn-sm'
           = link_to 'Dislike', vote_question_path(@question, vote: -1, show: true), method: :patch, remote: true, class: 'btn btn-danger d-index btn-sm'
-        - elsif current_user && current_user.can_dismiss?(@question)
+        - elsif current_user&.can_dismiss?(@question)
           = link_to 'Dismiss vote', dismiss_vote_question_path(@question, show: true), method: :patch, remote: true, class: 'btn btn-outline-danger btn-sm d-index float-right'
     p.lead #{@question.body}
     - if @question.attachments.files?
@@ -19,11 +19,13 @@
       - @question.attachments.each do |a|
         p data-attachment="#{a.id}"
           = link_to a.file.identifier, a.file.url, target: '_blank', class: 'd-index'
-          - if current_user && current_user.owner?(@question)
+          - if can?(:destroy, @question)
             = link_to 'Delete file', a, class: 'd-index btn btn-danger btn-sm', method: :delete, data: { confirm: 'Are you sure?' }, remote: true
   .col-md-4.operate-question
-    - if current_user && current_user.owner?(@question)
+    - if can?(:update, @question)
       = link_to 'Edit', '', class: 'edit_question_link d-inline btn btn-success'
+    - if can?(:destroy, @question)
       = link_to 'Delete', @question, method: :delete, class: 'btn d-inline btn-danger', data: { confirm: 'Are you sure?' }
       = link_to 'Back', questions_path, class: 'btn d-inline btn-info'
+    - if can?(:update, @question)
       p = render 'edit_form'
