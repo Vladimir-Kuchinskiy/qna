@@ -3,10 +3,10 @@
 Rails.application.routes.draw do
   root to: 'questions#index'
 
-  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations' }
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }
 
   devise_scope :user do
-    match '/users/:id/verify_email', to: 'registrations#verify_email', via: %i[get patch], as: :verify_email
+    match '/users/:id/verify_email', to: 'users/registrations#verify_email', via: %i[get patch], as: :verify_email
   end
 
   concern :voteable do

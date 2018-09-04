@@ -4,7 +4,6 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: :create
   before_action :set_answer,   only: %i[update vote dismiss_vote pick_up_the_best destroy]
-  # before_action :can_operate?, only: %i[destroy update]
 
   after_action :publish_answer, only: :create
 
@@ -75,12 +74,5 @@ class AnswersController < ApplicationController
     answer = @answer.as_json(include: :attachments).merge(email: @question.user.email)
     answer['attachments'].each { |a| a['name'] = a['file'].model['file'] }
     answer
-  end
-
-  def can_operate?
-    if current_user != @answer.user
-      flash.now[:error] = 'Sorry! You can operate only with your own answers'
-      render 'common/ajax_flash'
-    end
   end
 end
