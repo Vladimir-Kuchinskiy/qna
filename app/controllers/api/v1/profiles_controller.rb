@@ -7,6 +7,10 @@ module Api
 
       respond_to :json
 
+      def index
+        respond_with(@profiles = User.where.not(id: current_resource_owner.id))
+      end
+
       def me
         respond_with current_resource_owner
       end
