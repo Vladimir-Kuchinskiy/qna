@@ -10,6 +10,14 @@ Rails.application.routes.draw do
     match '/users/:id/verify_email', to: 'users/registrations#verify_email', via: %i[get patch], as: :verify_email
   end
 
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, on: :collection
+      end
+    end
+  end
+
   concern :voteable do
     patch :vote,         on: :member
     patch :dismiss_vote, on: :member

@@ -46,7 +46,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
 gem 'cancancan'
-gem 'doorkeeper'
+gem 'doorkeeper', '4.2.6'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
