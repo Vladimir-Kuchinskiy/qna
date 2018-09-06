@@ -48,6 +48,8 @@ gem 'omniauth-github'
 gem 'cancancan'
 gem 'doorkeeper', '4.2.6'
 gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
