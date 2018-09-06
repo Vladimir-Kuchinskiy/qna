@@ -29,27 +29,27 @@ describe 'Questions API' do
       end
 
       it 'returns questions list' do
-        expect(response.body).to have_json_size questions.count
+        expect(response.body).to have_json_size(questions.count).at_path('questions')
       end
 
-      %w[id title body created_at updated_at].each do |attr|
+      %w[id title body user_id created_at updated_at].each do |attr|
         it "question object contains #{attr}" do
-          expect(response.body).to be_json_eql(questions.first.send(attr).to_json).at_path("0/#{attr}")
+          expect(response.body).to be_json_eql(questions.first.send(attr).to_json).at_path("questions/0/#{attr}")
         end
       end
 
       it 'question object contains short_title' do
-        expect(response.body).to be_json_eql(question.title.truncate(10).to_json).at_path('0/short_title')
+        expect(response.body).to be_json_eql(question.title.truncate(10).to_json).at_path('questions/0/short_title')
       end
 
       context 'answers' do
         it 'included in question object' do
-          expect(response.body).to have_json_size(1).at_path('0/answers')
+          expect(response.body).to have_json_size(1).at_path('questions/0/answers')
         end
 
         %w[id body created_at updated_at].each do |attr|
           it "contains #{attr}" do
-            expect(response.body).to be_json_eql(answer.send(attr).to_json).at_path("0/answers/0/#{attr}")
+            expect(response.body).to be_json_eql(answer.send(attr).to_json).at_path("questions/0/answers/0/#{attr}")
           end
         end
       end
@@ -81,34 +81,34 @@ describe 'Questions API' do
         expect(response).to be_successful
       end
 
-      %w[id title body created_at updated_at].each do |attr|
+      %w[id title body user_id created_at updated_at].each do |attr|
         it "question contains #{attr}" do
-          expect(response.body).to be_json_eql(question.send(attr).to_json).at_path(attr)
+          expect(response.body).to be_json_eql(question.send(attr).to_json).at_path("question/#{attr}")
         end
       end
 
       it 'question object contains short_title' do
-        expect(response.body).to be_json_eql(question.title.truncate(10).to_json).at_path('short_title')
+        expect(response.body).to be_json_eql(question.title.truncate(10).to_json).at_path('question/short_title')
       end
 
-      context 'attachment' do
+      context 'attachments' do
         it 'included in question object' do
-          expect(response.body).to have_json_size(1).at_path('attachments')
+          expect(response.body).to have_json_size(1).at_path('question/attachments')
         end
 
         it 'contains file_url' do
-          expect(response.body).to be_json_eql(attachment.file.url.to_json).at_path('attachments/0/file_url')
+          expect(response.body).to be_json_eql(attachment.file.url.to_json).at_path('question/attachments/0/file_url')
         end
       end
 
-      context 'comment' do
+      context 'comments' do
         it 'included in question object' do
-          expect(response.body).to have_json_size(1).at_path('comments')
+          expect(response.body).to have_json_size(1).at_path('question/comments')
         end
 
         %w[id body commentable_id commentable_type user_id created_at updated_at].each do |attr|
           it "contains #{attr}" do
-            expect(response.body).to be_json_eql(comment.send(attr).to_json).at_path("comments/0/#{attr}")
+            expect(response.body).to be_json_eql(comment.send(attr).to_json).at_path("question/comments/0/#{attr}")
           end
         end
       end

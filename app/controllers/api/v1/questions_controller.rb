@@ -8,7 +8,9 @@ module Api
           @questions = Question.all,
           show_answers: true,
           show_attachments: false,
-          show_comments: false
+          show_comments: false,
+          root: 'questions',
+          adapter: :json
         )
       end
 
@@ -17,7 +19,9 @@ module Api
           @question = Question.find(params[:id]),
           show_answers: false,
           show_attachments: true,
-          show_comments: true
+          show_comments: true,
+          root: 'question',
+          adapter: :json
         )
       end
     end
