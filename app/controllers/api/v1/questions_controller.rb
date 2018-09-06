@@ -7,9 +7,7 @@ module Api
         respond_with(
           @questions = Question.all,
           show_answers: true,
-          show_attachments: false,
-          show_comments: false,
-          root: 'questions',
+          root: :questions,
           adapter: :json
         )
       end
@@ -17,12 +15,25 @@ module Api
       def show
         respond_with(
           @question = Question.find(params[:id]),
-          show_answers: false,
           show_attachments: true,
           show_comments: true,
-          root: 'question',
+          root: :question,
           adapter: :json
         )
+      end
+
+      def create
+        respond_with(
+          @question = current_resource_owner.questions.create(question_params),
+          root: :question,
+          adapter: :json
+        )
+      end
+
+      private
+
+      def question_params
+        params.require(:question).permit(:title, :body)
       end
     end
   end
