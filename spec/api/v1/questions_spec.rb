@@ -25,7 +25,7 @@ describe 'Questions API' do
       before { get '/api/v1/questions', params: { format: :json, access_token: access_token.token } }
 
       it 'returns 200 status code' do
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'returns questions list' do

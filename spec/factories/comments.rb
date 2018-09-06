@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :comment do
-    body 'My Body'
+    body { 'My Body' }
   end
 end

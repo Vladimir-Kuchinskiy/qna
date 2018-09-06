@@ -92,6 +92,7 @@ group :test, :development do
   gem 'capybara-webkit'
   gem 'letter_opener'
   gem 'capybara-email'
+  gem 'rubocop-rspec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

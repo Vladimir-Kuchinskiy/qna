@@ -13,12 +13,11 @@ class AttachmentsController < ApplicationController
 
   private
 
-  def set_attachment
-    @attachment = Attachment.find(params[:id])
-  end
-
-  def interpolation_options
+  def flash_interpolation_options
     { resource_name: 'Your file' }
   end
 
+  def set_attachment
+    @attachment = Attachment.find(params[:id])
+  end
 end

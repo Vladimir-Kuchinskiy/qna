@@ -2,14 +2,14 @@
 
 FactoryBot.define do
   factory :answer do
-    body 'MyText'
+    body { 'MyText' }
   end
 
   factory :another_answer, class: 'Answer' do
-    body 'AnotherText'
+    body { 'AnotherText' }
   end
 
   factory :invalid_answer, class: 'Answer' do
-    body nil
+    body { nil }
   end
 end

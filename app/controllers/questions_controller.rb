@@ -52,7 +52,7 @@ class QuestionsController < ApplicationController
 
   private
 
-  def interpolation_options
+  def flash_interpolation_options
     { resource_name: 'Your question' }
   end
 
