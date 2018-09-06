@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Profile API' do
+describe 'Profiles API' do
   describe 'GET #me' do
     context 'Unauthorized' do
       it 'returns 401 status if there is no access_token' do
@@ -64,14 +64,9 @@ describe 'Profile API' do
         expect(response).to be_success
       end
 
-      it 'returns users.count profiles' do
+      it 'returns users profiles list' do
         expect(response.body).to have_json_size(users.count)
-      end
-
-      %w[id email created_at updated_at admin username].each do |attr|
-        it "does not contain #{attr} of the current_user" do
-          expect(response.body).to_not be_json_eql(me.send(attr).to_json)
-        end
+        expect(response.body).to be_json_eql(users.to_json)
       end
 
       %w[password encrypted_password].each do |attr|
@@ -84,8 +79,10 @@ describe 'Profile API' do
         end
       end
 
-      it 'contains users in json format' do
-        expect(response.body).to be_json_eql(users.to_json)
+      %w[id email created_at updated_at admin username].each do |attr|
+        it "user object contains #{attr}" do
+          expect(response.body).to be_json_eql(users.first.send(attr).to_json).at_path("0/#{attr}")
+        end
       end
     end
   end
