@@ -14,11 +14,19 @@ class Answer < ApplicationRecord
   validates :body, presence: true
   validates :the_best, uniqueness: { scope: :question_id }, if: ->(answer) { answer.the_best.present? }
 
+  after_create :calculate_reputation
+
   scope :from_the_best, -> { where(the_best: true) + where(the_best: nil).order('created_at') }
 
   def update_the_best
     question.answers.where(the_best: true).first.update(the_best: nil) if question.answers.where(the_best: true).any?
     update(the_best: true)
     self
+  end
+
+  private
+
+  def calculate_reputation
+    user.update(reputation: Reputation.calculate(self))
   end
 end
