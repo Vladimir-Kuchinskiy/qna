@@ -9,9 +9,7 @@ shared_examples_for 'Voteable' do
 
     context 'user can vote' do
       it "gives the vote for #{described_class.name.downcase}" do
-        expect(subject.votes_count).to eq 0
-        subject.give_vote(user, 1)
-        expect(subject.votes_count).to eq 1
+        expect { subject.give_vote(user, 1) }.to change(subject, :votes_count).by(1)
       end
 
       it 'returns the value of true' do
@@ -39,9 +37,7 @@ shared_examples_for 'Voteable' do
     context 'user can vote' do
       before { subject.update(votes_count: 1) }
       it "dismiss the vote for #{described_class.name.downcase}" do
-        expect(subject.votes_count).to eq 1
-        subject.remove_vote(user)
-        expect(subject.votes_count).to eq 0
+        expect { subject.remove_vote(user) }.to change(subject, :votes_count).by(-1)
       end
 
       it 'returns the value of true' do
