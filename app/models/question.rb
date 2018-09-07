@@ -12,6 +12,4 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
   validates :title, :body, presence: true
-
-  attr_accessor :email
 end
