@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Answer < ApplicationRecord
+  include Voteable
+
   has_many :attachments, as: :attachable,  dependent: :destroy
-  has_many :votes,       as: :voteable,    dependent: :destroy
   has_many :comments,    as: :commentable, dependent: :destroy
 
   belongs_to :question, optional: true
@@ -19,25 +20,5 @@ class Answer < ApplicationRecord
     question.answers.where(the_best: true).first.update(the_best: nil) if question.answers.where(the_best: true).any?
     update(the_best: true)
     self
-  end
-
-  def give_vote(current_user, vote)
-    if current_user.can_vote?(self)
-      self.votes_count += vote if current_user.vote(self, vote)
-      save
-    else
-      errors.add(:votes_count, 'access denied')
-      self
-    end
-  end
-
-  def remove_vote(current_user)
-    if current_user.can_dismiss?(self)
-      self.votes_count -= current_user.votes.find_by(voteable_id: id).choice
-      save if current_user.dismiss_vote(self)
-    else
-      errors.add(:votes_count, 'access denied')
-      self
-    end
   end
 end

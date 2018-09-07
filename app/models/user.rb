@@ -26,10 +26,6 @@ class User < ApplicationRecord
     vote&.voted ? vote.update(voted: false, choice: 0) : false
   end
 
-  def owner?(entity)
-    entity.user_id == id
-  end
-
   def can_vote?(entity)
     id != entity.user_id && !votes.find_by(voteable_id: entity.id).try(:voted)
   end

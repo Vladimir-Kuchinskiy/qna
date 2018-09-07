@@ -14,4 +14,7 @@ RSpec.describe Answer, type: :model do
   it { should validate_uniqueness_of(:the_best).scoped_to(:question_id) }
 
   it { should accept_nested_attributes_for :attachments }
+
+  subject { create(:answer, user: create(:user), question: create(:question)) }
+  it_behaves_like 'Voteable'
 end
