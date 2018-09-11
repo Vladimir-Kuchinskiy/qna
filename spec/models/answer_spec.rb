@@ -36,6 +36,21 @@ RSpec.describe Answer, type: :model do
     end
   end
 
+  let(:question) { create(:question, user: create(:user)) }
+  let(:answer)   { build(:answer, question: question, user: create(:user)) }
+  describe 'questions notifications' do
+    it 'should notify user after creating' do
+      expect(NotifyQuestionUsersJob).to receive(:perform_later).with(answer)
+      answer.save!
+    end
+
+    it 'should not calculate reputation after update' do
+      answer.save!
+      expect(NotifyQuestionUsersJob).to_not receive(:perform_later)
+      answer.update(body: '123')
+    end
+  end
+
   subject { create(:answer, user: create(:user), question: create(:question, user: create(:user))) }
   it_behaves_like 'Voteable'
 

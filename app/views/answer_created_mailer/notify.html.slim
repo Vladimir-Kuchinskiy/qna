@@ -1,0 +1,16 @@
+.row
+  .col-md-8
+    h2.d-index #{@answer.question.title}
+    .row
+      .col-md-2
+        h4.votes
+          .badge.badge-primary.font-weight-normal
+            | Rating
+            span.badge.badge-light.font-weight-normal = @answer.question.votes_count
+    p.lead #{@answer.question.body}
+    .border-bottom
+    .answer
+      h2 New answer
+      p.blog-post-meta = @answer.created_at.try(:strftime, '%B %d, %Y') + ' by ' + @answer.user.try(:email)
+      p #{@answer.body}
+      p = link_to 'Show more...', question_url(@answer.question)

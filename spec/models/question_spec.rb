@@ -7,6 +7,7 @@ RSpec.describe Question, type: :model do
   it { should have_many(:attachments) }
   it { should have_many(:votes) }
   it { should have_many(:comments) }
+  it { should have_many(:subscriptions) }
 
   it { should belong_to(:user) }
 
@@ -20,4 +21,19 @@ RSpec.describe Question, type: :model do
 
   subject { build(:question, user: create(:user)) }
   it_behaves_like 'ReputationCalculatable'
+
+  let(:user)     { create(:user) }
+  let(:question) { build(:question, user: user) }
+  describe 'subscription' do
+    it 'should create subscription for user after creating' do
+      expect(question.subscriptions).to receive(:create).with(user: user)
+      question.save!
+    end
+
+    it 'should not calculate reputation after update' do
+      question.save!
+      expect(question.subscriptions).to_not receive(:create)
+      question.update(body: '123')
+    end
+  end
 end

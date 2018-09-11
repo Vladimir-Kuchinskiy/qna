@@ -7,13 +7,15 @@ class Answer < ApplicationRecord
   has_many :attachments, as: :attachable,  dependent: :destroy
   has_many :comments,    as: :commentable, dependent: :destroy
 
-  belongs_to :question, optional: true
-  belongs_to :user, optional: true
+  belongs_to :question
+  belongs_to :user
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
   validates :body, presence: true
   validates :the_best, uniqueness: { scope: :question_id }, if: ->(answer) { answer.the_best.present? }
+
+  after_create :notify_users
 
   scope :from_the_best, -> { where(the_best: true) + where(the_best: nil).order('created_at') }
 
@@ -21,5 +23,9 @@ class Answer < ApplicationRecord
     question.answers.where(the_best: true).first.update(the_best: nil) if question.answers.where(the_best: true).any?
     update(the_best: true)
     self
+  end
+
+  def notify_users
+    NotifyQuestionUsersJob.perform_later(self)
   end
 end
