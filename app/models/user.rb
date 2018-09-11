@@ -34,6 +34,15 @@ class User < ApplicationRecord
     id != entity.user_id && votes.find_by(voteable_id: entity.id)&.try(:voted)
   end
 
+  def email_verified?
+    !email.match(unverified_regexp)
+  end
+
+  def create_authorization(auth)
+    authorizations.create(provider: auth.provider, uid: auth.uid)
+    self
+  end
+
   class << self
     def find_for_oauth(auth)
       user = Authorization.find_by(provider: auth.provider, uid: auth.uid.to_s).try(:user)
@@ -49,15 +58,6 @@ class User < ApplicationRecord
       end
       user.create_authorization(auth)
     end
-  end
-
-  def email_verified?
-    !email.match(unverified_regexp)
-  end
-
-  def create_authorization(auth)
-    authorizations.create(provider: auth.provider, uid: auth.uid)
-    self
   end
 
   private

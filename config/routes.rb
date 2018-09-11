@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  require 'sidekiq/web'
+
   use_doorkeeper
-  root to: 'questions#index'
 
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }
 
   devise_scope :user do
     match '/users/:id/verify_email', to: 'users/registrations#verify_email', via: %i[get patch], as: :verify_email
   end
+
+  root to: 'questions#index'
 
   namespace :api do
     namespace :v1 do
@@ -40,4 +43,6 @@ Rails.application.routes.draw do
   resources :comments,    only: :create
 
   mount ActionCable.server => '/cable'
+
+  authenticate :user, ->(user) { user.admin? } { mount Sidekiq::Web => '/sidekiq' }
 end
