@@ -7,6 +7,12 @@
           .badge.badge-primary.font-weight-normal
             | Rating
             span.badge.badge-light.font-weight-normal = @question.votes_count
+      .col-md-2
+        .subscriptions
+          - if current_user&.can_subscribe?(@question)
+            = link_to 'Subscribe',   subscribe_question_path(@question), method: :patch, remote: true, class: 'btn btn-warning d-inline'
+          - elsif current_user
+            = link_to 'Unsubscribe', unsubscribe_question_path(@question), method: :patch, remote: true, class: 'btn btn-warning d-inline'
       .col-md-3
         - if current_user&.can_vote?(@question)
           = link_to 'Like', vote_question_path(@question, vote: 1, show: true), method: :patch, remote: true, class: 'btn btn-success d-index btn-sm'

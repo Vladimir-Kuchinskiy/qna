@@ -210,6 +210,90 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #subscribe' do
+    sign_in_user
+    context 'Unsubscribed user tries to subscribe' do
+      it 'assigns the requested question to @question' do
+        patch :subscribe, params: { id: question, format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'creates subscription for current_user' do
+        expect do
+          patch :subscribe, params: { id: question, format: :js }
+        end.to change(question.subscriptions, :count).by(1)
+      end
+
+      it 'renders subscribe template' do
+        patch :subscribe, params: { id: question, format: :js }
+        expect(response).to render_template :subscribe
+      end
+    end
+
+    context 'Subscribed user tries to subscribe' do
+      before { question.subscriptions.create(user: @user) }
+
+      it 'assigns the requested question to @question' do
+        patch :subscribe, params: { id: question, format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'does not create subscription for user' do
+        expect do
+          patch :subscribe, params: { id: question, format: :js }
+        end.to_not change(question.subscriptions, :count)
+      end
+
+      it 'renders subscribe template' do
+        patch :subscribe, params: { id: question, format: :js }
+        expect(response).to render_template :subscribe
+      end
+    end
+  end
+
+  describe 'PATCH #unsubscribe' do
+    sign_in_user
+    context 'Subscribed user tries to unsubscribe' do
+      before do
+        question.subscriptions.create(user: @user)
+      end
+
+      it 'assigns the requested question to @question' do
+        patch :unsubscribe, params: { id: question, format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'destroys subscriptions for user' do
+        expect do
+          patch :unsubscribe, params: { id: question, format: :js }
+        end.to change(question.subscriptions, :count).by(-1)
+      end
+
+      it 'renders subscribe template' do
+        patch :unsubscribe, params: { id: question, format: :js }
+        expect(response).to render_template :unsubscribe
+      end
+    end
+
+    context 'Unsubscribed user tries to unsubscribe' do
+      it 'assigns the requested question to @question' do
+        patch :unsubscribe, params: { id: question, format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'does not create subscription for user' do
+        expect do
+          patch :unsubscribe, params: { id: question, format: :js }
+        end.to_not change(question.subscriptions, :count)
+      end
+
+      it 'renders unsubscribe template' do
+        patch :unsubscribe, params: { id: question, format: :js }
+        expect(response).to render_template :unsubscribe
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     let(:another_question) { create(:another_question) }
     sign_in_user

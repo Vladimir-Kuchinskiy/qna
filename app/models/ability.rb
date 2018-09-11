@@ -26,6 +26,8 @@ class Ability
     can %i[update destroy], [Question, Answer, Comment], user: user
     can :vote,              [Question, Answer]
     can :dismiss_vote,      [Question, Answer]
+    can :subscribe, Question
+    can :unsubscribe, Question
     can :pick_up_the_best, Answer
   end
 end

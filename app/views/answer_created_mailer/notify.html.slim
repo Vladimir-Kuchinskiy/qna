@@ -1,12 +1,7 @@
+h1 QnA
 .row
   .col-md-8
     h2.d-index #{@answer.question.title}
-    .row
-      .col-md-2
-        h4.votes
-          .badge.badge-primary.font-weight-normal
-            | Rating
-            span.badge.badge-light.font-weight-normal = @answer.question.votes_count
     p.lead #{@answer.question.body}
     .border-bottom
     .answer

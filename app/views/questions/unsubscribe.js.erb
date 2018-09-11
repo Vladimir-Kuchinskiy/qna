@@ -1,0 +1,4 @@
+<% if !@question.errors.any? %>
+  $('.body_question').html('<%= j render 'questions/question' %>');
+<% end %>
+<%= ajax_flash('#main') %>

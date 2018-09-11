@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: %i[voteable commentable], shallow: true do
+    patch :subscribe,   on: :member
+    patch :unsubscribe, on: :member
     resources :answers, concerns: %i[voteable commentable] do
       patch :pick_up_the_best, on: :member
     end

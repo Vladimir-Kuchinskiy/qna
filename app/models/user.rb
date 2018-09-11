@@ -35,6 +35,10 @@ class User < ApplicationRecord
     id != entity.user_id && votes.find_by(voteable_id: entity.id)&.try(:voted)
   end
 
+  def can_subscribe?(question)
+    question.subscriptions.find_by(user_id: id).blank?
+  end
+
   def email_verified?
     !email.match(unverified_regexp)
   end

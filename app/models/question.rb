@@ -6,7 +6,7 @@ class Question < ApplicationRecord
 
   scope :from_last_day, -> { where('DATE(created_at) = ?', Time.zone.yesterday) }
 
-  belongs_to :user
+  belongs_to :user, optional: true
 
   has_many :answers,                       dependent: :destroy
   has_many :attachments, as: :attachable,  dependent: :destroy
@@ -20,6 +20,24 @@ class Question < ApplicationRecord
 
   after_create :update_reputation
   after_create :create_subscription
+
+  def subscribe(user)
+    if subscriptions.find_by(user_id: user.id).blank?
+      subscriptions.create(user: user)
+    else
+      errors.add(:user_id, 'cannot subscribe')
+    end
+    self
+  end
+
+  def unsubscribe(user)
+    if subscription = subscriptions.find_by(user_id: user.id)
+      subscription.destroy
+    else
+      errors.add(:user_id, 'cannot unsubscribe')
+    end
+    self
+  end
 
   private
 

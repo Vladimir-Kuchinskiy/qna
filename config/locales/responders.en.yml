@@ -22,6 +22,10 @@ en:
         notice: 'Your vote was successfully added'
       dismiss_vote:
         notice: 'Your vote was successfully dismissed'
+      subscribe:
+        notice: 'Your was successfully subscribed'
+      unsubscribe:
+        notice: 'Your was successfully unsubscribed'
     comments:
       create:
         notice: 'Your comment was successfully added'

@@ -2,7 +2,7 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question,       only: %i[show edit update vote dismiss_vote destroy]
+  before_action :set_question,       only: %i[show edit update vote dismiss_vote subscribe unsubscribe destroy]
   before_action :build_attachments,  only: :show
 
   after_action :publish_question, only: :create
@@ -46,6 +46,18 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def subscribe
+    respond_with(@question.subscribe(current_user)) do
+      flash[:error] = 'You can not subscribe for this question' if @question.errors.any?
+    end
+  end
+
+  def unsubscribe
+    respond_with(@question.unsubscribe(current_user)) do
+      flash[:error] = 'You can not unsubscribe from this question' if @question.errors.any?
+    end
+  end
+
   def destroy
     respond_with(@question.destroy) { flash[:notice] = 'Your question was successfully deleted' }
   end
@@ -58,6 +70,7 @@ class QuestionsController < ApplicationController
 
   def publish_question
     return if @question.errors.any?
+
     ActionCable.server.broadcast('questions', @question.attributes.merge(email: @question.user.email))
   end
 
