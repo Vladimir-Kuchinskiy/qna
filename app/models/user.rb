@@ -16,23 +16,20 @@ class User < ApplicationRecord
 
   validate :match_email, on: :update
 
-  def vote(entity, voted)
-    vote = votes.find_by(voteable_id: entity.id)
-    return vote.update(voted: true, choice: voted) if vote
-    votes.create(voteable_id: entity.id, voted: true, choice: voted)
+  def vote(entity, vote)
+    true if votes.create(voteable_id: entity.id, choice: vote)
   end
 
   def dismiss_vote(entity)
-    vote = votes.find_by(voteable_id: entity.id)
-    vote&.voted ? vote.update(voted: false, choice: 0) : false
+    true if votes.find_by(voteable_id: entity.id).destroy
   end
 
   def can_vote?(entity)
-    id != entity.user_id && !votes.find_by(voteable_id: entity.id).try(:voted)
+    id != entity.user_id && votes.find_by(voteable_id: entity.id).blank?
   end
 
   def can_dismiss?(entity)
-    id != entity.user_id && votes.find_by(voteable_id: entity.id)&.try(:voted)
+    id != entity.user_id && votes.find_by(voteable_id: entity.id).present?
   end
 
   def can_subscribe?(question)

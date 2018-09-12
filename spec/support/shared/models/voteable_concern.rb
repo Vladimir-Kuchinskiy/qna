@@ -5,7 +5,6 @@ shared_examples_for 'Voteable' do
 
   describe '#give_vote' do
     let!(:user) { create(:user) }
-    let!(:vote) { create(:vote, voted: false, user: user, voteable: subject, choice: 0) }
 
     context 'user can vote' do
       it "gives the vote for #{described_class.name.downcase}" do
@@ -18,7 +17,7 @@ shared_examples_for 'Voteable' do
     end
 
     context 'user can not vote' do
-      before { vote.update(voted: true, choice: 1) }
+      let!(:vote) { create(:vote, user: user, voteable: subject, choice: 1) }
       it 'returns an access denied error' do
         subject.give_vote(user, 1)
         expect(subject.errors[:votes_count]).to_not be_blank
@@ -32,7 +31,7 @@ shared_examples_for 'Voteable' do
 
   describe '#remove_vote' do
     let!(:user) { create(:user) }
-    let!(:vote) { create(:vote, voted: true, user: user, voteable: subject, choice: 1) }
+    let!(:vote) { create(:vote, user: user, voteable: subject, choice: 1) }
 
     context 'user can vote' do
       before { subject.update(votes_count: 1) }
@@ -46,7 +45,7 @@ shared_examples_for 'Voteable' do
     end
 
     context 'user can not vote' do
-      before { vote.update(voted: false, choice: 0) }
+      before { vote.destroy }
       it 'returns an access denied error' do
         subject.remove_vote(user)
         expect(subject.errors[:votes_count]).to_not be_blank

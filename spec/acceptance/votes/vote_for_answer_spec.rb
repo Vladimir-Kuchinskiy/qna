@@ -6,10 +6,10 @@ feature 'Give a vote for an answer', '
   I would like to be able to give my vote
 ' do
 
-  given(:user) { create(:user) }
-  given(:author) { create(:user) }
+  given(:user)      { create(:user) }
+  given(:author)    { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, question: question, user: author) }
+  given!(:answer)   { create(:answer, question: question, user: author) }
 
   describe 'User' do
     before do
@@ -45,7 +45,7 @@ feature 'Give a vote for an answer', '
   end
 
   describe 'Author' do
-    scenario 'tries to give any vote for an aswer' do
+    scenario 'tries to give any vote for an answer' do
       sign_in(author)
       visit question_path(question)
       within '.answers' do

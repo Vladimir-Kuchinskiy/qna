@@ -12,7 +12,7 @@
           - if current_user&.can_subscribe?(@question)
             = link_to 'Subscribe',   subscribe_question_path(@question), method: :patch, remote: true, class: 'btn btn-warning d-inline'
           - elsif current_user
-            = link_to 'Unsubscribe', unsubscribe_question_path(@question), method: :patch, remote: true, class: 'btn btn-warning d-inline'
+            = link_to 'Unsubscribe', unsubscribe_question_path(@question), method: :patch, remote: true, class: 'btn btn-outline-danger d-inline'
       .col-md-3
         - if current_user&.can_vote?(@question)
           = link_to 'Like', vote_question_path(@question, vote: 1, show: true), method: :patch, remote: true, class: 'btn btn-success d-index btn-sm'

@@ -149,7 +149,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'Voted user tries to dismiss vote' do
       before do
         answer.update(votes_count: 1)
-        answer.votes.create(user: @user, voted: true, choice: 1)
+        answer.votes.create(user: @user, choice: 1)
         patch :dismiss_vote, params: { id: answer, format: :js }
       end
 
@@ -159,10 +159,6 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'changes answer votes_count by -1' do
         expect(answer.reload.votes_count).to eq 0
-      end
-
-      it 'gives user 1 chance to vote for this answer' do
-        expect(@user.reload.votes.last.voted).to eq false
       end
     end
 
