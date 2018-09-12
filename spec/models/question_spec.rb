@@ -22,11 +22,11 @@ RSpec.describe Question, type: :model do
   subject { build(:question, user: create(:user)) }
   it_behaves_like 'ReputationCalculatable'
 
-  let(:user)     { create(:user) }
-  let(:question) { build(:question, user: user) }
   describe 'subscription' do
+    let(:question) { build(:question, user: create(:user)) }
+
     it 'should create subscription for user after creating' do
-      expect(question.subscriptions).to receive(:create).with(user: user)
+      expect(question.subscriptions).to receive(:create).with(user: question.user)
       question.save!
     end
 
@@ -34,6 +34,66 @@ RSpec.describe Question, type: :model do
       question.save!
       expect(question.subscriptions).to_not receive(:create)
       question.update(body: '123')
+    end
+  end
+
+  let(:user)     { create(:user) }
+  let(:question) { create(:question, user: create(:user)) }
+  describe '#subscribe' do
+    context 'for unsubscribed user' do
+      it 'creates subscription' do
+        expect { question.subscribe(user) }.to change(question.subscriptions, :count).by(1)
+      end
+
+      it 'returns question' do
+        expect(question.subscribe(user)).to be_a(Question)
+      end
+    end
+
+    context 'for subscribed user' do
+      before { question.subscriptions.create(user: user) }
+
+      it 'does not create subscription' do
+        expect { question.subscribe(user) }.to_not change(question.subscriptions, :count)
+      end
+
+      it 'returns a cannot subscribe error' do
+        question.subscribe(user)
+        expect(question.errors[:user_id]).to_not be_blank
+      end
+
+      it 'returns question' do
+        expect(question.subscribe(user)).to be_a(Question)
+      end
+    end
+  end
+
+  describe '#unsubscribe' do
+    context 'for subscribed user' do
+      before { question.subscriptions.create(user: user) }
+
+      it 'destroys user subscription' do
+        expect { question.unsubscribe(user) }.to change(question.subscriptions, :count).by(-1)
+      end
+
+      it 'returns question' do
+        expect(question.unsubscribe(user)).to be_a(Question)
+      end
+    end
+
+    context 'for unsubscribed user' do
+      it 'does not destroy subscription' do
+        expect { question.unsubscribe(user) }.to_not change(question.subscriptions, :count)
+      end
+
+      it 'returns a cannot unsubscribe error' do
+        question.unsubscribe(user)
+        expect(question.errors[:user_id]).to_not be_blank
+      end
+
+      it 'returns question' do
+        expect(question.unsubscribe(user)).to be_a(Question)
+      end
     end
   end
 end
