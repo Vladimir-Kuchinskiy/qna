@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question,       only: %i[show edit update vote dismiss_vote subscribe unsubscribe destroy]
-  before_action :build_attachments,  only: :show
+  before_action :authenticate_user!,  except: %i[index show]
+  before_action :set_question,        only: %i[show edit update vote dismiss_vote subscribe unsubscribe destroy]
+  before_action :build_attachments,   only: :show
+  before_action :beautify_search_url, only: :index
 
   after_action :publish_question, only: :create
 
@@ -12,7 +13,8 @@ class QuestionsController < ApplicationController
 
   def index
     gon.push(current_user_id: current_user.id) if current_user.present?
-    respond_with(@questions = Question.all)
+    respond_with(@questions = Question.searching(params[:query], params[:type].try(:to_sym)).
+        paginate(page: params[:page], per_page: 5))
   end
 
   def show
@@ -63,6 +65,10 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def beautify_search_url
+    redirect_to search_questions_path(query: params[:q], type: params[:type]) if params[:q].present?
+  end
 
   def flash_interpolation_options
     { resource_name: 'Your question' }

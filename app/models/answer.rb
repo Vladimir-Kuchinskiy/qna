@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Answer < ApplicationRecord
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
   include Voteable
   include ReputationCalculatable
 
@@ -9,6 +11,11 @@ class Answer < ApplicationRecord
 
   belongs_to :question, optional: true
   belongs_to :user, optional: true
+
+  mapping do
+    indexes :id, index: :not_analyzed
+    indexes :body
+  end
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
@@ -23,6 +30,13 @@ class Answer < ApplicationRecord
     question.answers.where(the_best: true).first.update(the_best: nil) if question.answers.where(the_best: true).any?
     update(the_best: true)
     self
+  end
+
+  class << self
+    def search_for_question(query)
+      answers = Answer.search(query).records.records
+      answers.any? ? Question.where(id: answers.map(&:question).map(&:id)) : Question.none
+    end
   end
 
   def notify_users

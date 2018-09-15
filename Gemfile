@@ -53,6 +53,10 @@ gem 'oj_mimic_json'
 gem 'sidekiq'
 gem 'sinatra', github: 'sinatra/sinatra', require: nil
 gem 'whenever'
+gem 'elasticsearch-rails'
+gem 'elasticsearch-model'
+gem 'will_paginate-bootstrap4'
+gem 'glyphicons-rails'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'

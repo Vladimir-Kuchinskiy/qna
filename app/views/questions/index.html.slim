@@ -1,9 +1,20 @@
 .row
   .col-md-9
-    h1 class="display-5" Questions
+    .row
+      .col-md-3
+        h1 class="display-5" Questions
+      .col-md-6.search-form
+        = form_tag questions_path, method: :get, class: 'navbar-form' do
+          .form-group style="display: inline;"
+            .input-group.input-group-sm
+              = label_tag :q, 'Search', class: 'sr-only'
+              = text_field_tag :q, params[:query], class: 'form-control'
+              = select_tag :type, options_from_collection_for_select(ApplicationRecord::TYPES, :first, :last, params[:type]), class: 'form-control'
+      br
     .questions_list
       - @questions.each do |question|
         = render 'question_on_index_page', question: question
+      = will_paginate @questions, renderer: WillPaginate::ActionView::BootstrapLinkRenderer
   .col-md-3
     - if can?(:create, Question)
       = link_to 'Ask a Question', '', class: 'create_question_link btn btn-primary'

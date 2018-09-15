@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: %i[voteable commentable], shallow: true do
+    get 'search/*query/*type', to: 'questions#index', as: :search, on: :collection
     patch :subscribe,   on: :member
     patch :unsubscribe, on: :member
     resources :answers, concerns: %i[voteable commentable] do

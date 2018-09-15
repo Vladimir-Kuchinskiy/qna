@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Question < ApplicationRecord
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
   include Voteable
   include ReputationCalculatable
 
@@ -13,6 +15,12 @@ class Question < ApplicationRecord
   has_many :comments, as: :commentable,    dependent: :destroy
   has_many :subscriptions,                 dependent: :destroy
   has_many :users, through: :subscriptions
+
+  mapping do
+    indexes :id, index: :not_analyzed
+    indexes :title
+    indexes :body
+  end
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
@@ -37,6 +45,23 @@ class Question < ApplicationRecord
       errors.add(:user_id, 'cannot unsubscribe')
     end
     self
+  end
+
+  class << self
+    def searching(query, type)
+      if query
+        case type
+        when :answer
+          Answer.search_for_question(query)
+        when :comment
+          Comment.search_for_question(query)
+        else
+          Question.search(query).records.records
+        end
+      else
+        Question.all
+      end
+    end
   end
 
   private
