@@ -5,6 +5,8 @@ class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :user
 
+  Comment.import
+
   mapping do
     indexes :id, index: :not_analyzed
     indexes :title

@@ -16,6 +16,8 @@ class Question < ApplicationRecord
   has_many :subscriptions,                 dependent: :destroy
   has_many :users, through: :subscriptions
 
+  Question.import
+
   mapping do
     indexes :id, index: :not_analyzed
     indexes :title

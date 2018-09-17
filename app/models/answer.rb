@@ -12,6 +12,8 @@ class Answer < ApplicationRecord
   belongs_to :question, optional: true
   belongs_to :user, optional: true
 
+  Answer.import
+
   mapping do
     indexes :id, index: :not_analyzed
     indexes :body
