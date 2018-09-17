@@ -6,12 +6,12 @@ feature 'Search for a question by question attributes', '
   I would like to be able to search for a question by its attributes
 ' do
 
-  given!(:question)  { create(:question, user: create(:user), title: 'My Title') }
-  given!(:questions) { create_list(:question, 3, user: create(:user)) }
+  # given!(:question)  { create(:question, user: create(:user), title: 'My Title') }
+  # given!(:questions) { create_list(:question, 3, user: create(:user)) }
 
-  before { visit questions_path }
+  # before { visit questions_path }
 
-  scenario 'User tries to find existed question' do
+  scenario 'User tries to find existed question', sphinx: true do
     # fill_in 'Search', with: question.title
     # form = find '.navbar-form'
     # class << form
@@ -27,7 +27,7 @@ feature 'Search for a question by question attributes', '
     # end
   end
 
-  scenario 'User tries to find non-existed question' do
+  scenario 'User tries to find non-existed question', sphinx: true do
     # fill_in 'Search', with: 'non-existed question'
     # form = find '.navbar-form'
     # class << form

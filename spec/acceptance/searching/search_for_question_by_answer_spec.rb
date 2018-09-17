@@ -9,26 +9,28 @@ feature 'Search for a question by answer attributes', '
   # given!(:questions) { create_list(:question, 3, user: create(:user)) }
   # given!(:question)  { create(:question, title: 'My Title', user: create(:user)) }
   # given!(:answer)    { create(:answer, question: question, user: create(:user)) }
-  #
+
   # before { visit questions_path }
 
-  scenario 'User tries to find existed answer\'s question' do
-    # fill_in 'Search', with: answer.body
-    # select 'Answer', from: 'type'
-    # form = find '.navbar-form'
-    # class << form
-    #   def submit!
-    #     Capybara::RackTest::Form.new(driver, native).submit({})
+  scenario 'User tries to find existed answer\'s question', sphinx: true do
+    # test 'Searching for Articles' do
+    #   fill_in 'Search', with: answer.body
+    #   select 'Answer', from: 'type'
+    #   form = find '.navbar-form'
+    #   class << form
+    #     def submit!
+    #       Capybara::RackTest::Form.new(driver, native).submit({})
+    #     end
     #   end
-    # end
-    # form.submit!
-    # within('.questions_list') do
-    #   expect(page).to have_content answer.question.title
-    #   expect(page).to_not have_content questions.last.title
+    #   form.submit!
+    #   within('.questions_list') do
+    #     expect(page).to have_content answer.question.title
+    #     expect(page).to_not have_content questions.last.title
+    #   end
     # end
   end
 
-  scenario 'User tries to find non-existed answer\'s question' do
+  scenario 'User tries to find non-existed answer\'s question', sphinx: true do
     # fill_in 'Search', with: 'non-existed question'
     # select 'Answer', from: 'type'
     # form = find '.navbar-form'

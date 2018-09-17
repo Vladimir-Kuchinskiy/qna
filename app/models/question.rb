@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
+require 'will_paginate/array'
 class Question < ApplicationRecord
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
   include Voteable
   include ReputationCalculatable
 
@@ -15,14 +14,6 @@ class Question < ApplicationRecord
   has_many :comments, as: :commentable,    dependent: :destroy
   has_many :subscriptions,                 dependent: :destroy
   has_many :users, through: :subscriptions
-
-  Question.import
-
-  mapping do
-    indexes :id, index: :not_analyzed
-    indexes :title
-    indexes :body
-  end
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
@@ -54,11 +45,11 @@ class Question < ApplicationRecord
       if query
         case type
         when :answer
-          Answer.search_for_question(query)
+          Answer.search_for_question(convert_text_for_search(query))
         when :comment
-          Comment.search_for_question(query)
+          Comment.search_for_question(convert_text_for_search(query))
         else
-          Question.search(query).records.records
+          Question.search(convert_text_for_search(query))
         end
       else
         Question.all
@@ -67,6 +58,10 @@ class Question < ApplicationRecord
   end
 
   private
+
+  def self.convert_text_for_search(text)
+    text.sub('@', '\@')
+  end
 
   def update_reputation
     CalculateReputationJob.perform_later(self)

@@ -7,15 +7,15 @@ feature 'Search for a question by answer attributes', '
 ' do
 
 
-  given!(:questions)        { create_list(:question, 3, user: create(:user)) }
-  given!(:question)         { create(:question, title: 'My Title', user: create(:user)) }
-  given!(:answer)           { create(:answer, question: question, user: create(:user)) }
-  given!(:comment_question) { create(:comment, commentable: question, user: create(:user)) }
-  given!(:comment_answer)   { create(:comment, commentable: answer, user: create(:user)) }
+  # given!(:questions)        { create_list(:question, 3, user: create(:user)) }
+  # given!(:question)         { create(:question, title: 'My Title', user: create(:user)) }
+  # given!(:answer)           { create(:answer, question: question, user: create(:user)) }
+  # given!(:comment_question) { create(:comment, commentable: question, user: create(:user)) }
+  # given!(:comment_answer)   { create(:comment, commentable: answer, user: create(:user)) }
 
-  before { visit questions_path }
+  # before { visit questions_path }
 
-  scenario 'User tries to find existed comment\'s question' do
+  scenario 'User tries to find existed comment\'s question', sphinx: true do
     # fill_in 'Search', with: comment_question.body
     # select 'Comment', from: 'type'
     # form = find '.navbar-form'
@@ -31,7 +31,7 @@ feature 'Search for a question by answer attributes', '
     # end
   end
 
-  scenario 'User tries to find existed comment\'s answer\'s question' do
+  scenario 'User tries to find existed comment\'s answer\'s question', sphinx: true do
     # fill_in 'Search', with: comment_answer.body
     # select 'Comment', from: 'type'
     # form = find '.navbar-form'
@@ -47,7 +47,7 @@ feature 'Search for a question by answer attributes', '
     # end
   end
 
-  scenario 'User tries to find non-existed answer\'s question' do
+  scenario 'User tries to find non-existed answer\'s question', sphinx: true do
     # fill_in 'Search', with: 'non-existed comment'
     # select 'Comment', from: 'type'
     # form = find '.navbar-form'
