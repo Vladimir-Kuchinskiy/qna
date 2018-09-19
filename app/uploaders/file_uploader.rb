@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class FileUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
 
-  delegate  :identifier, to: :file, allow_nil: true
+  delegate :identifier, to: :file, allow_nil: true
 
   # Choose what kind of storage to use for this uploader:
   storage :file

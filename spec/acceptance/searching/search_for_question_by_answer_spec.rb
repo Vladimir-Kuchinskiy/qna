@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../acceptance_helper'
 
 feature 'Search for a question by answer attributes', '

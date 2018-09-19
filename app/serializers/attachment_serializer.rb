@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AttachmentSerializer < ActiveModel::Serializer
   attributes :file_url
 

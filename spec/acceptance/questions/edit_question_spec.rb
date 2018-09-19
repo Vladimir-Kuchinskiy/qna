@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../acceptance_helper'
 
 feature 'Edit question', '
@@ -8,7 +10,6 @@ feature 'Edit question', '
   given(:user)              { create(:user) }
   given!(:question)         { create(:question, user: user) }
   given!(:another_question) { create(:another_question, user: create(:user)) }
-
 
   describe 'Authenticated user' do
     before do

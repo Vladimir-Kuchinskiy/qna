@@ -13,8 +13,8 @@ class QuestionsController < ApplicationController
 
   def index
     gon.push(current_user_id: current_user.id) if current_user.present?
-    respond_with(@questions = Question.searching(params[:query], params[:type].try(:to_sym)).
-        paginate(page: params[:page], per_page: 5))
+    respond_with(@questions = Question.searching(params[:query], params[:type].try(:to_sym))
+        .paginate(page: params[:page], per_page: 5))
   end
 
   def show

@@ -64,6 +64,7 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
+
     ActionCable.server.broadcast(
       "answer_for_question_#{params[:question_id]}",
       answer: answer_to_publish

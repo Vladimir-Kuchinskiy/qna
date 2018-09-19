@@ -108,13 +108,13 @@ describe 'Answers API' do
       end
 
       it 'creates new answer in the DB' do
-        expect {
+        expect do
           post "/api/v1/questions/#{question.id}/answers", params: {
             answer: attributes_for(:answer),
             format: :json,
             access_token: access_token.token
           }
-        }.to change(Answer, :count)
+        end.to change(Answer, :count)
       end
 
       context 'returns created answer in json' do

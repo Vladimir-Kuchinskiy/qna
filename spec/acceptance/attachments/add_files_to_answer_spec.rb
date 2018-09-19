@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../acceptance_helper'
 
 feature 'Add files to answer', '
@@ -8,7 +10,6 @@ feature 'Add files to answer', '
 
   given(:user)     { create(:user) }
   given(:question) { create(:question, user: user) }
-
 
   background do
     sign_in(user)

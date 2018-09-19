@@ -4,8 +4,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable,
-         :trackable, :validatable, :confirmable, :omniauthable, omniauth_providers: [:facebook, :github],
-         authentication_keys: { email: true }
+         :trackable, :validatable, :confirmable, :omniauthable, omniauth_providers: %i[facebook github],
+                                                                authentication_keys: { email: true }
 
   has_many :questions
   has_many :answers
@@ -49,7 +49,8 @@ class User < ApplicationRecord
     def find_for_oauth(auth)
       user = Authorization.find_by(provider: auth.provider, uid: auth.uid.to_s).try(:user)
       return user if user
-      unless user = User.find_by(email: auth.info.email)
+
+      unless (user = User.find_by(email: auth.info.email))
         password = Devise.friendly_token[0, 20]
         user = User.new(
           email: auth.info[:email] || "unverified-#{auth.uid}@#{auth.provider}.com",

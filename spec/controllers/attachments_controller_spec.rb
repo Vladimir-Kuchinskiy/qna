@@ -47,7 +47,9 @@ RSpec.describe AttachmentsController, type: :controller do
         end
 
         it 'removes an attachment record from the database' do
-          expect { delete :destroy, params: { id: attachment_answer }, format: :js }.to change(Attachment, :count).by(-1)
+          expect do
+            delete :destroy, params: { id: attachment_answer }, format: :js
+          end.to change(Attachment, :count).by(-1)
         end
 
         it 'renders destroy template' do
@@ -67,6 +69,5 @@ RSpec.describe AttachmentsController, type: :controller do
         end
       end
     end
-
   end
 end

@@ -5,7 +5,7 @@ class ApplicationRecord < ActiveRecord::Base
     question: 'Questions',
     answer: 'Answers',
     comment: 'Comments'
-  }
+  }.freeze
 
   self.abstract_class = true
 end

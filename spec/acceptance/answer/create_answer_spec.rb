@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../acceptance_helper'
 
 feature 'Create answer', '
@@ -59,5 +61,4 @@ feature 'Create answer', '
       end
     end
   end
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Attachment < ApplicationRecord
   belongs_to :attachable, polymorphic: true, optional: true
 
@@ -5,6 +7,7 @@ class Attachment < ApplicationRecord
 
   def destroy_if_owner(current_user)
     return destroy if current_user.id == attachable.user_id
+
     errors.add(:file, 'access denied')
     self
   end
