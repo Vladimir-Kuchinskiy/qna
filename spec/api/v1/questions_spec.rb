@@ -115,13 +115,13 @@ describe 'Questions API' do
       end
 
       it 'creates new question in the DB' do
-        expect {
+        expect do
           post '/api/v1/questions', params: {
             question: attributes_for(:question),
             format: :json,
             access_token: access_token.token
           }
-        }.to change(Question, :count)
+        end.to change(Question, :count)
       end
     end
   end

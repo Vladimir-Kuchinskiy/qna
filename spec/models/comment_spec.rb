@@ -19,7 +19,6 @@ RSpec.describe Comment, type: :model do
     end
 
     context 'for answer comment' do
-
       it 'returns question_id of the answer' do
         answer = create(:answer, user: create(:user), question: question)
         comment = create(:comment, commentable: answer, user: create(:user))

@@ -86,7 +86,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'renders common/ajax_flash template' do
-        expect(response).to  render_template 'common/ajax_flash'
+        expect(response).to render_template 'common/ajax_flash'
       end
     end
   end
@@ -118,7 +118,7 @@ RSpec.describe AnswersController, type: :controller do
         end
 
         it 'changes answer votes_count by -1' do
-          expect(answer.reload.votes_count).to eq -1
+          expect(answer.reload.votes_count).to eq(-1)
         end
 
         it 'renders vote template' do
@@ -134,7 +134,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'does not changes votes count of an answer' do
-        expect(answer.reload.votes_count).to eq 0
+        expect(answer.reload.votes_count).to eq(0)
       end
 
       it 'renders vote template' do
@@ -158,7 +158,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'changes answer votes_count by -1' do
-        expect(answer.reload.votes_count).to eq 0
+        expect(answer.reload.votes_count).to eq(0)
       end
     end
 
@@ -166,7 +166,7 @@ RSpec.describe AnswersController, type: :controller do
       before { patch :dismiss_vote, params: { id: answer, format: :js } }
 
       it 'do not change votes_count of answer' do
-        expect(answer.reload.votes_count).to eq 0
+        expect(answer.reload.votes_count).to eq(0)
       end
 
       it 'renders vote template' do

@@ -32,7 +32,7 @@ class Question < ApplicationRecord
   end
 
   def unsubscribe(user)
-    if subscription = subscriptions.find_by(user_id: user.id)
+    if (subscription = subscriptions.find_by(user_id: user.id))
       subscription.destroy
     else
       errors.add(:user_id, 'cannot unsubscribe')
@@ -55,13 +55,15 @@ class Question < ApplicationRecord
         Question.all
       end
     end
+
+    private
+
+    def convert_text_for_search(text)
+      text.sub('@', '\@')
+    end
   end
 
   private
-
-  def self.convert_text_for_search(text)
-    text.sub('@', '\@')
-  end
 
   def update_reputation
     CalculateReputationJob.perform_later(self)

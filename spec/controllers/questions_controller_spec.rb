@@ -40,9 +40,9 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'saves a new question in the database' do
-        expect {
+        expect do
           post :create, params: { question: attributes_for(:question), format: :js }
-        }.to change(Question, :count).by(1)
+        end.to change(Question, :count).by(1)
       end
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question), format: :js }
@@ -52,9 +52,9 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with invalid attributes' do
       it 'does not save the question' do
-        expect {
+        expect do
           post :create, params: { question: attributes_for(:invalid_question), format: :js }
-        }.to_not change(Question, :count)
+        end.to_not change(Question, :count)
       end
 
       it 'renders create view' do
@@ -148,7 +148,7 @@ RSpec.describe QuestionsController, type: :controller do
         end
 
         it 'changes question votes_count by -1' do
-          expect(question.reload.votes_count).to eq -1
+          expect(question.reload.votes_count).to eq(-1)
         end
 
         it 'renders vote template' do
@@ -163,7 +163,7 @@ RSpec.describe QuestionsController, type: :controller do
         patch :vote, params: { id: question, vote: 1, format: :js }
       end
       it 'does not changes votes count of a question' do
-        expect(question.reload.votes_count).to eq 0
+        expect(question.reload.votes_count).to eq(0)
       end
       it 'renders vote template' do
         expect(response).to render_template :vote
@@ -185,7 +185,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'changes question votes_count by -1' do
-        expect(question.reload.votes_count).to eq 0
+        expect(question.reload.votes_count).to eq(0)
       end
 
       it 'renders vote template' do
@@ -197,7 +197,7 @@ RSpec.describe QuestionsController, type: :controller do
       before { patch :dismiss_vote, params: { id: question, format: :js } }
 
       it 'do not change votes_count of question' do
-        expect(question.reload.votes_count).to eq 0
+        expect(question.reload.votes_count).to eq(0)
       end
 
       it 'renders vote template' do

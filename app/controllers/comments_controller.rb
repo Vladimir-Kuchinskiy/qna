@@ -27,6 +27,7 @@ class CommentsController < ApplicationController
 
   def publish_comment
     return if @comment.errors.any?
+
     ActionCable.server.broadcast(
       "comment_for_question_#{@comment.question_id}",
       comment: @comment.as_json.merge(email: @comment.user.email)

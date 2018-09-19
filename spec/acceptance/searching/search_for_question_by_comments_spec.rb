@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../acceptance_helper'
 
 feature 'Search for a question by answer attributes', '
@@ -5,7 +7,6 @@ feature 'Search for a question by answer attributes', '
   As a user
   I would like to be able to search for a question by its comments attributes
 ' do
-
 
   # given!(:questions)        { create_list(:question, 3, user: create(:user)) }
   # given!(:question)         { create(:question, title: 'My Title', user: create(:user)) }
