@@ -56,6 +56,9 @@ gem 'slim-rails'
 gem 'thinking-sphinx', '~> 3.1.4'
 gem 'whenever'
 gem 'will_paginate-bootstrap4'
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
+gem 'mini_racer'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
@@ -69,6 +72,10 @@ gem 'bootsnap', '>= 1.1.0', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
 end
 
 group :development do
