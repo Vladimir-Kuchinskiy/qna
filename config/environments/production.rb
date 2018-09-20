@@ -66,6 +66,16 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "qna_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_options     = { from: 'qna@18.223.124.96' }
+  config.action_mailer.default_url_options = { host: '18.223.124.96' }
+  config.action_mailer.perform_deliveries    = true
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.sendmail_settings = {
+      location: '/usr/sbin/exim4',
+      arguments: '-i'
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
