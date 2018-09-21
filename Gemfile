@@ -59,6 +59,7 @@ gem 'will_paginate-bootstrap4'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
 gem 'mini_racer'
+gem 'unicorn'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
@@ -77,6 +78,7 @@ group :development, :test do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :development do
