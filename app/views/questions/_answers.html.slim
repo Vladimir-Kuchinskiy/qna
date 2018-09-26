@@ -1,4 +1,5 @@
 - question.answers.from_the_best.each do |answer|
-  - if answer.persisted?
-    div data-answer-id="#{answer.id}"
-      = render 'answers/answer', answer: answer, question: question
+  - cache answer do
+    - if answer.persisted?
+      div data-answer-id="#{answer.id}"
+        = render 'answers/answer', answer: answer, question: question

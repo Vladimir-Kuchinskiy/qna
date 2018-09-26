@@ -1,10 +1,10 @@
-.row
-  .col-md-12
-    .body_question
-      = render 'questions/question'
-    = render 'comments'
-    .border-bottom
-    .answers
-      = render 'answers', question: @question
-
-    p = render 'answers/form', question: @question, answer: @question.answers.new if can?(:create, Answer)
+- cache @question do
+  .row
+    .col-md-12
+      .body_question
+        = render 'questions/question'
+      = render 'comments'
+      .border-bottom
+      .answers
+        = render 'answers', question: @question
+      p = render 'answers/form', question: @question, answer: @question.answers.new if can?(:create, Answer)

@@ -60,6 +60,7 @@ gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
 gem 'mini_racer'
 gem 'unicorn'
+gem 'redis-rails'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'

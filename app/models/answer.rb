@@ -7,7 +7,7 @@ class Answer < ApplicationRecord
   has_many :attachments, as: :attachable,  dependent: :destroy
   has_many :comments,    as: :commentable, dependent: :destroy
 
-  belongs_to :question, optional: true
+  belongs_to :question, optional: true, touch: true
   belongs_to :user, optional: true
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
